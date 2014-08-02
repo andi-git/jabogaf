@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>at.ahammer.heroquest</groupId>
+    <artifactId>heroquest-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+<!--    <modules>
+        <module>heroquest-core</module>
+    </modules>-->
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <!-- plugin -->
+        <version.maven-copiler-plugin>2.5.1</version.maven-copiler-plugin>
+        <version.maven-surefire-plugin>2.12.4</version.maven-surefire-plugin>
+        <!-- runtime -->
+        <version.javaee-api>7.0</version.javaee-api>
+        <version.slf4j-api>1.6.1</version.slf4j-api>
+        <!-- test -->
+        <version.junit>4.11</version.junit>
+        <version.arquillian-bom>1.1.5.Final</version.arquillian-bom>
+        <version.weld-core>1.1.5.Final</version.weld-core>
+        <version.slf4j-simple>1.6.4</version.slf4j-simple>
+        <version.arquillian-weld-ee-embedded-1.1>1.0.0.CR3</version.arquillian-weld-ee-embedded-1.1>
+        <!-- unknown -->
+        <version.weld-se-core>2.2.3.Final</version.weld-se-core>
+    </properties>
+
+    <build>
+        <finalName>heroquest-parent</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven-copiler-plugin}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.maven-surefire-plugin}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian-bom}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- runtime -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${version.javaee-api}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${version.slf4j-api}</version>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.junit</groupId>
+            <artifactId>arquillian-junit-container</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
