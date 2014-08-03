@@ -10,3 +10,4 @@ release.properties
 heroquest-parent/heroquest-parent.iml
 .idea
 .idea/libraries
+heroquest-parent/heroquest-core/heroquest-core.iml

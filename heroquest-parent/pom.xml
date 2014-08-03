@@ -4,9 +4,9 @@
     <groupId>at.ahammer.heroquest</groupId>
     <artifactId>heroquest-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-<!--    <modules>
+    <modules>
         <module>heroquest-core</module>
-    </modules>-->
+    </modules>
     <packaging>pom</packaging>
 
     <properties>
