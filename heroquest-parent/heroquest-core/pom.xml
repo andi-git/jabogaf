@@ -12,23 +12,24 @@
     <artifactId>heroquest-core</artifactId>
 
     <dependencies>
+        <!-- runtime -->
+
+        <!-- test -->
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-            <version>${version.arquillian-weld-ee-embedded-1.1}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core</artifactId>
-            <version>${version.weld-core}</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>${version.slf4j-simple}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

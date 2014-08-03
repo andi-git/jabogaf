@@ -23,8 +23,10 @@
         <version.junit>4.11</version.junit>
         <version.arquillian-bom>1.1.5.Final</version.arquillian-bom>
         <version.weld-core>1.1.5.Final</version.weld-core>
+        <version.weld-se-core>2.2.3.Final</version.weld-se-core>
         <version.slf4j-simple>1.6.4</version.slf4j-simple>
         <version.arquillian-weld-ee-embedded-1.1>1.0.0.CR3</version.arquillian-weld-ee-embedded-1.1>
+        <version.arquillian-suite-extension>1.1.1</version.arquillian-suite-extension>
         <!-- unknown -->
         <version.weld-se-core>2.2.3.Final</version.weld-se-core>
     </properties>
@@ -49,6 +51,20 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- runtime -->
+            <dependency>
+                <groupId>javax</groupId>
+                <artifactId>javaee-api</artifactId>
+                <version>${version.javaee-api}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${version.slf4j-api}</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- test -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -62,6 +78,36 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>org.eu.ingwar.tools</groupId>
+                <artifactId>arquillian-suite-extension</artifactId>
+                <version>${version.arquillian-suite-extension}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+                <version>${version.arquillian-weld-ee-embedded-1.1}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core</artifactId>
+                <version>${version.weld-core}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se-core</artifactId>
+                <version>${version.weld-se-core}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${version.slf4j-simple}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -70,13 +116,10 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>${version.javaee-api}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${version.slf4j-api}</version>
         </dependency>
         <!-- test -->
         <dependency>
