@@ -22,13 +22,13 @@
         <!-- test -->
         <version.junit>4.11</version.junit>
         <version.arquillian-bom>1.1.5.Final</version.arquillian-bom>
-        <version.weld-core>1.1.5.Final</version.weld-core>
-        <version.weld-se-core>2.2.3.Final</version.weld-se-core>
+        <version.weld-core>2.2.3.Final</version.weld-core>
+        <version.weld-core-impl>2.2.2.Final</version.weld-core-impl>
         <version.slf4j-simple>1.6.4</version.slf4j-simple>
         <version.arquillian-weld-ee-embedded-1.1>1.0.0.CR3</version.arquillian-weld-ee-embedded-1.1>
         <version.arquillian-suite-extension>1.1.1</version.arquillian-suite-extension>
-        <!-- unknown -->
-        <version.weld-se-core>2.2.3.Final</version.weld-se-core>
+        <version.arquillian-osgi>1.0.3.Final</version.arquillian-osgi>
+        <version.javassist>3.18.2-GA</version.javassist>
     </properties>
 
     <build>
@@ -97,15 +97,39 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.jboss.weld</groupId>
+                <artifactId>weld-core-impl</artifactId>
+                <version>${version.weld-core-impl}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.jboss.weld.se</groupId>
                 <artifactId>weld-se-core</artifactId>
-                <version>${version.weld-se-core}</version>
+                <version>${version.weld-core}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
                 <version>${version.slf4j-simple}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.testenricher</groupId>
+                <artifactId>arquillian-testenricher-osgi</artifactId>
+                <version>${version.arquillian-osgi}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.container</groupId>
+                <artifactId>arquillian-container-osgi</artifactId>
+                <version>${version.arquillian-osgi}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>${version.javassist}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
