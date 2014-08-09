@@ -1,15 +1,16 @@
-package at.ahammer;
+package at.ahammer.boardgame.test.util;
 
-import org.eu.ingwar.tools.arquillian.extension.suite.annotations.ArquillianSuiteDeployment;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
+
 /**
- * Created by ahammer on 05.08.2014.
+ * This class has the {@link BeanManager} injected and all test-methods will run in an {@link at.ahammer.boardgame.cdi.GameContext}.
  */
-@ArquillianSuiteDeployment
-public class ArquillianSuiteDeploymentHelper {
+public abstract class ArquillianGameContextTest {
 
     @Deployment
     public static WebArchive deploy() {
@@ -19,5 +20,12 @@ public class ArquillianSuiteDeploymentHelper {
                 addPackages(true, "at.ahammer");
         System.out.println(webArchive.toString(true));
         return webArchive;
+    }
+
+    @Inject
+    private BeanManager beanManager;
+
+    public BeanManager getBeanManager() {
+        return beanManager;
     }
 }

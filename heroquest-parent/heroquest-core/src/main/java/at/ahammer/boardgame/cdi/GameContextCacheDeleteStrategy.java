@@ -14,14 +14,20 @@ import java.util.UUID;
 @ApplicationScoped
 public class GameContextCacheDeleteStrategy {
 
-    public Set<UUID> getContextsToDelete(Map<UUID, GameContextInstance> gameContextCache) {
+    private static final int MAX_UNUSED_DURATION = 60 * 60 * 6;
+
+    public Set<UUID> getContextsToDelete(Map<UUID, GameContextInstance> gameContextCache, UUID currentId) {
+        return getContextsToDelete(gameContextCache, currentId, MAX_UNUSED_DURATION);
+    }
+
+    protected Set<UUID> getContextsToDelete(Map<UUID, GameContextInstance> gameContextCache, UUID currentId, int duration) {
         final Set<UUID> toDelete = new HashSet<>();
-        Instant now = Instant.now();
         gameContextCache.forEach((gameContextId, gameContextInstanceTmp) -> {
-            if (Duration.between(now, gameContextInstanceTmp.getLastAccess()).getSeconds() > (60 * 60 * 6)) {
+            if (gameContextId != currentId && Duration.between(gameContextInstanceTmp.getLastAccess(), Instant.now()).getSeconds() > (duration)) {
                 toDelete.add(gameContextId);
             }
         });
         return toDelete;
     }
+
 }

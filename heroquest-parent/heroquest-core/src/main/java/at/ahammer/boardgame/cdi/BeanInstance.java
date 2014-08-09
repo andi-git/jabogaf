@@ -4,7 +4,7 @@ import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
 
 /**
- * Created by andreas on 02.08.14.
+ * Representation of a concrete {@link javax.enterprise.inject.spi.Bean}.
  */
 public class BeanInstance<T> {
 

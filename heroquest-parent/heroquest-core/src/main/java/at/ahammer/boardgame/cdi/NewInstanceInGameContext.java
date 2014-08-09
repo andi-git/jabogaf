@@ -16,6 +16,6 @@ public abstract class NewInstanceInGameContext {
     }
 
     protected <T> T fromGameContext(Class<T> clazz) {
-        return BeanProvider.getBean(beanManager, clazz);
+        return GameContext.current().getBean(beanManager, clazz);
     }
 }

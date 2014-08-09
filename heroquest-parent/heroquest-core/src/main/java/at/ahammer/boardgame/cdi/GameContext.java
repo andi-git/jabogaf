@@ -1,26 +1,28 @@
 package at.ahammer.boardgame.cdi;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.lang.annotation.Annotation;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.*;
 
 /**
  * This class represents a CDI-context for a game. The context has to be
  * started at the begin of a game and will (automatically) be
  * destroyed at the end of a game. All components with the
- * annotation {@link GameScoped} will be unique in this context.<br>
- * <br>
+ * annotation {@link GameScoped} will be unique in this context.
+ * <p/>
  * To start the context use
  * {@link #run(javax.enterprise.inject.spi.BeanManager, RunInGameContext)}.
+ * <p/>
+ * To reuse an existing context use {@link #run(java.util.UUID, javax.enterprise.inject.spi.BeanManager, RunInGameContext)}
  *
  * @author Andreas
  */
@@ -32,7 +34,18 @@ public class GameContext implements Context {
      */
     private static final ThreadLocal<Stack<GameContextInstance>> gameContextStack = new ThreadLocal<>();
 
-    private static final Map<UUID, GameContextInstance> gameContextCache = new ConcurrentHashMap<>();
+    /**
+     * A cache for all created {@link at.ahammer.boardgame.cdi.GameContextInstance}s. This instances can be reused.
+     */
+    private static final Map<UUID, GameContextInstance> gameContextCache = Collections.synchronizedMap(new HashMap<>());
+
+    private static final Logger log = LoggerFactory.getLogger(GameContext.class);
+
+    @Inject
+    private GameContextCacheDeleteStrategy gameContextCacheDeleteStrategy;
+
+    @Inject
+    private GameContextDeleteTimer gameContextDeleteTimer;
 
     /**
      * The assigned code will run within a new {@link GameContext}. The
@@ -43,21 +56,51 @@ public class GameContext implements Context {
      * @return the result of the {@link at.ahammer.boardgame.cdi.RunInGameContext}
      */
     public static <T> T run(BeanManager beanManager, RunInGameContext<T> runnable) throws Throwable {
-        return BeanProvider.getBean(beanManager, GameContext.class).runInternal(beanManager, runnable);
+        return run(null, beanManager, runnable);
     }
 
+    /**
+     * Start a new {@link at.ahammer.boardgame.cdi.GameContext} or reuse an existing one via the {@code gameContextId}. The code within the {@code runnable} will be executed within the {@link at.ahammer.boardgame.cdi.GameContext}.
+     * <p/>
+     * This method will throw {@link java.lang.Throwable}, because for JUnit-Tests.
+     *
+     * @param gameContextId the id (a {@link java.util.UUID} to reuse an existing {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     * @param beanManager   the current {@link javax.enterprise.inject.spi.BeanManager}
+     * @param runnable      the code run within the {@link at.ahammer.boardgame.cdi.GameContext}
+     * @param <T>           the return-type
+     * @return the id of the used {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     * @throws Throwable
+     */
     public static <T> T run(UUID gameContextId, BeanManager beanManager, RunInGameContext<T> runnable) throws Throwable {
-        return BeanProvider.getBean(beanManager, GameContext.class).runInternal(beanManager, getGameContextInstance(gameContextId), runnable);
+        GameContextInstance gameContextInstance = getGameContextInstance(gameContextId);
+        return gameContextInstance.getBean(beanManager, GameContext.class).runInternal(beanManager, gameContextInstance, runnable);
     }
 
+    /**
+     * Add a new instance of {@link at.ahammer.boardgame.cdi.NewInstanceInGameContext} created within the current {@link at.ahammer.boardgame.cdi.GameContextInstance}.
+     *
+     * @param beanManager              the curret {@link javax.enterprise.inject.spi.BeanManager}
+     * @param newInstanceInGameContext the new object
+     */
     public static void addNewInstanceInGameContext(BeanManager beanManager, NewInstanceInGameContext newInstanceInGameContext) {
-        BeanProvider.getBean(beanManager, NewInstanceInGameContextCache.class).addNewInstanceToGameContext(newInstanceInGameContext);
+        current().addNewInstanceToGameContext(newInstanceInGameContext);
     }
 
+    /**
+     * Get all objects created in the current {@link at.ahammer.boardgame.cdi.GameContextInstance} which are subclasses of {@link at.ahammer.boardgame.cdi.NewInstanceInGameContext}.
+     *
+     * @param beanManager the current {@link javax.enterprise.inject.spi.BeanManager}
+     * @return all objects created in the current {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     */
     public static Set<NewInstanceInGameContext> getNewInstancesInGameContext(BeanManager beanManager) {
-        return BeanProvider.getBean(beanManager, NewInstanceInGameContextCache.class).getNewInstancesInGameContext();
+        return current().getNewInstancesInGameContext();
     }
 
+    /**
+     * Get the {@link java.util.Stack} holding all {@link at.ahammer.boardgame.cdi.GameContextInstance}s in the current {@link java.lang.Thread}.
+     *
+     * @return the {@link java.util.Stack} holding all {@link at.ahammer.boardgame.cdi.GameContextInstance}s in the current {@link java.lang.Thread}
+     */
     private static Stack<GameContextInstance> getGameContextStack() {
         Stack<GameContextInstance> stack = gameContextStack.get();
         if (stack == null) {
@@ -67,10 +110,27 @@ public class GameContext implements Context {
         return stack;
     }
 
+    /**
+     * Get a new {@link at.ahammer.boardgame.cdi.GameContextInstance} or create a new one if the assigned {@code gameContextId} is null or the {@link at.ahammer.boardgame.cdi.GameContextInstance} for this is is not available.
+     *
+     * @param gameContextId - the id of the {@link at.ahammer.boardgame.cdi.GameContextInstance} to reuse. If it is null, a new {@link at.ahammer.boardgame.cdi.GameContextInstance} will create.
+     * @return the {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     */
     private static GameContextInstance getGameContextInstance(UUID gameContextId) {
-        GameContextInstance gameContextInstance = gameContextCache.get(gameContextId);
+        GameContextInstance gameContextInstance = null;
+        if (gameContextId != null) {
+            gameContextInstance = gameContextCache.get(gameContextId);
+        }
         if (gameContextInstance == null) {
-            throw new GameContextException("No " + GameContext.class.getSimpleName() + " with id " + gameContextId + " available!");
+            if (gameContextId != null) {
+                log.info("no {}  with id {} available", GameContextInstance.class.getSimpleName(), gameContextId);
+            }
+            gameContextId = UUID.randomUUID();
+            log.info("create new {} with id {}", GameContextInstance.class.getSimpleName(), gameContextId);
+            gameContextInstance = new GameContextInstance(gameContextId);
+            gameContextCache.put(gameContextId, gameContextInstance);
+        } else {
+            log.info("reuse {} with id {}", GameContextInstance.class.getSimpleName(), gameContextId);
         }
         return gameContextInstance;
     }
@@ -106,6 +166,11 @@ public class GameContext implements Context {
         return true;
     }
 
+    /**
+     * Get the current {@link at.ahammer.boardgame.cdi.GameContextInstance}.
+     *
+     * @return the current {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     */
     private GameContextInstance getGameContextInstance() {
         if (getGameContextStack().isEmpty()) {
             throw new GameContextException(new ContextNotActiveException("This context may only be used inside an active " + this.getClass().getName()));
@@ -115,11 +180,13 @@ public class GameContext implements Context {
 
     private <T> T runInternal(BeanManager beanManager, GameContextInstance gameContextInstance, RunInGameContext<T> runnable) throws Throwable {
         // remove old GameContexts from cache
-        // FIXME not always! -> every xx minutes
-        Set<UUID> contextsToDelete = BeanProvider.getBean(beanManager, GameContextCacheDeleteStrategy.class).getContextsToDelete(gameContextCache);
-        contextsToDelete.stream().forEach((contextId) -> {
-            gameContextCache.remove(contextId);
-        });
+        if (gameContextDeleteTimer.shouldCheck()) {
+            log.info("check if a {} should be removed", GameContextInstance.class.getSimpleName());
+            gameContextCacheDeleteStrategy.getContextsToDelete(gameContextCache, gameContextInstance.getId()).stream().forEach((contextId) -> {
+                log.info("remove {} with id {}", GameContextInstance.class.getSimpleName(), contextId);
+                gameContextCache.remove(contextId);
+            });
+        }
 
         // add a new GameContext to the stack
         getGameContextStack().push(gameContextInstance);
@@ -140,12 +207,30 @@ public class GameContext implements Context {
         }
     }
 
-    private <T> T runInternal(BeanManager beanManager, RunInGameContext<T> runnable) throws Throwable {
-        // create a new GameContextInstance
-        UUID gameContextId = UUID.randomUUID();
-        GameContextInstance gameContextInstance = new GameContextInstance(gameContextId);
-        gameContextCache.put(gameContextId, gameContextInstance);
-        // perform the statements in the runnable
-        return runInternal(beanManager, gameContextInstance, runnable);
+    /**
+     * Get the instance of a {@link java.lang.Class} from the current CDI-Context.
+     *
+     * @param beanManager the current {@link javax.enterprise.inject.spi.BeanManager}
+     * @param clazz       the {@link java.lang.Class} to an instance of
+     * @param <T>         the type
+     * @return the instance of the assigned {@link java.lang.Class}
+     */
+    public <T> T getBean(BeanManager beanManager, Class<T> clazz) {
+        return getGameContextInstance().getBean(beanManager, clazz);
+    }
+
+//    public void destroy(@Observes KillEvent killEvent) {
+//        if (customScopeContextHolder.getBeans().containsKey(killEvent.getBeanType())) {
+//            customScopeContextHolder.destroyBean(customScopeContextHolder.getBean(killEvent.getBeanType()));
+//        }
+//    }
+
+    /**
+     * Get the current {@link at.ahammer.boardgame.cdi.GameContextInstance}.
+     *
+     * @return the current {@link at.ahammer.boardgame.cdi.GameContextInstance}
+     */
+    public static GameContextInstance current() {
+        return getGameContextStack().peek();
     }
 }

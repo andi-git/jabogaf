@@ -1,38 +1,35 @@
 package at.ahammer.boardgame.cdi;
 
+import at.ahammer.boardgame.test.util.ArquillianGameContextTest;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 import java.util.UUID;
 
 /**
  * Created by ahammer on 06.08.2014.
  */
 @RunWith(Arquillian.class)
-public class GameContextCacheTest {
-
-    @Inject
-    private BeanManager beanManager;
+public class GameContextCacheTest extends ArquillianGameContextTest {
 
     @Test
     public void testGameContextCache() throws Throwable {
+
         final String[] objectReference = new String[3];
-        UUID gameContextId1 = GameContext.run(beanManager, (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = BeanProvider.getBean(beanManager, BeanWithGameScoped.class);
+        UUID gameContextId1 = GameContext.run(getBeanManager(), (gameContextId) -> {
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(getBeanManager(), BeanWithGameScoped.class);
             objectReference[0] = beanWithGameScoped.toString();
             return gameContextId;
         });
-        UUID gameContextId2 = GameContext.run(beanManager, (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = BeanProvider.getBean(beanManager, BeanWithGameScoped.class);
+        UUID gameContextId2 = GameContext.run(getBeanManager(), (gameContextId) -> {
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(getBeanManager(), BeanWithGameScoped.class);
             objectReference[1] = beanWithGameScoped.toString();
             return gameContextId;
         });
-        UUID gameContextId3 = GameContext.run(gameContextId1, beanManager, (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = BeanProvider.getBean(beanManager, BeanWithGameScoped.class);
+        UUID gameContextId3 = GameContext.run(gameContextId1, getBeanManager(), (gameContextId) -> {
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(getBeanManager(), BeanWithGameScoped.class);
             objectReference[2] = beanWithGameScoped.toString();
             return gameContextId;
         });
