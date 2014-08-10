@@ -15,8 +15,8 @@ public abstract class Hero extends GameSubject {
 
     private Attribute vitality;
 
-    public Hero(BeanManager beanManager, String name) {
-        super(beanManager, name);
+    public Hero(String name) {
+        super(name);
     }
 
     private static class Attribute {

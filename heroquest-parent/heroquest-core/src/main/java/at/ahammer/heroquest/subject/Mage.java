@@ -10,12 +10,12 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class Mage extends Hero {
 
-    public Mage(BeanManager beanManager) {
-        this(beanManager, "Mage");
+    public Mage() {
+        this("Mage");
     }
 
-    public Mage(BeanManager beanManager, String name) {
-        super(beanManager, name);
+    public Mage(String name) {
+        super(name);
         addHandStrategy(fromGameContext(OneWeapon.class));
         addHandStrategy(fromGameContext(OneWeaponOneShield.class));
     }

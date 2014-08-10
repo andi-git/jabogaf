@@ -18,6 +18,8 @@ public class GameContextInstance {
 
     private Instant lastAccess;
 
+    private final BeanManager beanManager;
+
     private final Map<Contextual<?>, BeanInstance<?>> contextualMap = new ConcurrentHashMap<>();
 
     private final Map<Class<?>, Bean<?>> cachedBeans = new HashMap<>();
@@ -26,9 +28,10 @@ public class GameContextInstance {
 
     private final Set<NewInstanceInGameContext> newInstancesInGameContext = new HashSet<>();
 
-    public GameContextInstance(UUID id) {
+    public GameContextInstance(UUID id, BeanManager beanManager) {
         this.id = id;
         this.lastAccess = Instant.now();
+        this.beanManager = beanManager;
     }
 
     public UUID getId() {
@@ -50,7 +53,7 @@ public class GameContextInstance {
         return lastAccess;
     }
 
-    private Bean<?> getBeanFromCache(BeanManager beanManager, Class<?> clazz) {
+    private Bean<?> getBeanFromCache(Class<?> clazz) {
         Bean<?> result;
         // if the bean is not in the cache, create it and put it into the cache
         if ((result = cachedBeans.get(clazz)) == null) {
@@ -69,9 +72,9 @@ public class GameContextInstance {
      * @param clazz
      * @return the bean for the given class.
      */
-    public <T> T getBean(BeanManager beanManager, Class<T> clazz) {
+    public <T> T getBean(Class<T> clazz) {
         try {
-            Bean<?> bean = getBeanFromCache(beanManager, clazz);
+            Bean<?> bean = getBeanFromCache(clazz);
             if (bean != null) {
                 CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
                 Object o = beanManager.getReference(bean, clazz, ctx);

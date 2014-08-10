@@ -15,8 +15,8 @@ public abstract class Weapon extends Artifact {
 
     private final WeaponType weaponType;
 
-    protected Weapon(BeanManager beanManager, String name, WeaponType weaponType) {
-        super(beanManager, name, weaponType.getHandCount());
+    protected Weapon(String name, WeaponType weaponType) {
+        super(name, weaponType.getHandCount());
         this.weaponType = weaponType;
     }
 

@@ -23,8 +23,8 @@ public abstract class GameSubject extends NewInstanceInGameContext {
     private Artifact leftHand;
     private Artifact rightHand;
 
-    public GameSubject(BeanManager beanManager, String name) {
-        super(beanManager);
+    public GameSubject(String name) {
+        super();
         this.name = name;
     }
 

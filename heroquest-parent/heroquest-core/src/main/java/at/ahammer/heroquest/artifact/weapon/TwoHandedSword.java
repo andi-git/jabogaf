@@ -10,11 +10,11 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class TwoHandedSword extends Weapon {
 
-    public TwoHandedSword(BeanManager beanManager) {
-        this(beanManager, "Two Handed Sword");
+    public TwoHandedSword() {
+        this("Two Handed Sword");
     }
 
-    public TwoHandedSword(BeanManager beanManager, String name) {
-        super(beanManager, name, WeaponType.TWO_HAND_ATTACK);
+    public TwoHandedSword(String name) {
+        super(name, WeaponType.TWO_HAND_ATTACK);
     }
 }

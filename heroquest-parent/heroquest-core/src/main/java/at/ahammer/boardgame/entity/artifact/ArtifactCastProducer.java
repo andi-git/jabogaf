@@ -16,11 +16,8 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class ArtifactCastProducer {
 
-    @Inject
-    private BeanManager beanManager;
-
     @Produces
     public ArtifactCast<Weapon> getWeaponCast() {
-        return (Artifact artifact) -> (artifact instanceof Weapon) ? ((Weapon) artifact) : new NullWeapon(beanManager);
+        return (Artifact artifact) -> (artifact instanceof Weapon) ? ((Weapon) artifact) : new NullWeapon();
     }
 }

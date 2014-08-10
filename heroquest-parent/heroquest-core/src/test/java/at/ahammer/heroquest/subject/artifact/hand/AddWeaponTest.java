@@ -32,11 +32,11 @@ public class AddWeaponTest extends ArquillianGameContextTest implements RunAllMe
 
     @BeforeInGameContext
     public void setUp() {
-        this.barbarian = new Barbarian(getBeanManager());
-        this.oneHandedSword = new OneHandedSword(getBeanManager());
-        this.oneHandedAxe = new OneHandedAxe(getBeanManager());
-        this.twoHandedSword = new TwoHandedSword(getBeanManager());
-        this.mage = new Mage(getBeanManager());
+        this.barbarian = new Barbarian();
+        this.oneHandedSword = new OneHandedSword();
+        this.oneHandedAxe = new OneHandedAxe();
+        this.twoHandedSword = new TwoHandedSword();
+        this.mage = new Mage();
     }
 
     @Test

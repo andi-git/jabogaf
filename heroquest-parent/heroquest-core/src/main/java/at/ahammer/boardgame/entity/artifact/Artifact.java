@@ -15,12 +15,12 @@ public abstract class Artifact extends NewInstanceInGameContext {
 
     private final HandCount handCount;
 
-    protected Artifact(BeanManager beanManager, String name) {
-        this(beanManager, name, HandCount.NONE);
+    protected Artifact(String name) {
+        this(name, HandCount.NONE);
     }
 
-    protected Artifact(BeanManager beanManager, String name, HandCount handCount) {
-        super(beanManager);
+    protected Artifact(String name, HandCount handCount) {
+        super();
         this.name = name;
         this.handCount = handCount;
     }

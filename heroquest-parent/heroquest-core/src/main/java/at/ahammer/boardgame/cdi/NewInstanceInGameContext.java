@@ -8,14 +8,11 @@ import javax.inject.Inject;
  */
 public abstract class NewInstanceInGameContext {
 
-    private final BeanManager beanManager;
-
-    public NewInstanceInGameContext(BeanManager beanManager) {
-        this.beanManager = beanManager;
-        GameContext.addNewInstanceInGameContext(beanManager, this);
+    public NewInstanceInGameContext() {
+        GameContext.addNewInstanceInGameContext(this);
     }
 
     protected <T> T fromGameContext(Class<T> clazz) {
-        return GameContext.current().getBean(beanManager, clazz);
+        return GameContext.current().getBean(clazz);
     }
 }

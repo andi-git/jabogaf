@@ -12,12 +12,12 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class Barbarian extends Hero {
 
-    public Barbarian(BeanManager beanManager) {
-        this(beanManager, "Barbarian");
+    public Barbarian() {
+        this("Barbarian");
     }
 
-    public Barbarian(BeanManager beanManager, String name) {
-        super(beanManager, name);
+    public Barbarian(String name) {
+        super(name);
         addHandStrategy(fromGameContext(TwoHandedWeapon.class)); // FIXME: must be before OneWeaponOneShield
         addHandStrategy(fromGameContext(TwoWeapon.class));       // FIXME: must be beforeOneWeapon
         addHandStrategy(fromGameContext(OneWeapon.class));

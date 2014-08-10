@@ -9,7 +9,7 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class NullWeapon extends Weapon {
 
-    public NullWeapon(BeanManager beanManager) {
-        super(beanManager, WeaponType.NULL.toString(), WeaponType.NULL);
+    public NullWeapon() {
+        super(WeaponType.NULL.toString(), WeaponType.NULL);
     }
 }
