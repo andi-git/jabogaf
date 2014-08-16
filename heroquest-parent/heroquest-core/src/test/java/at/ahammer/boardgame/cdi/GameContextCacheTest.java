@@ -19,17 +19,17 @@ public class GameContextCacheTest extends ArquillianGameContextTest {
 
         final String[] objectReference = new String[3];
         UUID gameContextId1 = GameContext.run(getBeanManager(), (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(BeanWithGameScoped.class);
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getFromDynamicContext(BeanWithGameScoped.class);
             objectReference[0] = beanWithGameScoped.toString();
             return gameContextId;
         });
         UUID gameContextId2 = GameContext.run(getBeanManager(), (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(BeanWithGameScoped.class);
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getFromDynamicContext(BeanWithGameScoped.class);
             objectReference[1] = beanWithGameScoped.toString();
             return gameContextId;
         });
         UUID gameContextId3 = GameContext.run(gameContextId1, getBeanManager(), (gameContextId) -> {
-            BeanWithGameScoped beanWithGameScoped = GameContext.current().getBean(BeanWithGameScoped.class);
+            BeanWithGameScoped beanWithGameScoped = GameContext.current().getFromDynamicContext(BeanWithGameScoped.class);
             objectReference[2] = beanWithGameScoped.toString();
             return gameContextId;
         });

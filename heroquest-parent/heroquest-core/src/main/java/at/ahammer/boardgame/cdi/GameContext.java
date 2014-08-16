@@ -73,7 +73,7 @@ public class GameContext implements Context {
      */
     public static <T> T run(UUID gameContextId, BeanManager beanManager, RunInGameContext<T> runnable) throws Throwable {
         GameContextInstance gameContextInstance = getGameContextInstance(gameContextId, beanManager);
-        return gameContextInstance.getBean(GameContext.class).runInternal(gameContextInstance, runnable);
+        return gameContextInstance.getFromDynamicContext(GameContext.class).runInternal(gameContextInstance, runnable);
     }
 
     /**
@@ -141,17 +141,16 @@ public class GameContext implements Context {
 
     @Override
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
-        BeanInstance<T> instance = getGameContextInstance().get(contextual);
-        if (instance != null) {
+        if (getGameContextInstance().isAvailableInCreationalContext(contextual)) {
             // bean is already available in context -> return
-            return instance.get();
+            return getGameContextInstance().getFromCreationalContext(contextual);
         }
         if (creationalContext == null) {
             // creationalContext is null -> return null
             return null;
         } else {
             // create and return bean
-            return getGameContextInstance().addBeanInstance(contextual, creationalContext);
+            return getGameContextInstance().addToCreationalContext(contextual, creationalContext);
         }
     }
 
@@ -186,7 +185,6 @@ public class GameContext implements Context {
                 gameContextCache.remove(contextId);
             });
         }
-
         // add a new GameContext to the stack
         getGameContextStack().push(gameContextInstance);
         try {
@@ -206,21 +204,9 @@ public class GameContext implements Context {
         }
     }
 
-    /**
-     * Get the instance of a {@link java.lang.Class} from the current CDI-Context.
-     *
-     * @param beanManager the current {@link javax.enterprise.inject.spi.BeanManager}
-     * @param clazz       the {@link java.lang.Class} to an instance of
-     * @param <T>         the type
-     * @return the instance of the assigned {@link java.lang.Class}
-     */
-    public <T> T getBean(BeanManager beanManager, Class<T> clazz) {
-        return getGameContextInstance().getBean(clazz);
-    }
-
 //    public void destroy(@Observes KillEvent killEvent) {
 //        if (customScopeContextHolder.getBeans().containsKey(killEvent.getBeanType())) {
-//            customScopeContextHolder.destroyBean(customScopeContextHolder.getBean(killEvent.getBeanType()));
+//            customScopeContextHolder.destroyBean(customScopeContextHolder.getFromDynamicContext(killEvent.getBeanType()));
 //        }
 //    }
 
