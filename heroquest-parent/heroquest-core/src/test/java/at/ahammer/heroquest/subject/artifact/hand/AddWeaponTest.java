@@ -46,24 +46,24 @@ public class AddWeaponTest extends ArquillianGameContextTest implements RunAllMe
 
         barbarian.addArtifactForHand(oneHandedAxe);
         Assert.assertNotNull(barbarian.getRightHand());
-        Assert.assertEquals("One Handed Axe", barbarian.getRightHand().getName());
+        Assert.assertEquals("One Handed Axe", barbarian.getRightHand().getId());
         Assert.assertNull(barbarian.getLeftHand());
 
         barbarian.addArtifactForHand(oneHandedSword);
         Assert.assertNotNull(barbarian.getRightHand());
-        Assert.assertEquals("One Handed Sword", barbarian.getRightHand().getName());
+        Assert.assertEquals("One Handed Sword", barbarian.getRightHand().getId());
         Assert.assertNotNull(barbarian.getLeftHand());
-        Assert.assertEquals("One Handed Axe", barbarian.getLeftHand().getName());
+        Assert.assertEquals("One Handed Axe", barbarian.getLeftHand().getId());
 
         barbarian.addArtifactForHand(twoHandedSword);
         Assert.assertNotNull(barbarian.getRightHand());
-        Assert.assertEquals("Two Handed Sword", barbarian.getRightHand().getName());
+        Assert.assertEquals("Two Handed Sword", barbarian.getRightHand().getId());
         Assert.assertNotNull(barbarian.getLeftHand());
-        Assert.assertEquals("Two Handed Sword", barbarian.getLeftHand().getName());
+        Assert.assertEquals("Two Handed Sword", barbarian.getLeftHand().getId());
 
         barbarian.addArtifactForHand(oneHandedAxe);
         Assert.assertNotNull(barbarian.getRightHand());
-        Assert.assertEquals("One Handed Axe", barbarian.getRightHand().getName());
+        Assert.assertEquals("One Handed Axe", barbarian.getRightHand().getId());
         Assert.assertNull(barbarian.getLeftHand());
 
     }
@@ -75,7 +75,7 @@ public class AddWeaponTest extends ArquillianGameContextTest implements RunAllMe
 
         mage.addArtifactForHand(oneHandedAxe);
         Assert.assertNotNull(mage.getRightHand());
-        Assert.assertEquals("One Handed Axe", mage.getRightHand().getName());
+        Assert.assertEquals("One Handed Axe", mage.getRightHand().getId());
         Assert.assertNull(mage.getLeftHand());
 
         mage.addArtifactForHand(twoHandedSword);

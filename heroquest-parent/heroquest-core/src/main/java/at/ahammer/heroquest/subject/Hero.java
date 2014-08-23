@@ -15,8 +15,8 @@ public abstract class Hero extends GameSubject {
 
     private Attribute vitality;
 
-    public Hero(String name) {
-        super(name);
+    public Hero(String id) {
+        super(id);
     }
 
     private static class Attribute {

@@ -88,10 +88,9 @@ public class GameContext implements Context {
     /**
      * Get all objects created in the current {@link at.ahammer.boardgame.cdi.GameContextInstance} which are subclasses of {@link at.ahammer.boardgame.cdi.NewInstanceInGameContext}.
      *
-     * @param beanManager the current {@link javax.enterprise.inject.spi.BeanManager}
      * @return all objects created in the current {@link at.ahammer.boardgame.cdi.GameContextInstance}
      */
-    public static Set<NewInstanceInGameContext> getNewInstancesInGameContext(BeanManager beanManager) {
+    public static Set<NewInstanceInGameContext> getNewInstancesInGameContext() {
         return current().getNewInstancesInGameContext();
     }
 

@@ -7,9 +7,11 @@ import at.ahammer.boardgame.entity.subject.move.Move;
 /**
  * Created by andreas on 8/14/14.
  */
-public class Wall extends FieldConnectionObject {
+public class Door extends FieldConnectionObject {
 
-    public Wall(String id) {
+    private boolean locked = true;
+
+    public Door(String id) {
         super(id);
     }
 
@@ -25,6 +27,18 @@ public class Wall extends FieldConnectionObject {
 
     @Override
     public boolean isVisible() {
-        return true;
+        return false;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void open() {
+        locked = false;
+    }
+
+    public void close() {
+        locked = true;
     }
 }

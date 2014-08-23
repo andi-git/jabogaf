@@ -79,6 +79,13 @@ public class GameContextInstance {
         return newInstancesInGameContext;
     }
 
+    public NewInstanceInGameContext getNewInstanceInGameContext(String id) {
+        return getNewInstancesInGameContext().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+    }
+
+    public <T> T getNewInstanceInGameContext(Class<T> clazz, String id) {
+        return (T) getNewInstancesInGameContext().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+    }
 
     private static class CacheForDeploymentBeans {
 

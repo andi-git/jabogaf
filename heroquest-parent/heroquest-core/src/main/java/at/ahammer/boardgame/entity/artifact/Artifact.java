@@ -11,22 +11,15 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public abstract class Artifact extends NewInstanceInGameContext {
 
-    private final String name;
-
     private final HandCount handCount;
 
-    protected Artifact(String name) {
-        this(name, HandCount.NONE);
+    protected Artifact(String id) {
+        this(id, HandCount.NONE);
     }
 
-    protected Artifact(String name, HandCount handCount) {
-        super();
-        this.name = name;
+    protected Artifact(String id, HandCount handCount) {
+        super(id);
         this.handCount = handCount;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public HandCount getHandCount() {

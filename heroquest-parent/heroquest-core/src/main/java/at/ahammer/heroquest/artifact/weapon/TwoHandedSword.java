@@ -14,7 +14,7 @@ public class TwoHandedSword extends Weapon {
         this("Two Handed Sword");
     }
 
-    public TwoHandedSword(String name) {
-        super(name, WeaponType.TWO_HAND_ATTACK);
+    public TwoHandedSword(String id) {
+        super(id, WeaponType.TWO_HAND_ATTACK);
     }
 }

@@ -19,17 +19,11 @@ import java.util.List;
 public abstract class GameSubject extends NewInstanceInGameContext {
 
     private final List<ArtifactHandStrategy> handStrategies = new ArrayList<>();
-    private final String name;
     private Artifact leftHand;
     private Artifact rightHand;
 
-    public GameSubject(String name) {
-        super();
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    public GameSubject(String id) {
+        super(id);
     }
 
     public Artifact getLeftHand() {

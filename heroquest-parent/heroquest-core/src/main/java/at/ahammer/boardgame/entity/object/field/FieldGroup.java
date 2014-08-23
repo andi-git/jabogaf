@@ -12,6 +12,10 @@ public abstract class FieldGroup extends GameObject {
 
     private final Set<Field> fields = new HashSet<>();
 
+    protected FieldGroup(String id) {
+        super(id);
+    }
+
     public void add(Field field) {
         fields.add(field);
     }
@@ -22,5 +26,10 @@ public abstract class FieldGroup extends GameObject {
 
     public Set<Field> getFields() {
         return fields;
+    }
+
+    @Override
+    public boolean isVisible() {
+        return false;
     }
 }

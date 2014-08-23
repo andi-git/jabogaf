@@ -23,4 +23,15 @@ public class NewInstanceInGameContextBeanTest extends ArquillianGameContextTest 
         Assert.assertEquals(1, GameContext.current().getNewInstancesInGameContext().size());
         Assert.assertTrue(GameContext.current().getNewInstancesInGameContext().contains(bean));
     }
+
+    @Test(expected = IllegalStateException.class)
+    public void testNewInstanceInGameContextDuplicateId() {
+        new NewInstanceInGameContextBean();
+        new NewInstanceInGameContextBean();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNewInstanceInGameContextIllegalId() {
+        new NewInstanceInGameContextBean(null);
+    }
 }

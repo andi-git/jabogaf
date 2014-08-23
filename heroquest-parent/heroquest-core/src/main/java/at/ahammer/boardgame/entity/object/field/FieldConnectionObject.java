@@ -9,6 +9,10 @@ import at.ahammer.boardgame.entity.subject.move.Move;
  */
 public abstract class FieldConnectionObject extends GameObject {
 
+    protected FieldConnectionObject(String id) {
+        super(id);
+    }
+
     public abstract boolean canMove(Move move);
 
     public abstract boolean canLook(Look look);

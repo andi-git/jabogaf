@@ -5,11 +5,6 @@ import at.ahammer.boardgame.cdi.NewInstanceInGameContext;
 /**
  * Created by andreas on 8/14/14.
  */
-public class GameSubjectBehavior extends NewInstanceInGameContext {
+public interface GameSubjectBehavior {
 
-    private final String name;
-
-    public GameSubjectBehavior(String name) {
-        this.name = name;
-    }
 }

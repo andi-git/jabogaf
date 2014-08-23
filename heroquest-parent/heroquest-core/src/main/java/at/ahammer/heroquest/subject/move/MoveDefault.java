@@ -1,0 +1,38 @@
+package at.ahammer.heroquest.subject.move;
+
+import at.ahammer.boardgame.entity.object.field.Field;
+import at.ahammer.boardgame.entity.object.field.FieldConnection;
+import at.ahammer.boardgame.entity.object.field.FieldConnectionObject;
+import at.ahammer.boardgame.entity.subject.move.Move;
+import at.ahammer.heroquest.object.field.Door;
+import at.ahammer.heroquest.object.field.Wall;
+
+/**
+ * Created by andreas on 8/22/14.
+ */
+@MoveStrategy(MoveDefault.class)
+public class MoveDefault implements Move {
+
+    @Override
+    public boolean canMove(Field start, Field end) {
+        if (start.isConnected(end)) {
+            FieldConnection fieldConnection = start.getConnectionTo(end);
+            // doors only if it is opened
+            for (FieldConnectionObject fieldConnectionObject : fieldConnection.getObjectsOnConnection()) {
+                if (fieldConnectionObject instanceof Wall) {
+                    return false;
+                } else if (fieldConnectionObject instanceof Door) {
+                    return !((Door) fieldConnectionObject).isLocked();
+                } else {
+                    return true;
+                }
+            }
+            return true;
+            // no monsters
+//            if () {
+//
+//            }
+        }
+        return false;
+    }
+}

@@ -14,8 +14,8 @@ public class Mage extends Hero {
         this("Mage");
     }
 
-    public Mage(String name) {
-        super(name);
+    public Mage(String id) {
+        super(id);
         addHandStrategy(fromGameContext(OneWeapon.class));
         addHandStrategy(fromGameContext(OneWeaponOneShield.class));
     }

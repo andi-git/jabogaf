@@ -7,6 +7,14 @@ import javax.enterprise.inject.spi.BeanManager;
  */
 public class NewInstanceInGameContextBean extends NewInstanceInGameContext {
 
+    public NewInstanceInGameContextBean() {
+        super("NewInstanceInGameContextBean");
+    }
+
+    public NewInstanceInGameContextBean(String id) {
+        super(id);
+    }
+
     public String foo() {
         return "foo";
     }
