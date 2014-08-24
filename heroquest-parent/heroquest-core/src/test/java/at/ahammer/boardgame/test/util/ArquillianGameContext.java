@@ -12,6 +12,7 @@ import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -81,26 +82,28 @@ public class ArquillianGameContext extends Arquillian {
                                 // it the test-class is an instance of ArquillianGameContextTest, then start a new GameContext
                                 GameContext.run(((ArquillianGameContextTest) test).getBeanManager(), (gameContextId) -> {
                                     // call before-method
-                                    for(Method method : test.getClass().getDeclaredMethods()) {
-                                        if (method.isAnnotationPresent(BeforeInGameContext.class)) {
-                                            method.setAccessible(true);
-                                            method.invoke(test);
-                                            break;
-                                        }
-                                    }
+                                    invokeAnnotatedMethod(test, BeforeInGameContext.class);
+//                                    for(Method method : test.getClass().getDeclaredMethods()) {
+//                                        if (method.isAnnotationPresent(BeforeInGameContext.class)) {
+//                                            method.setAccessible(true);
+//                                            method.invoke(test);
+//                                            break;
+//                                        }
+//                                    }
                                     try {
                                         method.invokeExplosively(test, parameters);
                                     } catch (Throwable throwable) {
                                         throw throwable;
                                     }
                                     // call after-method
-                                    for(Method method : test.getClass().getDeclaredMethods()) {
-                                        if (method.isAnnotationPresent(AfterInGameContext.class)) {
-                                            method.setAccessible(true);
-                                            method.invoke(test);
-                                            break;
-                                        }
-                                    }
+                                    invokeAnnotatedMethod(test, AfterInGameContext.class);
+//                                    for(Method method : test.getClass().getDeclaredMethods()) {
+//                                        if (method.isAnnotationPresent(AfterInGameContext.class)) {
+//                                            method.setAccessible(true);
+//                                            method.invoke(test);
+//                                            break;
+//                                        }
+//                                    }
                                     return gameContextId;
                                 });
                             } else {
@@ -127,5 +130,25 @@ public class ArquillianGameContext extends Arquillian {
                 }
             }
         };
+    }
+
+    private void invokeAnnotatedMethod(Object test, java.lang.Class<? extends Annotation> annotationClass) throws InvocationTargetException, IllegalAccessException {
+        Method annotatedMethod = getMethodAnnotatedWith(test.getClass(), annotationClass);
+        if (annotatedMethod != null) {
+            annotatedMethod.setAccessible(true);
+            annotatedMethod.invoke(test);
+        }
+    }
+
+    private Method getMethodAnnotatedWith(Class<?> testClass, java.lang.Class<? extends Annotation> annotationClass) {
+        for(Method method : testClass.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(annotationClass)) {
+                return method;
+            }
+        }
+        if (testClass.getSuperclass() != null) {
+            return getMethodAnnotatedWith(testClass.getSuperclass(), annotationClass);
+        }
+        return null;
     }
 }

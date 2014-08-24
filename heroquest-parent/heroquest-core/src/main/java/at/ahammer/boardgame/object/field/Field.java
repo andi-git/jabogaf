@@ -13,11 +13,11 @@ public abstract class Field extends GameObject {
     }
 
     public boolean isConnected(Field other) {
-        return fromGameContext(Board.class).isConnected(this, other);
+        return fromGameContext(Board.class).getLayout().isConnected(this, other);
     }
 
     public FieldConnection getConnectionTo(Field other) {
-        return fromGameContext(Board.class).getConnection(this, other);
+        return fromGameContext(Board.class).getLayout().getConnection(this, other);
     }
 
     @Override

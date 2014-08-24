@@ -16,6 +16,11 @@ public abstract class FieldGroup extends GameObject {
         super(id);
     }
 
+    protected FieldGroup(String id, Set<Field> fields) {
+        super(id);
+        this.fields.addAll(fields);
+    }
+
     public void add(Field field) {
         fields.add(field);
     }
@@ -26,6 +31,10 @@ public abstract class FieldGroup extends GameObject {
 
     public Set<Field> getFields() {
         return fields;
+    }
+
+    public boolean contains(Field field) {
+        return fields.contains(field);
     }
 
     @Override
