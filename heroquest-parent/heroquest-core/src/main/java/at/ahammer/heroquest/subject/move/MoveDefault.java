@@ -1,9 +1,9 @@
 package at.ahammer.heroquest.subject.move;
 
-import at.ahammer.boardgame.entity.object.field.Field;
-import at.ahammer.boardgame.entity.object.field.FieldConnection;
-import at.ahammer.boardgame.entity.object.field.FieldConnectionObject;
-import at.ahammer.boardgame.entity.subject.move.Move;
+import at.ahammer.boardgame.object.field.Field;
+import at.ahammer.boardgame.object.field.FieldConnection;
+import at.ahammer.boardgame.object.field.FieldConnectionObject;
+import at.ahammer.boardgame.subject.move.Move;
 import at.ahammer.heroquest.object.field.Door;
 import at.ahammer.heroquest.object.field.Wall;
 

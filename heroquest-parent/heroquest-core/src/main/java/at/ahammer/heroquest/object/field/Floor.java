@@ -1,6 +1,6 @@
 package at.ahammer.heroquest.object.field;
 
-import at.ahammer.boardgame.entity.object.field.FieldGroup;
+import at.ahammer.boardgame.object.field.FieldGroup;
 
 /**
  * Created by andreas on 8/14/14.

@@ -1,6 +1,6 @@
 package at.ahammer.heroquest.subject.move;
 
-import at.ahammer.boardgame.entity.subject.move.Move;
+import at.ahammer.boardgame.subject.move.Move;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

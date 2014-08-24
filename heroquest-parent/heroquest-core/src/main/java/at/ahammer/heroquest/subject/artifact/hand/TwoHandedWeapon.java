@@ -1,11 +1,11 @@
 package at.ahammer.heroquest.subject.artifact.hand;
 
-import at.ahammer.boardgame.entity.artifact.Artifact;
-import at.ahammer.boardgame.entity.artifact.ArtifactCast;
-import at.ahammer.boardgame.entity.artifact.weapon.WeaponType;
-import at.ahammer.boardgame.entity.subject.GameSubject;
-import at.ahammer.boardgame.entity.artifact.weapon.Weapon;
-import at.ahammer.boardgame.entity.subject.artifact.hand.ArtifactHandStrategy;
+import at.ahammer.boardgame.artifact.Artifact;
+import at.ahammer.boardgame.artifact.ArtifactCast;
+import at.ahammer.boardgame.artifact.weapon.WeaponType;
+import at.ahammer.boardgame.subject.GameSubject;
+import at.ahammer.boardgame.artifact.weapon.Weapon;
+import at.ahammer.boardgame.subject.artifact.hand.ArtifactHandStrategy;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

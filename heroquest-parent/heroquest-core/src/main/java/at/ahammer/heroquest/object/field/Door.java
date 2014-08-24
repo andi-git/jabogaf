@@ -1,8 +1,8 @@
 package at.ahammer.heroquest.object.field;
 
-import at.ahammer.boardgame.entity.object.field.FieldConnectionObject;
-import at.ahammer.boardgame.entity.subject.look.Look;
-import at.ahammer.boardgame.entity.subject.move.Move;
+import at.ahammer.boardgame.object.field.FieldConnectionObject;
+import at.ahammer.boardgame.subject.look.Look;
+import at.ahammer.boardgame.subject.move.Move;
 
 /**
  * Created by andreas on 8/14/14.

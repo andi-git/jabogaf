@@ -1,10 +1,7 @@
 package at.ahammer.heroquest.subject.move;
 
-import at.ahammer.boardgame.cdi.GameContext;
-import at.ahammer.boardgame.entity.board.Board;
-import at.ahammer.boardgame.entity.board.DummyBoard;
-import at.ahammer.boardgame.entity.object.field.Field;
-import at.ahammer.boardgame.entity.subject.move.Move;
+import at.ahammer.boardgame.board.DummyBoard;
+import at.ahammer.boardgame.subject.move.Move;
 import at.ahammer.boardgame.test.util.ArquillianGameContext;
 import at.ahammer.boardgame.test.util.ArquillianGameContextTest;
 import at.ahammer.boardgame.test.util.RunAllMethodsInGameContext;

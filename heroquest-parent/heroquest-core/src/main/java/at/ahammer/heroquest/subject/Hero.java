@@ -1,8 +1,6 @@
 package at.ahammer.heroquest.subject;
 
-import at.ahammer.boardgame.entity.subject.GameSubject;
-
-import javax.enterprise.inject.spi.BeanManager;
+import at.ahammer.boardgame.subject.GameSubject;
 
 /**
  * Created by andreas on 26.07.14.

@@ -2,7 +2,7 @@ package at.ahammer.heroquest.subject.artifact.hand;
 
 import at.ahammer.boardgame.test.util.ArquillianGameContext;
 import at.ahammer.boardgame.test.util.ArquillianGameContextTest;
-import at.ahammer.boardgame.entity.artifact.ArtifactException;
+import at.ahammer.boardgame.artifact.ArtifactException;
 import at.ahammer.boardgame.test.util.BeforeInGameContext;
 import at.ahammer.boardgame.test.util.RunAllMethodsInGameContext;
 import at.ahammer.heroquest.artifact.weapon.OneHandedAxe;
@@ -11,12 +11,8 @@ import at.ahammer.heroquest.artifact.weapon.TwoHandedSword;
 import at.ahammer.heroquest.subject.Barbarian;
 import at.ahammer.heroquest.subject.Mage;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 
 /**
  * Created by andreas on 26.07.14.
