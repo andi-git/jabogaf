@@ -7,7 +7,7 @@ import at.ahammer.boardgame.subject.HiddenGameSubject;
  */
 public class SecretDoor extends Door implements HiddenGameSubject {
 
-    protected SecretDoor(String id) {
+    public SecretDoor(String id) {
         super(id);
     }
 }

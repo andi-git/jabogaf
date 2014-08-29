@@ -24,7 +24,7 @@ public class GameContextExtention implements Extension, Serializable {
 
     public void registerContexts(@Observes
                                  AfterBeanDiscovery afterBeanDiscovery) {
-        log.info("AfterBeanDiscovery: Register context ServiceContext for ServiceScoped beans\n");
+        log.info("AfterBeanDiscovery: Register context GameContext for GameScoped beans\n");
         afterBeanDiscovery.addContext(new GameContext());
     }
 }

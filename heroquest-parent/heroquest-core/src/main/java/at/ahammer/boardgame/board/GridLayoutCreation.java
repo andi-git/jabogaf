@@ -20,21 +20,21 @@ public class GridLayoutCreation {
 
     protected final Map<String, FieldGroup> fieldGroups;
 
-    public GridLayoutCreation(int rows, int cols) {
-        fieldsArray = new Field[rows][cols];
+    public GridLayoutCreation(int x, int y) {
+        fieldsArray = new Field[y][x];
         fields = new HashMap<>();
         fieldConnections = new HashMap<>();
         fieldGroups = new HashMap<>();
 
-        createFields(rows, cols);
-        createFieldConnections(rows, cols);
+        createFields(x, y);
+        createFieldConnections(x, y);
         createFieldConnectionObjects();
         createFieldGroups();
     }
 
-    protected void createFields(int rows, int cols) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+    protected void createFields(int x, int y) {
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
                 String id = Field.class.getSimpleName() + ":" + i + "," + j;
                 fieldsArray[i][j] = createDefaultField(id);
                 fields.put(id, fieldsArray[i][j]);
@@ -42,14 +42,14 @@ public class GridLayoutCreation {
         }
     }
 
-    protected void createFieldConnections(int rows, int cols) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if ((i + 1) < rows) {
+    protected void createFieldConnections(int x, int y) {
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if ((i + 1) < y) {
                     String id = FieldConnection.class.getSimpleName() + ":" + i + "," + j + "-" + (i + 1) + "," + j;
                     fieldConnections.put(id, createDefaultFieldConnection(id, fieldsArray[i][j], fieldsArray[i + 1][j]));
                 }
-                if ((j + 1) < cols) {
+                if ((j + 1) < x) {
                     String id = FieldConnection.class.getSimpleName() + ":" + i + "," + j + "-" + i + "," + (j + 1);
                     fieldConnections.put(id, createDefaultFieldConnection(id, fieldsArray[i][j], fieldsArray[i][j + 1]));
                 }
@@ -95,10 +95,10 @@ public class GridLayoutCreation {
         return new HashSet<>(fieldGroups.values());
     }
 
-    public Set<Field> getAllFieldsInRectangle(int startRow, int startCol, int endRow, int endCol) {
+    public Set<Field> getAllFieldsInRectangle(int fromX, int fromY, int toX, int toY) {
         Set<Field> fieldsInRectangle = new HashSet<>();
-        for (int i = startRow; i <= endRow; i++) {
-            for (int j = startCol; j <= endCol; j++) {
+        for (int i = fromX; i <= toX; i++) {
+            for (int j = fromY; j <= toY; j++) {
                 fieldsInRectangle.add(fieldsArray[i][j]);
             }
         }

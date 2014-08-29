@@ -38,7 +38,10 @@ public abstract class FieldGroup extends GameObject {
     }
 
     @Override
-    public boolean isVisible() {
-        return false;
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        for (Field field : fields) {
+            field.setVisible(visible);
+        }
     }
 }

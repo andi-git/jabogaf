@@ -1,5 +1,6 @@
 package at.ahammer.boardgame.board;
 
+import at.ahammer.boardgame.object.field.Field;
 import at.ahammer.boardgame.test.util.ArquillianGameContext;
 import at.ahammer.boardgame.test.util.ArquillianGameContextTest;
 import at.ahammer.boardgame.test.util.BeforeInGameContext;
@@ -27,6 +28,8 @@ public class TestWithDummyBoard extends ArquillianGameContextTest implements Run
     protected GridLayout getLayout() {
         return (GridLayout) board.getLayout();
     }
+
+    protected Field getField(int x, int y) { return getLayout().getField(x, y); }
 
     @Test
     public void dummy() {

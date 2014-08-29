@@ -19,7 +19,7 @@ public class CDIActivationExtension implements Extension, Serializable {
     private static final Logger log = LoggerFactory.getLogger(CDIActivationExtension.class);
 
     public void addAlternatives(@Observes AfterTypeDiscovery afterTypeDiscovery, BeanManager beanManager) throws IOException, ClassNotFoundException {
-        log.info("AfterTypeDiscovery: Register context ServiceContext for ServiceScoped beans");
+        log.info("AfterTypeDiscovery: register alternatives");
         // add all defined alternatives
         afterTypeDiscovery.getAlternatives().addAll(AlternativesHolder.getAlternatives());
         log.info("alternatives: " + afterTypeDiscovery.getAlternatives());

@@ -11,6 +11,8 @@ public class Door extends FieldConnectionObject {
 
     private boolean locked = true;
 
+    private boolean closed = true;
+
     public Door(String id) {
         super(id);
     }
@@ -34,11 +36,15 @@ public class Door extends FieldConnectionObject {
         return locked;
     }
 
+    public boolean isClosed() {
+        return closed;
+    }
+
     public void open() {
-        locked = false;
+        closed = false;
     }
 
     public void close() {
-        locked = true;
+        closed = true;
     }
 }

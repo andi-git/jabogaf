@@ -87,6 +87,16 @@ public class GameContextInstance {
         return (T) getNewInstancesInGameContext().stream().filter(b -> b.getId().equals(id)).findFirst().get();
     }
 
+    public <T> T getNewInstanceInGameContext(Class<T> clazz) {
+        for (NewInstanceInGameContext newInstanceInGameContext : GameContext.current().getNewInstancesInGameContext()) {
+            if (clazz.isAssignableFrom(newInstanceInGameContext.getClass())) {
+                // get only first match
+                return (T) newInstanceInGameContext;
+            }
+        }
+        return null;
+    }
+
     private static class CacheForDeploymentBeans {
 
         private final Map<Contextual<?>, BeanInstance<?>> cacheForDeploymentBeans = Collections.synchronizedMap(new HashMap<>());

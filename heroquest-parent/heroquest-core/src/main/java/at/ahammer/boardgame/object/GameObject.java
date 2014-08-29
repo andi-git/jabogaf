@@ -7,9 +7,17 @@ import at.ahammer.boardgame.cdi.NewInstanceInGameContext;
  */
 public abstract class GameObject extends NewInstanceInGameContext {
 
+    private boolean visible = false;
+
     protected GameObject(String id) {
         super(id);
     }
 
-    public abstract boolean isVisible();
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 }

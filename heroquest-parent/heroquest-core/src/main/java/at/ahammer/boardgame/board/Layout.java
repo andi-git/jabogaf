@@ -47,4 +47,6 @@ public abstract class Layout extends NewInstanceInGameContext {
     public FieldConnection getConnection(Field field1, Field field2) {
         return fieldConnections.stream().filter(fc -> fc.connect(field1, field2)).findFirst().get();
     }
+
+    public abstract Set<FieldConnection> getLookConnections(Field field1, Field field2);
 }

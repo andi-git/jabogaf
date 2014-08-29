@@ -4,8 +4,7 @@ import at.ahammer.boardgame.object.field.Field;
 import at.ahammer.boardgame.object.field.FieldConnection;
 import at.ahammer.boardgame.object.field.FieldConnectionObject;
 import at.ahammer.boardgame.object.field.FieldGroup;
-import at.ahammer.heroquest.object.field.Door;
-import at.ahammer.heroquest.object.field.Wall;
+import at.ahammer.heroquest.object.field.*;
 
 import java.util.Set;
 
@@ -20,8 +19,19 @@ public class GridLayoutCreationDummy extends GridLayoutCreation {
 
     @Override
     protected void createFieldConnectionObjects() {
-        fieldConnections.get(FieldConnection.class.getSimpleName() + ":3,0-4,0").addObjectOnConnection(new Wall("Wall:3,0-4,0"));
-        fieldConnections.get(FieldConnection.class.getSimpleName() + ":3,1-4,1").addObjectOnConnection(new Door("Door:3,1-4,1"));
+        // room1
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":1,3-1,4").addObjectOnConnection(new Door("Door:1,3-1,4"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":0,3-0,4").addObjectOnConnection(new Wall("Wall:0,3-0,4"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":1,3-2,3").addObjectOnConnection(new Wall("Wall:1,3-2,3"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":1,2-2,2").addObjectOnConnection(new Wall("Wall:1,2-2,2"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":0,0-0,1").addObjectOnConnection(new Wall("Wall:0,0-0,1"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":1,0-1,1").addObjectOnConnection(new Wall("Wall:1,0-1,1"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":1,1-2,1").addObjectOnConnection(new SecretDoor("SecretDoor:1,1-2,1"));
+        // room2
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":3,2-3,3").addObjectOnConnection(new Door("Door:3,2-3,3"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":2,4-3,4").addObjectOnConnection(new Wall("Wall:2,4-3,4"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":2,3-3,3").addObjectOnConnection(new Wall("Wall:2,3-3,3"));
+        fieldConnections.get(FieldConnection.class.getSimpleName() + ":4,2-4,3").addObjectOnConnection(new Wall("Wall:4,2-4,3"));
     }
 
     @Override
@@ -36,8 +46,17 @@ public class GridLayoutCreationDummy extends GridLayoutCreation {
 
     @Override
     protected void createFieldGroups() {
-        String id = FieldGroup.class.getSimpleName() + ":1";
-        fieldGroups.put(id, new DummyFieldGroup(id, getAllFieldsInRectangle(1, 1, 2, 3)));
+        int count = 0;
+        fieldGroups.put(getFieldGroupId(++count), new Room(getFieldGroupId(count), getAllFieldsInRectangle(0, 1, 1, 3)));
+        fieldGroups.put(getFieldGroupId(++count), new Room(getFieldGroupId(count), getAllFieldsInRectangle(3, 3, 4, 4)));
+        fieldGroups.put(getFieldGroupId(++count), new Floor(getFieldGroupId(count), getAllFieldsInRectangle(0, 0, 1, 1)));
+        fieldGroups.put(getFieldGroupId(++count), new Floor(getFieldGroupId(count), getAllFieldsInRectangle(2, 0, 4, 2)));
+        fieldGroups.put(getFieldGroupId(++count), new Floor(getFieldGroupId(count), getAllFieldsInRectangle(0, 4, 2, 4)));
+        fieldGroups.put(getFieldGroupId(++count), new Floor(getFieldGroupId(count), getAllFieldsInRectangle(2, 3, 2, 4)));
+    }
+
+    private String getFieldGroupId(int count) {
+        return FieldGroup.class.getSimpleName() + ":" + count;
     }
 
     private static class DummyField extends Field {

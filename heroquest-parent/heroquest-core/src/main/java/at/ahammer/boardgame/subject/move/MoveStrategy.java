@@ -1,4 +1,4 @@
-package at.ahammer.heroquest.subject.move;
+package at.ahammer.boardgame.subject.move;
 
 import at.ahammer.boardgame.subject.move.Move;
 

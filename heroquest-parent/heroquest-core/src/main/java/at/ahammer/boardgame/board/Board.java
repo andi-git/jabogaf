@@ -2,6 +2,8 @@ package at.ahammer.boardgame.board;
 
 import at.ahammer.boardgame.cdi.NewInstanceInGameContext;
 
+import javax.enterprise.inject.Typed;
+
 /**
  * Created by andreas on 8/23/14.
  */

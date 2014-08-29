@@ -1,5 +1,6 @@
 package at.ahammer.boardgame.cdi;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Typed;
 
 /**
@@ -29,13 +30,7 @@ public abstract class NewInstanceInGameContext {
         T result = GameContext.current().getFromDynamicContext(clazz);
         if (result == null) {
             // get from all instances created within the current cdi-context
-            for (NewInstanceInGameContext newInstanceInGameContext : GameContext.current().getNewInstancesInGameContext()) {
-                if (clazz.isAssignableFrom(newInstanceInGameContext.getClass())) {
-                    // get only first match
-                    result = (T) newInstanceInGameContext;
-                    break;
-                }
-            }
+            return GameContext.current().getNewInstanceInGameContext(clazz);
         }
         return result;
     }
@@ -68,5 +63,9 @@ public abstract class NewInstanceInGameContext {
     @Override
     public String toString() {
         return id;
+    }
+
+    public void fire(Event event) {
+
     }
 }
