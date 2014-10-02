@@ -12,7 +12,7 @@ import at.ahammer.heroquest.object.field.Wall;
  * Created by andreas on 8/22/14.
  */
 @GameScoped
-public class MoveDefault implements Move {
+public class MoveHero implements Move {
 
     @Override
     public boolean canMove(Field start, Field end) {

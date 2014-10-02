@@ -83,13 +83,6 @@ public class ArquillianGameContext extends Arquillian {
                                 GameContext.run(((ArquillianGameContextTest) test).getBeanManager(), (gameContextId) -> {
                                     // call before-method
                                     invokeAnnotatedMethod(test, BeforeInGameContext.class);
-//                                    for(Method method : test.getClass().getDeclaredMethods()) {
-//                                        if (method.isAnnotationPresent(BeforeInGameContext.class)) {
-//                                            method.setAccessible(true);
-//                                            method.invoke(test);
-//                                            break;
-//                                        }
-//                                    }
                                     try {
                                         method.invokeExplosively(test, parameters);
                                     } catch (Throwable throwable) {
@@ -97,13 +90,6 @@ public class ArquillianGameContext extends Arquillian {
                                     }
                                     // call after-method
                                     invokeAnnotatedMethod(test, AfterInGameContext.class);
-//                                    for(Method method : test.getClass().getDeclaredMethods()) {
-//                                        if (method.isAnnotationPresent(AfterInGameContext.class)) {
-//                                            method.setAccessible(true);
-//                                            method.invoke(test);
-//                                            break;
-//                                        }
-//                                    }
                                     return gameContextId;
                                 });
                             } else {

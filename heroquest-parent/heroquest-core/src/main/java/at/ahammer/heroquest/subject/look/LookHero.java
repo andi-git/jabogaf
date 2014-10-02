@@ -15,7 +15,7 @@ import javax.inject.Inject;
  * Created by andreas on 8/29/14.
  */
 @GameScoped
-public class LookDefault implements Look {
+public class LookHero implements Look {
 
     @Inject
     private BoardAccess boardAccess;

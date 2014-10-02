@@ -2,8 +2,6 @@ package at.ahammer.heroquest.subject.look;
 
 import at.ahammer.boardgame.board.TestWithDummyBoard;
 import at.ahammer.boardgame.cdi.GameContext;
-import at.ahammer.boardgame.subject.look.Look;
-import at.ahammer.boardgame.subject.look.LookStrategy;
 import at.ahammer.heroquest.object.field.Door;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,8 +14,7 @@ import javax.inject.Inject;
 public class LookAllTest extends TestWithDummyBoard {
 
     @Inject
-    @LookStrategy(LookAll.class)
-    private Look look;
+    private LookAll look;
 
     @Test
     public void testOk() {

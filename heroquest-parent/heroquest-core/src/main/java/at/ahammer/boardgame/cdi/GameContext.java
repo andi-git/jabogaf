@@ -48,7 +48,7 @@ public class GameContext implements Context {
     private GameContextDeleteTimer gameContextDeleteTimer;
 
     /**
-     * The assigned code will run within a new {@link GameContext}. The
+     * The assigned cod        e will run within a new {@link GameContext}. The
      * context will be started automatically and will be destroyed afterwards.
      *
      * @param runnable - the {@link at.ahammer.boardgame.cdi.RunInGameContext} which code must run within a
