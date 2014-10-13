@@ -1,10 +1,12 @@
 package at.ahammer.boardgame.board;
 
 import at.ahammer.boardgame.cdi.NewInstanceInGameContext;
+import at.ahammer.boardgame.object.GameObject;
 import at.ahammer.boardgame.object.field.Field;
 import at.ahammer.boardgame.object.field.FieldConnection;
 import at.ahammer.boardgame.object.field.FieldGroup;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -49,4 +51,14 @@ public abstract class Layout extends NewInstanceInGameContext {
     }
 
     public abstract Set<FieldConnection> getLookConnections(Field field1, Field field2);
+
+    public Set<GameObject> getAllGameObjectsOf(Field field) {
+        Set<GameObject> gameObjects = new HashSet<>();
+        fieldConnections.stream().filter((fc) -> {
+            return fc.getLeftHand().equals(field) || fc.getRightHand().equals(field);
+        }).forEach((fc) -> {
+            gameObjects.addAll(fc.getObjectsOnConnection());
+        });
+        return gameObjects;
+    }
 }

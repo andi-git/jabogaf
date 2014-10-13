@@ -15,7 +15,7 @@ public class ArtifactHandHelper {
     /**
      * Add an {@link at.ahammer.boardgame.artifact.Artifact} to the hand of a {@link at.ahammer.boardgame.subject.GameSubject}
      * <p/>
-     * Every {@link at.ahammer.boardgame.subject.GameSubject} has a {@link java.util.Set} of {@link ArtifactHandStrategy} where cast cast defined, which {@link at.ahammer.boardgame.artifact.Artifact} can be used.
+     * Every {@link at.ahammer.boardgame.subject.GameSubject} has a {@link java.util.Set} of {@link ArtifactHandStrategy} where it is defined, which {@link at.ahammer.boardgame.artifact.Artifact} can be used.
      *
      * @param artifact    the {@link at.ahammer.boardgame.artifact.Artifact} to add
      * @param gameSubject the {@link at.ahammer.boardgame.subject.GameSubject} who gets the{@link at.ahammer.boardgame.artifact.Artifact}
@@ -25,7 +25,7 @@ public class ArtifactHandHelper {
     }
 
     /**
-     * Check cast the assigned {@link at.ahammer.boardgame.subject.GameSubject} can handle (can use) the assigned {@link at.ahammer.boardgame.artifact.Artifact}.
+     * Check if the assigned {@link at.ahammer.boardgame.subject.GameSubject} can handle (can use) the assigned {@link at.ahammer.boardgame.artifact.Artifact}.
      *
      * @param artifact    the {@link at.ahammer.boardgame.artifact.Artifact} to add
      * @param gameSubject the {@link at.ahammer.boardgame.subject.GameSubject} that should use the {@link at.ahammer.boardgame.artifact.Artifact}

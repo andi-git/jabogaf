@@ -1,8 +1,8 @@
 package at.ahammer.heroquest.object.field;
 
 import at.ahammer.boardgame.object.field.FieldConnectionObject;
-import at.ahammer.boardgame.subject.look.Look;
-import at.ahammer.boardgame.subject.move.Move;
+import at.ahammer.boardgame.behavior.look.LookBehavior;
+import at.ahammer.boardgame.behavior.move.MoveBehavior;
 
 /**
  * Created by andreas on 8/14/14.
@@ -14,12 +14,12 @@ public class Wall extends FieldConnectionObject {
     }
 
     @Override
-    public boolean canMove(Move move) {
+    public boolean canMove(MoveBehavior moveBehavior) {
         return false;
     }
 
     @Override
-    public boolean canLook(Look look) {
+    public boolean canLook(LookBehavior lookBehavior) {
         return false;
     }
 

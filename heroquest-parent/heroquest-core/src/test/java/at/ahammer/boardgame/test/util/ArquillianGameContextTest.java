@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * This class has the {@link BeanManager} injected and all test-methods will run in an {@link at.ahammer.boardgame.cdi.GameContext}.
  */
-public abstract class ArquillianGameContextTest {
+public abstract class ArquillianGameContextTest implements RunAllMethodsInGameContext {
 
     @Deployment
     public static WebArchive deploy() {
