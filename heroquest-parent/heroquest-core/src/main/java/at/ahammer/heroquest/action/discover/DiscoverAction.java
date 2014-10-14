@@ -7,7 +7,8 @@ import at.ahammer.boardgame.action.move.AfterMoveActionEvent;
 import at.ahammer.boardgame.board.BoardAccess;
 import at.ahammer.boardgame.controller.PlayerController;
 import at.ahammer.boardgame.object.field.Field;
-import at.ahammer.boardgame.subject.GameSubject;
+import at.ahammer.heroquest.subject.Hero;
+import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -25,17 +26,35 @@ public class DiscoverAction extends GameAction {
     @Inject
     private BoardAccess boardAccess;
 
-    public void discover(GameSubject subject, Field field) throws ActionNotPossibleException {
+    @Inject
+    private Logger log;
+
+    public void discover(Hero subject, Field position) throws ActionNotPossibleException {
+        log.info("running DiscoverAction with subject {} and position {}", subject, position);
         super.perform(GameActionPreferences.newInstance().newInstance().actionPrerequisite(() -> {
             if (!playerController.isCurrentPlayer(subject)) {
+                log.warn("{} is not the current player ({})", subject, playerController.getCurrentPlayer());
                 throw new ActionNotPossibleException(subject + " is not the current player (" + playerController.getCurrentPlayer() + ")");
             }
         }).actionPerform(() -> {
-            boardAccess.getGameObjects(field).stream().forEach((f) -> f.setVisible(true));
+            boardAccess.getFields().stream().forEach((field) -> {
+                if (subject.canLook(field)) {
+                    log.info("field {} is visible -> set all GameObjects to visible", field);
+                    boardAccess.getGameObjects(position).stream().filter((gameObject) -> {
+                        return !gameObject.isVisible();
+                    }).forEach((gameObject) -> {
+                        log.info("  {} is now visible", gameObject);
+                        gameObject.setVisible(true);
+                    });
+                }
+            });
         }));
     }
 
     private void afterMove(@Observes AfterMoveActionEvent afterMoveActionEvent) throws ActionNotPossibleException {
-        discover(afterMoveActionEvent.getGameSubject(), afterMoveActionEvent.getTarget());
+        log.info("observe a " + afterMoveActionEvent);
+        if (afterMoveActionEvent.getGameSubject() instanceof Hero) {
+            discover((Hero) afterMoveActionEvent.getGameSubject(), afterMoveActionEvent.getTarget());
+        }
     }
 }

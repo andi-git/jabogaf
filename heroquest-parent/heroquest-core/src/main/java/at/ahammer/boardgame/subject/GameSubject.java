@@ -103,10 +103,14 @@ public abstract class GameSubject extends NewInstanceInGameContext {
         }
     }
 
-    public void look(Field to) throws LookNotPossibleException {
-        if (!lookBehavior.canLook(position, to)) {
-            throw new LookNotPossibleException("unable to look from " + position + " to " + to);
+    public void look(Field target) throws LookNotPossibleException {
+        if (!lookBehavior.canLook(position, target)) {
+            throw new LookNotPossibleException("unable to look from " + position + " to " + target);
         }
+    }
+
+    public boolean canLook(Field target) {
+        return lookBehavior.canLook(position, target);
     }
 
     public Field getPosition() {
