@@ -31,12 +31,12 @@ public class MoveAction extends GameAction {
                         log.warn("{} is not the current player ({})", gameSubject, playerController.getCurrentPlayer());
                         throw new ActionNotPossibleException(gameSubject + " is not the current player (" + playerController.getCurrentPlayer() + ")");
                     }
-                }).actionPerform(() -> { //
+                }).actionPerform(() -> {
                     log.info("move {} to {}", gameSubject, target);
-                    gameSubject.move(target); //
-                }).afterActionEventCreation(() -> { //
+                    gameSubject.move(target);
+                }).afterActionEventCreation(() -> {
                     log.info("fire AfterMoveActionEvent");
-                    return new AfterMoveActionEvent(gameSubject, target); //
+                    return new AfterMoveActionEvent(gameSubject, target);
                 }));
     }
 }

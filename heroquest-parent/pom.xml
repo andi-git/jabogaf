@@ -5,6 +5,9 @@
     <artifactId>heroquest-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
+        <module>boardgame-api</module>
+        <module>boardgame-core</module>
+        <module>boardgame-common</module>
         <module>heroquest-core</module>
     </modules>
     <packaging>pom</packaging>

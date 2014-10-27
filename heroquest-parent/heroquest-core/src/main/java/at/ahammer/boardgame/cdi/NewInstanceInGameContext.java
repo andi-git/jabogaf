@@ -65,7 +65,4 @@ public abstract class NewInstanceInGameContext {
         return id;
     }
 
-    public void fire(Event event) {
-
-    }
 }
