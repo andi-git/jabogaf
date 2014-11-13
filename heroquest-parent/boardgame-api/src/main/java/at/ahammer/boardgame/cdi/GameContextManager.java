@@ -30,4 +30,13 @@ public interface GameContextManager {
      * @return the assigned bean with the resolved CDI-components
      */
     <T> T resolve(T bean);
+
+    /**
+     * Run a code within a new {@link at.ahammer.boardgame.cdi.GameScoped}.
+     *
+     * @param runnable the code to run
+     * @param <T>      the type of the return-value
+     * @return a return-value
+     */
+    <T> T runInGameContext(RunInGameContext<T> runnable) throws Throwable;
 }

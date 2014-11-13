@@ -1,12 +1,13 @@
 package at.ahammer.boardgame.cdi;
 
-import javax.enterprise.inject.Alternative;
+import javax.annotation.PostConstruct;
 
-@Alternative
+@GameScoped
+@AlternativeInGameContext
 public class BeanWithGameScopedAlternative extends BeanWithGameScoped {
 
     @Override
     public String getString() {
-        return "alternative";
+        return "i'm an ALTERNATIVE in GameContext";
     }
 }

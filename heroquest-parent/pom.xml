@@ -9,6 +9,7 @@
         <module>boardgame-core</module>
         <module>boardgame-common</module>
         <module>heroquest-core</module>
+        <module>boardgame-test-util</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -29,7 +30,7 @@
         <version.weld-core-impl>2.2.2.Final</version.weld-core-impl>
         <version.slf4j-simple>1.6.4</version.slf4j-simple>
         <version.arquillian-weld-ee-embedded-1.1>1.0.0.CR3</version.arquillian-weld-ee-embedded-1.1>
-        <version.arquillian-suite-extension>1.1.1</version.arquillian-suite-extension>
+        <version.arquillian-suite-extension>1.1.2</version.arquillian-suite-extension>
         <version.arquillian-osgi>1.0.3.Final</version.arquillian-osgi>
         <version.javassist>3.18.2-GA</version.javassist>
     </properties>
