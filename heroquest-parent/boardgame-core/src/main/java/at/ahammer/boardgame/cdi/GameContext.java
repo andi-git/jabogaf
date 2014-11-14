@@ -86,6 +86,10 @@ public class GameContext implements Context {
         current().addNewInstanceToGameContext(newInstanceInGameContext);
     }
 
+    public static <T extends GameContextBean> T addGameContextBean(T bean) {
+        return current().addGameContextBean(bean);
+    }
+
     /**
      * Get all objects created in the current {@link GameContextInstance} which are subclasses of {@link NewInstanceInGameContext}.
      *

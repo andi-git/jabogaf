@@ -1,21 +1,21 @@
 package at.ahammer.boardgame.cdi;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import java.time.Duration;
 import java.time.Instant;
 
-/**
- * Created by andreas on 07.08.14.
- */
 @ApplicationScoped
 public class GameContextDeleteTimer {
 
     private static final int DURATION = 60;
 
+    private int currentDuration = DURATION;
+
     private Instant lastCheck = Instant.now();
 
     public boolean shouldCheck() {
-        return shouldCheck(DURATION);
+        return shouldCheck(currentDuration);
     }
 
     protected boolean shouldCheck(int duration) {
@@ -25,6 +25,17 @@ public class GameContextDeleteTimer {
             return true;
         }
         return false;
+    }
 
+    public int getCurrentDuration() {
+        return currentDuration;
+    }
+
+    public void setCurrentDuration(int currentDuration) {
+        this.currentDuration = currentDuration;
+    }
+
+    public void resetDuration() {
+        this.currentDuration = DURATION;
     }
 }

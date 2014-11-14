@@ -8,16 +8,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Created by ahammer on 06.08.2014.
- */
 @ApplicationScoped
 public class GameContextCacheDeleteStrategy {
 
     private static final int MAX_UNUSED_DURATION = 60 * 60 * 6;
 
+    private int unusedDuration = MAX_UNUSED_DURATION;
+
     public Set<UUID> getContextsToDelete(Map<UUID, GameContextInstance> gameContextCache, UUID currentId) {
-        return getContextsToDelete(gameContextCache, currentId, MAX_UNUSED_DURATION);
+        return getContextsToDelete(gameContextCache, currentId, unusedDuration);
     }
 
     protected Set<UUID> getContextsToDelete(Map<UUID, GameContextInstance> gameContextCache, UUID currentId, int duration) {
@@ -30,4 +29,15 @@ public class GameContextCacheDeleteStrategy {
         return toDelete;
     }
 
+    public int getUnusedDuration() {
+        return unusedDuration;
+    }
+
+    public void setUnusedDuration(int unusedDuration) {
+        this.unusedDuration = unusedDuration;
+    }
+
+    public void resetUnusedDuration() {
+        this.unusedDuration = MAX_UNUSED_DURATION;
+    }
 }

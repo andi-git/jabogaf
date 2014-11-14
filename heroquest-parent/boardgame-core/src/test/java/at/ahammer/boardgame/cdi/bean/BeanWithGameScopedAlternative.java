@@ -1,6 +1,7 @@
-package at.ahammer.boardgame.cdi;
+package at.ahammer.boardgame.cdi.bean;
 
-import javax.annotation.PostConstruct;
+import at.ahammer.boardgame.cdi.AlternativeInGameContext;
+import at.ahammer.boardgame.cdi.GameScoped;
 
 @GameScoped
 @AlternativeInGameContext

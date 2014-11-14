@@ -23,6 +23,7 @@ public class GameContextInstance {
     private final CacheForDeploymentBeans cacheForDeploymentBeans;
     private final CacheForDynamicBeans cacheForDynamicBeans;
     private final Set<NewInstanceInGameContext> newInstancesInGameContext = new HashSet<>();
+    private final Set<GameContextBean> gameContextBeans = new HashSet<>();
     private Instant lastAccess;
 
     public GameContextInstance(UUID id, BeanManager beanManager) {
@@ -60,12 +61,12 @@ public class GameContextInstance {
      * the given type.
      *
      * @param <T>
-     * @param clazz
+     * @param type
      * @return the bean for the given class.
      */
-    public <T> T getFromDynamicContext(Class<T> clazz) {
+    public <T> T getFromDynamicContext(Class<T> type, Annotation... qualifiers) {
         this.lastAccess = Instant.now();
-        return cacheForDynamicBeans.getBean(clazz);
+        return cacheForDynamicBeans.getBean(type, qualifiers);
     }
 
     public void addNewInstanceToGameContext(NewInstanceInGameContext newInstanceInGameContext) {
@@ -95,6 +96,36 @@ public class GameContextInstance {
         }
         return null;
     }
+
+    public <T extends GameContextBean> T addGameContextBean(T bean) {
+        this.lastAccess = Instant.now();
+        gameContextBeans.add(bean);
+        return bean;
+    }
+
+    public Set<GameContextBean> getGameContextBeans() {
+        this.lastAccess = Instant.now();
+        return gameContextBeans;
+    }
+
+    public GameContextBean getGameContextBean(String id) {
+        return getGameContextBeans().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+    }
+
+    public <T> T getGameContextBean(Class<T> clazz, String id) {
+        return (T) getGameContextBeans().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+    }
+
+    public <T> T getGameContextBean(Class<T> clazz) {
+        for (GameContextBean gameContextBean : GameContext.current().getGameContextBeans()) {
+            if (clazz.isAssignableFrom(gameContextBean.getClass())) {
+                // get only first match
+                return (T) gameContextBean;
+            }
+        }
+        return null;
+    }
+
 
     private static class CacheForDeploymentBeans {
 
@@ -139,19 +170,20 @@ public class GameContextInstance {
 
         private final BeanManager beanManager;
 
-        private final Map<Class<?>, Bean<?>> cacheForDynamicBeans = Collections.synchronizedMap(new HashMap<>());
+        // TODO: the qualifier must be part of the key!
+        private final Map<BeanKey, Bean<?>> cacheForDynamicBeans = Collections.synchronizedMap(new HashMap<>());
 
         private CacheForDynamicBeans(BeanManager beanManager) {
             this.beanManager = beanManager;
         }
 
-        private Bean<?> getBeanFromCache(Class<?> clazz) {
+        private Bean<?> getBeanFromCache(Class<?> type, Annotation... qualifiers) {
             Bean<?> result;
             // if the bean is not in the cache, create it and put it into the cache
-            if ((result = cacheForDynamicBeans.get(clazz)) == null) {
-                Set<Bean<?>> beans = beanManager.getBeans(clazz, emptyAnnotations);
+            if ((result = cacheForDynamicBeans.get(new BeanKey(type, qualifiers))) == null) {
+                Set<Bean<?>> beans = beanManager.getBeans(type, (qualifiers == null || qualifiers.length == 0 || qualifiers[0] == null) ? emptyAnnotations : qualifiers);
                 result = beanManager.resolve(beans);
-                cacheForDynamicBeans.put(clazz, result);
+                cacheForDynamicBeans.put(new BeanKey(type, qualifiers), result);
             }
             return result;
         }
@@ -161,22 +193,54 @@ public class GameContextInstance {
          * of the given type.
          *
          * @param <T>
-         * @param clazz
+         * @param type
          * @return the bean for the given class.
          */
-        public <T> T getBean(Class<T> clazz) {
+        public <T> T getBean(Class<T> type, Annotation... qualifiers) {
             try {
-                Bean<?> bean = getBeanFromCache(clazz);
+                Bean<?> bean = getBeanFromCache(type, qualifiers);
                 if (bean != null) {
                     CreationalContext<?> ctx = beanManager.createCreationalContext(bean);
-                    Object o = beanManager.getReference(bean, clazz, ctx);
-                    return clazz.cast(o);
+                    Object o = beanManager.getReference(bean, type, ctx);
+                    return type.cast(o);
                 } else {
                     return null;
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+
+    private static class BeanKey {
+
+        private final Class<?> type;
+
+        private final Annotation[] qualifiers;
+
+        public BeanKey(Class<?> type, Annotation[] qualifiers) {
+            this.type = type;
+            this.qualifiers = qualifiers;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            BeanKey beanKey = (BeanKey) o;
+
+            if (!Arrays.equals(qualifiers, beanKey.qualifiers)) return false;
+            if (!type.equals(beanKey.type)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = type.hashCode();
+            result = 31 * result + (qualifiers != null ? Arrays.hashCode(qualifiers) : 0);
+            return result;
         }
     }
 

@@ -1,4 +1,6 @@
-package at.ahammer.boardgame.cdi;
+package at.ahammer.boardgame.cdi.bean;
+
+import at.ahammer.boardgame.cdi.GameScoped;
 
 import javax.annotation.PostConstruct;
 

@@ -19,7 +19,7 @@ public abstract class GameContextBean {
      */
     protected GameContextBean(String id) {
         this.id = id;
-        getGameContextManager().resolve(this);
+        getGameContextManager().add(this, id);
     }
 
     public String getId() {
@@ -32,7 +32,7 @@ public abstract class GameContextBean {
      * @return the current {@link at.ahammer.boardgame.cdi.GameContextManager} or a {@link java.lang.RuntimeException}
      * will be thrown
      */
-    private GameContextManager getGameContextManager() {
+    protected GameContextManager getGameContextManager() {
         final GameContextManager[] gameContextManager = {null};
         ServiceLoader<GameContextManager> gameContextManagerServiceLoader = ServiceLoader.load(GameContextManager.class);
         gameContextManagerServiceLoader.forEach(g -> gameContextManager[0] = g);

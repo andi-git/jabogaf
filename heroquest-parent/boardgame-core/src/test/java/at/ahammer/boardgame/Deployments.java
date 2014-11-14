@@ -14,6 +14,7 @@ public class Deployments {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war").//
                 addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml").
                 addAsResource("META-INF/services/javax.enterprise.inject.spi.Extension", "META-INF/services/javax.enterprise.inject.spi.Extension").//
+                addAsResource("META-INF/services/at.ahammer.boardgame.cdi.GameContextManager", "META-INF/services/at.ahammer.boardgame.cdi.GameContextManager").//
                 addPackages(true, "at.ahammer");
         System.out.println(webArchive.toString(true));
         return webArchive;

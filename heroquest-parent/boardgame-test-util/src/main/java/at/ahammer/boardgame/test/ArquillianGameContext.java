@@ -82,7 +82,7 @@ public class ArquillianGameContext extends Arquillian {
                                 log.info("alternatives from annotation: " + getAlternativesToActivate());
                                 arquillianGameContextTest.getAlternativesInGameContext().addAll(getAlternativesToActivate());
                                 // it the test-class is an instance of ArquillianGameContextTest, then start a new GameContext
-                                arquillianGameContextTest.getGameContextManager().runInGameContext((gameContextId) -> {
+                                arquillianGameContextTest.getGameContextManager().runInGameContext(arquillianGameContextTest.getBeanManager(), (gameContextId) -> {
                                     // call before-method
                                     invokeAnnotatedMethod(test, BeforeInGameContext.class);
                                     try {

@@ -1,13 +1,10 @@
 package at.ahammer.boardgame.cdi;
 
+import at.ahammer.boardgame.cdi.bean.BeanWithGameScoped;
+import at.ahammer.boardgame.cdi.bean.BeanWithGameScopedAlternative;
 import at.ahammer.boardgame.test.ActivateAlternatives;
 import at.ahammer.boardgame.test.ArquillianGameContext;
 import at.ahammer.boardgame.test.ArquillianGameContextTest;
-import at.ahammer.boardgame.test.BeforeInGameContext;
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
