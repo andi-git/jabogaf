@@ -3,13 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>at.ahammer.heroquest</groupId>
     <artifactId>heroquest-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <modules>
         <module>boardgame-api</module>
         <module>boardgame-core</module>
+        <module>boardgame-core-testutil</module>
         <module>boardgame-common</module>
+        <module>boardgame-common-testutil</module>
         <module>heroquest-core</module>
-        <module>boardgame-test-util</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -20,6 +21,7 @@
         <!-- plugin -->
         <version.maven-copiler-plugin>2.5.1</version.maven-copiler-plugin>
         <version.maven-surefire-plugin>2.12.4</version.maven-surefire-plugin>
+        <version.maven-dependency-plugin>2.9</version.maven-dependency-plugin>
         <!-- runtime -->
         <version.javaee-api>7.0</version.javaee-api>
         <version.slf4j-api>1.6.1</version.slf4j-api>
@@ -37,10 +39,25 @@
 
     <build>
         <finalName>heroquest-parent</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.maven-copiler-plugin}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${version.maven-surefire-plugin}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${version.maven-dependency-plugin}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.maven-copiler-plugin}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -48,7 +65,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${version.maven-surefire-plugin}</version>
             </plugin>
         </plugins>
     </build>

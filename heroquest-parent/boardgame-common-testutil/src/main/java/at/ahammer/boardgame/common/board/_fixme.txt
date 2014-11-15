@@ -1,0 +1,1 @@
+these classes are duplications -> use maven-plugin to extract them under target-folder!
