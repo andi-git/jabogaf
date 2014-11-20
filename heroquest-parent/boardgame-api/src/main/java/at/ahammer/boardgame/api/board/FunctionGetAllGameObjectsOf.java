@@ -14,14 +14,17 @@ import java.util.Set;
 public interface FunctionGetAllGameObjectsOf {
 
     /**
-     * Get all {@link at.ahammer.boardgame.api.object.GameObject}s that are located on a {@link
-     * at.ahammer.boardgame.api.board.field.Field}.
+     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnectionObject}s that are located on a {@link
+     * at.ahammer.boardgame.api.board.field.FieldConnection} where the {@link at.ahammer.boardgame.api.board.field.Field}
+     * is involved.
      *
      * @param fieldConnections all available {@link at.ahammer.boardgame.api.board.field.FieldConnection}s
-     * @param field            the {@link at.ahammer.boardgame.api.board.field.Field} to get all {@link
-     *                         at.ahammer.boardgame.api.object.GameObject}s from
-     * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.object.GameObject}s that are located on a {@link
-     * at.ahammer.boardgame.api.board.field.Field}
+     * @param leftHand         the one {@link at.ahammer.boardgame.api.board.field.Field} of the {@link
+     *                         at.ahammer.boardgame.api.board.field.FieldConnection}
+     * @param rightHand        the other {@link at.ahammer.boardgame.api.board.field.Field} of the {@link
+     *                         at.ahammer.boardgame.api.board.field.FieldConnection}
+     * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.board.field.FieldConnectionObject}s that are
+     * located on a {@link at.ahammer.boardgame.api.board.field.FieldConnection}
      */
-    Set<FieldConnectionObject> getAllGameObjectsOf(Set<FieldConnection> fieldConnections, Field field);
+    Set<FieldConnectionObject> getAllGameObjectsOf(Set<FieldConnection> fieldConnections, Field leftHand, Field rightHand);
 }

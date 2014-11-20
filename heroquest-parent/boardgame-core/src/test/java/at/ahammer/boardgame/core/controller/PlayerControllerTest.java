@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.core.controller;
 
 import at.ahammer.boardgame.api.controller.PlayerController;
+import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.api.subject.GameSubjectNull;
@@ -19,5 +20,12 @@ public class PlayerControllerTest extends ArquillianGameContextTest {
     @Test
     public void testEmptyPlayerController() {
         Assert.assertEquals(GameSubjectNull.class, playerController.getCurrentPlayer().getClass());
+    }
+
+    @Test
+    public void testPlayerController() {
+        GameSubject subject = new MySubject();
+        playerController.setCurrentPlayer(subject);
+        Assert.assertEquals(subject, playerController.getCurrentPlayer());
     }
 }

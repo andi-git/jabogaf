@@ -10,7 +10,7 @@ import java.util.Set;
  * Represents a connection between two {@link Field}. On this connection there can be
  * multiple {@link FieldConnectionObject}s which are the behavior of the connection.
  */
-public abstract class FieldConnection extends GameContextBean {
+public class FieldConnection extends GameContextBean {
 
     private final Field leftHand;
 
@@ -41,6 +41,9 @@ public abstract class FieldConnection extends GameContextBean {
      * {@link Field}s
      */
     public boolean connects(Field field1, Field field2) {
+        if (field1 == null || field2 == null) {
+            return false;
+        }
         return (field1.equals(leftHand) && field2.equals(rightHand)) || (field2.equals(leftHand) && field1.equals(rightHand));
     }
 
@@ -52,15 +55,21 @@ public abstract class FieldConnection extends GameContextBean {
         fieldConnectionObjects.add(fieldConnectionObject);
     }
 
+    public void addObjectOnConnection(FieldConnectionObject... fieldConnectionObject) {
+        for (FieldConnectionObject f : fieldConnectionObject) {
+            fieldConnectionObjects.add(f);
+        }
+    }
+
     public void clearObjectsOnConnection() {
         fieldConnectionObjects.clear();
     }
 
     public Field getRightHand() {
-        return rightHand;
+        return rightHand != null ? rightHand : new FieldNull();
     }
 
     public Field getLeftHand() {
-        return leftHand;
+        return leftHand != null ? leftHand : new FieldNull();
     }
 }

@@ -12,7 +12,7 @@ import javax.inject.Inject;
  * A field is a {@link at.ahammer.boardgame.api.object.GameObject} and is always visible.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class Field extends GameContextBean {
+public class Field extends GameContextBean {
 
     @Inject
     private BoardManager boardManager;
@@ -22,7 +22,7 @@ public abstract class Field extends GameContextBean {
      *
      * @param id the id of the {@link Field}
      */
-    protected Field(String id) {
+    public Field(String id) {
         super(id);
     }
 

@@ -4,17 +4,16 @@ import java.util.ServiceLoader;
 import java.util.UUID;
 
 /**
- * This is the superclass for all new instantiated beans within the {@link GameScoped}. This
- * class only provides the method getId() as abstract method and it's not an obligation to use this class as
- * superclass.
+ * This is the superclass for all new instantiated beans within the {@link GameScoped}. This class only provides the
+ * method getId() as abstract method and it's not an obligation to use this class as superclass.
  */
 public abstract class GameContextBean {
 
     private final String id;
 
     /**
-     * Create a new {@link GameContextBean} with a random id. The bean will also be registered in GameContext
-     * via {@link GameContextManager}.
+     * Create a new {@link GameContextBean} with a random id. The bean will also be registered in GameContext via {@link
+     * GameContextManager}.
      *
      * @see #GameContextBean(String)
      */
@@ -23,8 +22,8 @@ public abstract class GameContextBean {
     }
 
     /**
-     * Create a new {@link GameContextBean}. The bean will also be registered in GameContext
-     * via {@link GameContextManager}.
+     * Create a new {@link GameContextBean}. The bean will also be registered in GameContext via {@link
+     * GameContextManager}.
      *
      * @param id the id of the {@link GameContextBean}.
      */
@@ -40,8 +39,7 @@ public abstract class GameContextBean {
     /**
      * Get the {@link GameContextManager} via the {@link java.util.ServiceLoader}.
      *
-     * @return the current {@link GameContextManager} or a {@link java.lang.RuntimeException}
-     * will be thrown
+     * @return the current {@link GameContextManager} or a {@link java.lang.RuntimeException} will be thrown
      */
     protected GameContextManager getGameContextManager() {
         final GameContextManager[] gameContextManager = {null};
@@ -51,5 +49,29 @@ public abstract class GameContextBean {
             throw new RuntimeException("unable to get instance of " + GameContextManager.class + " via " + ServiceLoader.class);
         }
         return gameContextManager[0];
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GameContextBean that = (GameContextBean) o;
+
+        if (!id.equals(that.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "GameContextBean{" +
+                "id='" + id + '\'' +
+                '}';
     }
 }

@@ -94,9 +94,9 @@ public abstract class Layout extends GameContextBean {
     public abstract Set<FieldConnection> getLookConnections(Field position, Field target);
 
     /**
-     * @see FunctionGetAllGameObjectsOf#getAllGameObjectsOf(java.util.Set, at.ahammer.boardgame.api.board.field.Field)
+     * @see FunctionGetAllGameObjectsOf#getAllGameObjectsOf(java.util.Set, at.ahammer.boardgame.api.board.field.Field, at.ahammer.boardgame.api.board.field.Field)
      */
-    public Set<FieldConnectionObject> getAllGameObjectsOf(Field field) {
-        return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, field);
+    public Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+        return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
     }
 }

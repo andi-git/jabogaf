@@ -18,21 +18,25 @@ public interface BoardManager {
     Board getBoard();
 
     /**
-     * Get all {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link Board}
-     * specified by the {@link Layout}.
+     * Get all {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link Board} specified by the {@link
+     * Layout}.
      *
-     * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link
-     * Board} specified by the {@link Layout}
+     * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link Board}
+     * specified by the {@link Layout}
      */
     Set<Field> getFields();
 
     /**
-     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnectionObject}s of a current {@link at.ahammer.boardgame.api.board.field.Field}
+     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnectionObject}s of a current {@link
+     * at.ahammer.boardgame.api.board.field.FieldConnection} defined by the two {@link
+     * at.ahammer.boardgame.api.board.field.Field}s.
      *
-     * @param field the {@link at.ahammer.boardgame.api.board.field.Field} to get all {@link
-     *              at.ahammer.boardgame.api.object.GameObject}s of
+     * @param leftHand  the one {@link at.ahammer.boardgame.api.board.field.Field} to get all {@link
+     *                  at.ahammer.boardgame.api.board.field.FieldConnectionObject}s of
+     * @param rightHand the other {@link at.ahammer.boardgame.api.board.field.Field} to get all {@link
+     *                  at.ahammer.boardgame.api.board.field.FieldConnectionObject}s of
      * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.object.GameObject}s of the assigned {@link
      * at.ahammer.boardgame.api.board.field.Field}
      */
-    Set<FieldConnectionObject> getGameObjects(Field field);
+    Set<FieldConnectionObject> getAllFieldConectionObjects(Field leftHand, Field rightHand);
 }

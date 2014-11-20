@@ -23,7 +23,7 @@ public class BoardManagerBasic implements BoardManager {
     }
 
     @Override
-    public Set<FieldConnectionObject> getGameObjects(Field field) {
-        return getBoard().getLayout().getAllGameObjectsOf(field);
+    public Set<FieldConnectionObject> getAllFieldConectionObjects(Field leftHand, Field rightHand) {
+        return getBoard().getLayout().getAllFieldConnectionObjects(leftHand, rightHand);
     }
 }

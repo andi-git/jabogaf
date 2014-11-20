@@ -2,7 +2,7 @@ package at.ahammer.boardgame.api.object;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 
-public abstract class GameObject extends GameContextBean {
+public class GameObject extends GameContextBean {
 
     private boolean visible = false;
 
@@ -11,7 +11,7 @@ public abstract class GameObject extends GameContextBean {
      *
      * @param id the id of the {@link GameObject}
      */
-    protected GameObject(String id) {
+    public GameObject(String id) {
         super(id);
     }
 
