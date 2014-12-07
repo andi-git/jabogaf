@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.core.stream;
+package at.ahammer.boardgame.util.stream;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.NoSuchElementException;

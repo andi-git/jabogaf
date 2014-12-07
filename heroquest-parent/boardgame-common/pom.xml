@@ -41,6 +41,11 @@
             <artifactId>boardgame-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>at.ahammer.heroquest</groupId>
+            <artifactId>boardgame-util</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- test -->
         <dependency>

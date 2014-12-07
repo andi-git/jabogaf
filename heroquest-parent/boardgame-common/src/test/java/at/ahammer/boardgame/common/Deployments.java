@@ -20,7 +20,8 @@ public class Deployments {
 //                addAsResource("META-INF/services/at.ahammer.boardgame.cdi.GameContextManager", "META-INF/services/at.ahammer.boardgame.cdi.GameContextManager").//
                 addPackages(true, "at.ahammer.boardgame.api").
                 addPackages(true, "at.ahammer.boardgame.core").
-                addPackages(true, "at.ahammer.boardgame.common");
+                addPackages(true, "at.ahammer.boardgame.common").
+                addPackages(true, "at.ahammer.boardgame.util");
 //                addAsLibraries(new File(new File("").getAbsolutePath(), "target/arquillianLibs").listFiles());;
         System.out.println(webArchive.toString(true));
         return webArchive;

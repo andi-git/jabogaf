@@ -13,7 +13,7 @@ public abstract class ActionEvent<T extends GameActionParameter> {
         this.actionParameter = actionParameter;
     }
 
-    protected T getActionParameter() {
+    public T getActionParameter() {
         return actionParameter;
     }
 }

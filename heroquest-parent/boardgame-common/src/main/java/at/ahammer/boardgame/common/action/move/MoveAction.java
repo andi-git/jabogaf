@@ -50,7 +50,7 @@ public class MoveAction implements GameAction<MoveActionParameter> {
         GameSubject gameSubject = moveActionParameter.getGameSubject();
         Field target = moveActionParameter.getTarget();
         gameActionLifecycle.perform(//
-                GameActionPreferences.newInstance().newInstance().addPrerequisite(() -> {
+                GameActionPreferences.newInstance().addPrerequisite(() -> {
                     if (!playerController.isCurrentPlayer(gameSubject)) {
                         log.warn("{} is not the current player ({})", gameSubject, playerController.getCurrentPlayer());
                         throw new ActionNotPossibleException(gameSubject + " is not the current player (" + playerController.getCurrentPlayer() + ")");

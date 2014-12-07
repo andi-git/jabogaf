@@ -8,7 +8,6 @@ import at.ahammer.boardgame.api.action.event.BeforeActionEvent;
  * All data or functions to perform a {@link GameAction}. An instance of this class
  * can be created via {@link #newInstance()} and add data or functions via the builder-pattern.
  */
-@SuppressWarnings("CodeBlock2Expr")
 public class GameActionPreferences {
 
     private ActionPrerequisite actionPrerequisite = () -> {
@@ -18,13 +17,11 @@ public class GameActionPreferences {
     };
 
     private ActionEventCreation<BeforeActionEvent> beforeActionEventCreation = () -> {
-        return new BeforeActionEvent(new GameActionParameter() {
-        });
+        return new BeforeActionEventDefault();
     };
 
     private ActionEventCreation<AfterActionEvent> afterActionEventCreation = () -> {
-        return new AfterActionEvent(new GameActionParameter() {
-        });
+        return new AfterActionEventDefault();
     };
 
     private GameActionPreferences() {
@@ -50,13 +47,13 @@ public class GameActionPreferences {
         return this;
     }
 
-    public GameActionPreferences addBeforeActionEventCreation(ActionEventCreation<BeforeActionEvent> beforeActionEventActionEventCreation) {
-        this.beforeActionEventCreation = beforeActionEventActionEventCreation;
+    public GameActionPreferences addBeforeActionEventCreation(ActionEventCreation<BeforeActionEvent> beforeActionEventCreation) {
+        this.beforeActionEventCreation = beforeActionEventCreation;
         return this;
     }
 
-    public GameActionPreferences addAfterActionEventCreation(ActionEventCreation<AfterActionEvent> afterActionEventActionEventCreation) {
-        this.afterActionEventCreation = afterActionEventActionEventCreation;
+    public GameActionPreferences addAfterActionEventCreation(ActionEventCreation<AfterActionEvent> afterActionEventCreation) {
+        this.afterActionEventCreation = afterActionEventCreation;
         return this;
     }
 
@@ -74,5 +71,21 @@ public class GameActionPreferences {
 
     public ActionEventCreation<AfterActionEvent> getAfterActionEventCreation() {
         return afterActionEventCreation;
+    }
+
+    private class AfterActionEventDefault extends AfterActionEvent<GameActionParameter> {
+
+        public AfterActionEventDefault() {
+            super(new GameActionParameter() {
+            });
+        }
+    }
+
+    private class BeforeActionEventDefault extends BeforeActionEvent<GameActionParameter> {
+
+        public BeforeActionEventDefault() {
+            super(new GameActionParameter() {
+            });
+        }
     }
 }
