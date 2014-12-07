@@ -3,7 +3,7 @@ package at.ahammer.boardgame.core.board;
 import at.ahammer.boardgame.api.board.FunctionGetConnection;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
-import at.ahammer.boardgame.api.board.field.FieldConnectionNull;
+import at.ahammer.boardgame.core.board.field.FieldConnectionNull;
 import at.ahammer.boardgame.util.stream.OptionalDefault;
 
 import javax.enterprise.context.ApplicationScoped;

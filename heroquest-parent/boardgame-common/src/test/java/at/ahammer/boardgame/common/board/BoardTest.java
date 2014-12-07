@@ -7,7 +7,7 @@ public class BoardTest extends DummyBoardTest {
 
     @Test
     public void testBoard() {
-        Assert.assertTrue(board.getLayout() instanceof GridLayout);
-        Assert.assertEquals(25, board.getLayout().getFields().size());
+        Assert.assertTrue(getBoard().getLayout() instanceof GridLayout);
+        Assert.assertEquals(25, getBoard().getLayout().getFields().size());
     }
 }

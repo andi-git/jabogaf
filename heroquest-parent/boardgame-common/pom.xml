@@ -43,6 +43,11 @@
         </dependency>
         <dependency>
             <groupId>at.ahammer.heroquest</groupId>
+            <artifactId>boardgame-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>at.ahammer.heroquest</groupId>
             <artifactId>boardgame-util</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -77,12 +82,6 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>at.ahammer.heroquest</groupId>
-            <artifactId>boardgame-core</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>at.ahammer.heroquest</groupId>

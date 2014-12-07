@@ -2,8 +2,8 @@ package at.ahammer.boardgame.core.controller;
 
 import at.ahammer.boardgame.api.cdi.GameScoped;
 import at.ahammer.boardgame.api.controller.PlayerController;
+import at.ahammer.boardgame.api.loader.ServiceLoader;
 import at.ahammer.boardgame.api.subject.GameSubject;
-import at.ahammer.boardgame.api.subject.GameSubjectNull;
 
 /**
  * The basic implementation of {@link at.ahammer.boardgame.api.controller.PlayerController}.
@@ -21,7 +21,7 @@ public class PlayerControllerBasic implements PlayerController {
     @Override
     public GameSubject getCurrentPlayer() {
         if (currentPlayer == null) {
-            currentPlayer = new GameSubjectNull();
+            currentPlayer = ServiceLoader.get(GameSubject.class);
         }
         return currentPlayer;
     }

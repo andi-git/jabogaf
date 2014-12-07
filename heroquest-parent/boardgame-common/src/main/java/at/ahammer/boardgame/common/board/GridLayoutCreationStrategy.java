@@ -1,6 +1,8 @@
 package at.ahammer.boardgame.common.board;
 
 import at.ahammer.boardgame.api.board.field.*;
+import at.ahammer.boardgame.core.board.field.FieldConnectionNull;
+import at.ahammer.boardgame.core.board.field.FieldNull;
 
 import java.util.HashMap;
 import java.util.HashSet;

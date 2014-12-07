@@ -5,7 +5,6 @@ import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.board.FunctionGetAllGameObjectsOf;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
-import at.ahammer.boardgame.api.board.field.FieldConnectionNull;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
 import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;

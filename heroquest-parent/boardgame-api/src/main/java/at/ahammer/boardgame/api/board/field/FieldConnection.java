@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.api.board.field;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.api.loader.ServiceLoader;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -66,10 +67,16 @@ public class FieldConnection extends GameContextBean {
     }
 
     public Field getRightHand() {
-        return rightHand != null ? rightHand : new FieldNull();
+        return rightHand != null ? rightHand : getNullField();
+//        return rightHand != null ? rightHand : new FieldNull();
     }
 
     public Field getLeftHand() {
-        return leftHand != null ? leftHand : new FieldNull();
+        return leftHand != null ? leftHand : getNullField();
+//        return leftHand != null ? leftHand : new FieldNull();
+    }
+
+    private Field getNullField() {
+        return ServiceLoader.get(Field.class);
     }
 }

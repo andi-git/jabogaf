@@ -2,9 +2,9 @@ package at.ahammer.boardgame.core.controller;
 
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
-import at.ahammer.boardgame.api.subject.GameSubjectNull;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

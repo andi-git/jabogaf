@@ -1,7 +1,10 @@
-package at.ahammer.boardgame.api.board.field;
+package at.ahammer.boardgame.core.board.field;
+
+import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.board.field.FieldConnection;
 
 /**
- * The null-implementation of a {@link Field}.
+ * The null-implementation of a {@link at.ahammer.boardgame.api.board.field.Field}.
  */
 public class FieldNull extends Field {
 

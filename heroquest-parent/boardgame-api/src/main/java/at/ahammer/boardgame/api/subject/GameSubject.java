@@ -7,8 +7,8 @@ import at.ahammer.boardgame.api.behavior.look.LookNotPossibleException;
 import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandManager;
 
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * A subject (i.e. hero, monster,...) in the game.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class GameSubject extends GameContextBean {
 
     private final Set<WeaponType> weaponTypes = new HashSet<>();
@@ -63,15 +63,14 @@ public abstract class GameSubject extends GameContextBean {
     }
 
     /**
-     * Move the {@link GameSubject} from the current {@code position} to a {@link
-     * at.ahammer.boardgame.api.board.field.Field} defined by the parameter {@code target}.
+     * Move the {@link GameSubject} from the current {@code position} to a {@link at.ahammer.boardgame.api.board.field.Field}
+     * defined by the parameter {@code target}.
      * <p/>
      * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior}.
      *
-     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link
-     *               GameSubject} to
-     * @throws FieldsNotConnectedException if the {@link at.ahammer.boardgame.api.board.field.Field}s {@code position} and
-     *                                     {@code target} are not connected
+     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link GameSubject} to
+     * @throws FieldsNotConnectedException if the {@link at.ahammer.boardgame.api.board.field.Field}s {@code position}
+     *                                     and {@code target} are not connected
      * @throws MoveNotPossibleException    if the move from {@code position} to {@code target} is not possible, because
      *                                     it is blocked by a {@link at.ahammer.boardgame.api.object.GameObject} or
      *                                     something
@@ -79,8 +78,8 @@ public abstract class GameSubject extends GameContextBean {
     public abstract void move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException;
 
     /**
-     * Check if the {@link GameSubject} can move from the current {@code position} to
-     * another {@link at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
+     * Check if the {@link GameSubject} can move from the current {@code position} to another {@link
+     * at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
      * <p/>
      * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior}.
      *
@@ -95,16 +94,17 @@ public abstract class GameSubject extends GameContextBean {
      * <p/>
      * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.look.LookBehavior}.
      *
-     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link
-     *               GameSubject} to
-     * @throws at.ahammer.boardgame.api.behavior.look.LookNotPossibleException if the move from {@code position} to {@code target} is not possible, because it
-     *                                  is blocked by a {@link at.ahammer.boardgame.api.object.GameObject} or something
+     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link GameSubject} to
+     * @throws at.ahammer.boardgame.api.behavior.look.LookNotPossibleException if the move from {@code position} to
+     *                                                                         {@code target} is not possible, because
+     *                                                                         it is blocked by a {@link at.ahammer.boardgame.api.object.GameObject}
+     *                                                                         or something
      */
     public abstract void look(Field target) throws LookNotPossibleException;
 
     /**
-     * Check if the {@link GameSubject} can look from the current {@code position} to
-     * another {@link at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
+     * Check if the {@link GameSubject} can look from the current {@code position} to another {@link
+     * at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
      * <p/>
      * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.look.LookBehavior}.
      *
@@ -131,11 +131,10 @@ public abstract class GameSubject extends GameContextBean {
     }
 
     /**
-     * Add an {@link at.ahammer.boardgame.api.artifact.Artifact} to the hand of the current {@link
-     * GameSubject}
+     * Add an {@link at.ahammer.boardgame.api.artifact.Artifact} to the hand of the current {@link GameSubject}
      * <p/>
-     * Every {@link GameSubject} has a {@link java.util.Set} of {@link
-     * ArtifactHandStrategy} where it is defined, which {@link at.ahammer.boardgame.api.artifact.Artifact} can be used.
+     * Every {@link GameSubject} has a {@link java.util.Set} of {@link ArtifactHandStrategy} where it is defined, which
+     * {@link at.ahammer.boardgame.api.artifact.Artifact} can be used.
      *
      * @param artifact the {@link at.ahammer.boardgame.api.artifact.Artifact} to add
      * @see at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandManager#addArtifact(Artifact, GameSubject)
@@ -151,4 +150,8 @@ public abstract class GameSubject extends GameContextBean {
     public abstract void changeMoveBehavior(MoveBehavior moveBehavior);
 
     public abstract void changeLookBehavior(LookBehavior lookBehavior);
+
+    protected void setPosition(Field position) {
+        this.position = position;
+    }
 }

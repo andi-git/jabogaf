@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.api.cdi;
 
-import java.util.ServiceLoader;
+import at.ahammer.boardgame.api.loader.ServiceLoader;
+
 import java.util.UUID;
 
 /**
@@ -42,13 +43,14 @@ public abstract class GameContextBean {
      * @return the current {@link GameContextManager} or a {@link java.lang.RuntimeException} will be thrown
      */
     protected GameContextManager getGameContextManager() {
-        final GameContextManager[] gameContextManager = {null};
-        ServiceLoader<GameContextManager> gameContextManagerServiceLoader = ServiceLoader.load(GameContextManager.class);
-        gameContextManagerServiceLoader.forEach(g -> gameContextManager[0] = g);
-        if (gameContextManager[0] == null) {
-            throw new RuntimeException("unable to get instance of " + GameContextManager.class + " via " + ServiceLoader.class);
-        }
-        return gameContextManager[0];
+        return ServiceLoader.get(GameContextManager.class);
+//        final GameContextManager[] gameContextManager = {null};
+//        ServiceLoader<GameContextManager> gameContextManagerServiceLoader = ServiceLoader.load(GameContextManager.class);
+//        gameContextManagerServiceLoader.forEach(g -> gameContextManager[0] = g);
+//        if (gameContextManager[0] == null) {
+//            throw new RuntimeException("unable to get instance of " + GameContextManager.class + " via " + ServiceLoader.class);
+//        }
+//        return gameContextManager[0];
     }
 
     @Override
