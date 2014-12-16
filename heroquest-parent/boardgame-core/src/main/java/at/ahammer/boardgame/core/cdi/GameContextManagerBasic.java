@@ -23,7 +23,7 @@ public class GameContextManagerBasic implements GameContextManager {
 
     @Override
     public <T extends GameContextBean> T add(T bean) {
-        return add(bean, ((GameContextBean) bean).getId());
+        return add(bean, bean.getId());
     }
 
     @Override

@@ -1,8 +1,5 @@
 package at.ahammer.boardgame.api.subject.artifact.hand;
 
-import at.ahammer.boardgame.api.artifact.Artifact;
-import at.ahammer.boardgame.api.subject.GameSubject;
-
 /**
  * Helper-class for {@link at.ahammer.boardgame.api.artifact.Artifact}s used by a {@link
  * at.ahammer.boardgame.api.subject.GameSubject} in the hand.
@@ -17,21 +14,18 @@ public interface ArtifactHandManager {
      * at.ahammer.boardgame.api.artifact.weapon.WeaponType} where it is defined, which {@link
      * at.ahammer.boardgame.api.artifact.Artifact} can be used.
      *
-     * @param artifact    the {@link at.ahammer.boardgame.api.artifact.Artifact} to add
-     * @param gameSubject the {@link at.ahammer.boardgame.api.subject.GameSubject} who gets the{@link
-     *                    at.ahammer.boardgame.api.artifact.Artifact}
+     * @param addArtifactToHandStrategyContext the context of the functionality to add an {@link at.ahammer.boardgame.api.artifact.Artifact} to a {@link at.ahammer.boardgame.api.subject.GameSubject}
+     * @throws at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException if the handling is not possible -> check via {@link #canHandle(AddArtifactToHandStrategyContext)} first!
      */
-    void addArtifact(Artifact artifact, GameSubject gameSubject);
+    void addArtifact(AddArtifactToHandStrategyContext addArtifactToHandStrategyContext) throws ArtifactHandlingException;
 
     /**
      * Check if the assigned {@link at.ahammer.boardgame.api.subject.GameSubject} can handle (can use) the assigned {@link
      * at.ahammer.boardgame.api.artifact.Artifact}.
      *
-     * @param artifact    the {@link at.ahammer.boardgame.api.artifact.Artifact} to add
-     * @param gameSubject the {@link at.ahammer.boardgame.api.subject.GameSubject} that should use the {@link
-     *                    at.ahammer.boardgame.api.artifact.Artifact}
+     * @param addArtifactToHandStrategyContext the context of the functionality to add an {@link at.ahammer.boardgame.api.artifact.Artifact} to a {@link at.ahammer.boardgame.api.subject.GameSubject}
      * @return {@code true} it the {@link at.ahammer.boardgame.api.subject.GameSubject} can handle (can use) the {@link
      * at.ahammer.boardgame.api.artifact.Artifact}
      */
-    boolean canHandle(Artifact artifact, GameSubject gameSubject);
+    boolean canHandle(AddArtifactToHandStrategyContext addArtifactToHandStrategyContext);
 }

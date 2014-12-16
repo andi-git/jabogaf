@@ -18,11 +18,7 @@ public enum WeaponType {
     /**
      * Needs two hands and can be used to perform an attack.
      */
-    TWO_HAND_ATTACK(HandCount.TWO),
-    /**
-     * Can be used to defend an attack.
-     */
-    DEFENSE(HandCount.ONE);
+    TWO_HAND_ATTACK(HandCount.TWO);
 
     private final HandCount handCount;
 

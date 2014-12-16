@@ -2,6 +2,7 @@ package at.ahammer.boardgame.core.cdi;
 
 /**
  * Created by andreas on 02.08.14.
+ * FIXME delete this class -> renamed to GameContextBean and move function to GameContextManager
  */
 public abstract class NewInstanceInGameContext {
 
@@ -37,7 +38,7 @@ public abstract class NewInstanceInGameContext {
     }
 
     protected <T> T fromGameContext(Class<T> clazz, String id) {
-        return (T) GameContext.current().getNewInstanceInGameContext(clazz, id);
+        return GameContext.current().getNewInstanceInGameContext(clazz, id);
     }
 
     @Override

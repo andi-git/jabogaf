@@ -1,7 +1,6 @@
 package at.ahammer.boardgame.core.subject;
 
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
-import at.ahammer.boardgame.api.behavior.look.LookNotPossibleException;
 import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
@@ -26,11 +25,6 @@ public class GameSubjectNull extends GameSubject {
     @Override
     public boolean canMove(Field target) {
         return false;
-    }
-
-    @Override
-    public void look(Field target) throws LookNotPossibleException {
-        throw new LookNotPossibleException("i'm a null-object");
     }
 
     @Override

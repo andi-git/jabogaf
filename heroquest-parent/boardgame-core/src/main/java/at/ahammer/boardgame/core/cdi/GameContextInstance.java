@@ -146,7 +146,7 @@ public class GameContextInstance {
 
         public <T> T addBeanInstance(Bean<T> bean, CreationalContext<T> creationalContext) {
             bean = replaceWithAlternativeIfActivated(bean, creationalContext);
-            BeanInstance<T> beanInstance = new BeanInstance<T>(bean, creationalContext);
+            BeanInstance<T> beanInstance = new BeanInstance<>(bean, creationalContext);
             cacheForDeploymentBeans.put(bean, beanInstance);
             return beanInstance.get();
         }

@@ -1,6 +1,5 @@
 package at.ahammer.boardgame.core.board;
 
-import at.ahammer.boardgame.api.board.FunctionIsConnected;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 

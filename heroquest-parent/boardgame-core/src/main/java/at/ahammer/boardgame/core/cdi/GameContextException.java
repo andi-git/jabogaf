@@ -1,8 +1,5 @@
 package at.ahammer.boardgame.core.cdi;
 
-/**
- * Created by ahammer on 06.08.2014.
- */
 public class GameContextException extends RuntimeException {
 
     public GameContextException() {

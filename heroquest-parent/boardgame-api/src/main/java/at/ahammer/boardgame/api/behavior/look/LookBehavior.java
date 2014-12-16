@@ -2,6 +2,8 @@ package at.ahammer.boardgame.api.behavior.look;
 
 import at.ahammer.boardgame.api.board.field.Field;
 
+import java.util.List;
+
 /**
  * The strategy of a look from one {@link at.ahammer.boardgame.api.board.field.Field} to another,
  * <p/>
@@ -20,4 +22,11 @@ public interface LookBehavior {
      */
     boolean canLook(Field position, Field target);
 
+    /**
+     * Get a list of all {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to.
+     *
+     * @param position the {@link at.ahammer.boardgame.api.board.field.Field} where to look starts
+     * @return a list of {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to
+     */
+    List<Field> getLookableFields(Field position);
 }

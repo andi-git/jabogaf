@@ -17,7 +17,6 @@ import java.util.Set;
  * and grouped via {@link at.ahammer.boardgame.api.board.field.FieldGroup}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-@Typed()
 public abstract class Layout extends GameContextBean {
 
     private final Set<Field> fields;

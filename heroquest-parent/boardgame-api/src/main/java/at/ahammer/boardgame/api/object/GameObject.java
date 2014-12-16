@@ -2,6 +2,9 @@ package at.ahammer.boardgame.api.object;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 
+/**
+ * An object in the game, e.g. door, wall,...
+ */
 public class GameObject extends GameContextBean {
 
     private boolean visible = false;

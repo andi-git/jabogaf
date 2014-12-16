@@ -25,11 +25,6 @@ public class MySubject extends GameSubject {
     }
 
     @Override
-    public void look(Field target) throws LookNotPossibleException {
-
-    }
-
-    @Override
     public boolean canLook(Field target) {
         return false;
     }
