@@ -18,7 +18,7 @@ public class GameSubjectNull extends GameSubject {
     }
 
     @Override
-    public void move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
+    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
         throw new MoveNotPossibleException("i'm a null-object");
     }
 

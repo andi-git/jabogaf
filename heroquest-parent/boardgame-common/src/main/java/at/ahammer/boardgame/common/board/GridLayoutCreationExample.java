@@ -3,14 +3,18 @@ package at.ahammer.boardgame.common.board;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
-import at.ahammer.boardgame.common.board.GridLayoutCreationStrategy;
 import at.ahammer.boardgame.common.object.field.*;
 
 import java.util.Set;
 
-public class GridLayoutCreationDummy extends GridLayoutCreationStrategy {
+/**
+ * A simple example of a {@link at.ahammer.boardgame.common.board.GridLayoutCreationStrategy} to build {@link at.ahammer.boardgame.common.board.GridLayout} 5x5 with fields, door, walls,...
+ * <p/>
+ * This example can be used for tests.
+ */
+public class GridLayoutCreationExample extends GridLayoutCreationStrategy {
 
-    public GridLayoutCreationDummy() {
+    public GridLayoutCreationExample() {
         super(5, 5);
     }
 

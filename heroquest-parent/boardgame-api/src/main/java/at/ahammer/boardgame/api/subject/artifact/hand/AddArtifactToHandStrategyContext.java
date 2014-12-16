@@ -3,6 +3,7 @@ package at.ahammer.boardgame.api.subject.artifact.hand;
 import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.artifact.HandCount;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.api.subject.SetterOfArtifactsForHands;
 import at.ahammer.boardgame.api.subject.artifact.NullArtifact;
 import at.ahammer.boardgame.api.subject.hand.Hand;
 

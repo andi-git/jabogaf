@@ -1,19 +1,22 @@
 package at.ahammer.boardgame.common.action.move;
 
 import at.ahammer.boardgame.api.action.ActionNotPossibleException;
-import at.ahammer.boardgame.common.board.DummyBoardTest;
+import at.ahammer.boardgame.common.TestWithExampleGridLayoutBoard;
 import at.ahammer.boardgame.common.object.field.Door;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
+import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
 import javax.inject.Inject;
 
+@RunWith(ArquillianGameContext.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MoveActionTest extends DummyBoardTest {
+public class MoveActionTest extends TestWithExampleGridLayoutBoard {
 
     @Inject
     private MoveAction moveAction;
@@ -28,7 +31,7 @@ public class MoveActionTest extends DummyBoardTest {
     @BeforeInGameContext
     public void before() {
         super.before();
-        setCurrentPlayer(new DummyGameSubject("dummyGameSubject", getField(1, 4)));
+        setCurrentPlayer(new MyGameSubject("dummyGameSubject", getField(1, 4)));
     }
 
     @Test

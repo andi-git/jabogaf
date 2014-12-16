@@ -4,12 +4,11 @@ import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.artifact.ArtifactCast;
 import at.ahammer.boardgame.api.artifact.weapon.Weapon;
 import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
-import at.ahammer.boardgame.api.behavior.look.LookBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
-import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.api.subject.SetterOfArtifactsForHands;
 import at.ahammer.boardgame.api.subject.artifact.hand.*;
 import at.ahammer.boardgame.api.subject.hand.Hand;
 import at.ahammer.boardgame.core.board.field.FieldNull;
+import at.ahammer.boardgame.core.subject.GameSubjectNull;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -68,30 +67,10 @@ public class Helper {
         }
     }
 
-    public static class MyGameSubject extends GameSubject {
+    public static class MyGameSubject extends GameSubjectNull {
 
         public MyGameSubject() {
             super("myGameSubject", new FieldNull());
-        }
-
-        @Override
-        public MoveBehavior getMoveBehavior() {
-            return null;
-        }
-
-        @Override
-        public LookBehavior getLookBehavior() {
-            return null;
-        }
-
-        @Override
-        protected void changeMoveBehavior(MoveBehavior moveBehavior) {
-
-        }
-
-        @Override
-        protected void changeLookBehavior(LookBehavior lookBehavior) {
-
         }
 
         public SetterOfArtifactsForHands getSetterOfArtifactsForHands() {
@@ -99,14 +78,6 @@ public class Helper {
                 getMainHand().setArtifact(main);
                 getOffHand().setArtifact(off);
             };
-        }
-
-        public void setMain(Artifact artifact) {
-            getMainHand().setArtifact(artifact);
-        }
-
-        public void setOff(Artifact artifact) {
-            getOffHand().setArtifact(artifact);
         }
 
         @Override

@@ -5,15 +5,16 @@ import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
 
-public class DummyGameSubject extends GameSubjectNull {
+public class MyGameSubject extends GameSubjectNull {
 
-    public DummyGameSubject(String id, Field position) {
+    public MyGameSubject(String id, Field position) {
         super(id, position);
     }
 
     @Override
-    public void move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
+    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
         setPosition(target);
+        return target;
     }
 
     @Override

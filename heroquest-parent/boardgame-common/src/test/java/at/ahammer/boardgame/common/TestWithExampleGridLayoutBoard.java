@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.common.board;
+package at.ahammer.boardgame.common;
 
 import at.ahammer.boardgame.api.board.Board;
 import at.ahammer.boardgame.api.board.field.Field;
@@ -6,6 +6,8 @@ import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.common.board.GridLayout;
+import at.ahammer.boardgame.common.board.GridLayoutCreationExample;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
@@ -15,22 +17,19 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-@RunWith(ArquillianGameContext.class)
-public class DummyBoardTest extends ArquillianGameContextTest {
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
+public abstract class TestWithExampleGridLayoutBoard extends ArquillianGameContextTest {
 
     private Board board;
 
     @Inject
     private PlayerController playerController;
 
-    @Inject
-    private GameContextManager gameContextManager;
-
     private GameSubject currentPlayer;
 
     @BeforeInGameContext
     public void before() {
-        board = new Board("dummyBoard", new GridLayout("dummyGridLayout", new GridLayoutCreationDummy()));
+        board = new Board("dummyBoard", new GridLayout("dummyGridLayout", new GridLayoutCreationExample()));
         setCurrentPlayer(new GameSubjectNull());
     }
 
@@ -47,33 +46,23 @@ public class DummyBoardTest extends ArquillianGameContextTest {
     }
 
     protected <T> T getById(Class<T> type, String id) {
-        return gameContextManager.getGameContextBean(type, id);
+        return getGameContextManager().getGameContextBean(type, id);
     }
 
     protected GameContextBean getById(String id) {
         return getById(GameContextBean.class, id);
     }
 
-    public PlayerController getPlayerController() {
+    protected PlayerController getPlayerController() {
         return playerController;
     }
 
-    @Override
-    public GameContextManager getGameContextManager() {
-        return gameContextManager;
-    }
-
-    public GameSubject getCurrentPlayer() {
+    protected GameSubject getCurrentPlayer() {
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(GameSubject currentPlayer) {
+    protected void setCurrentPlayer(GameSubject currentPlayer) {
         this.currentPlayer = currentPlayer;
         playerController.setCurrentPlayer(currentPlayer);
-    }
-
-    @Test
-    public void dummy() {
-        // nothing
     }
 }

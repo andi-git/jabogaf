@@ -7,13 +7,17 @@ import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
-import at.ahammer.boardgame.api.subject.artifact.hand.*;
+import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext;
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandManager;
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException;
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import at.ahammer.boardgame.api.subject.hand.Hand;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A subject (i.e. hero, monster,...) in the game.
@@ -68,15 +72,16 @@ public abstract class GameSubject extends GameContextBean {
      * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior}.
      *
      * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link GameSubject} to
+     * @return the new position as {@link Field}
      * @throws FieldsNotConnectedException if the {@link at.ahammer.boardgame.api.board.field.Field}s {@code position}
      *                                     and {@code target} are not connected
      * @throws MoveNotPossibleException    if the move from {@code position} to {@code target} is not possible, because
      *                                     it is blocked by a {@link at.ahammer.boardgame.api.object.GameObject} or
      *                                     something
-     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#move(GameSubject, at.ahammer.boardgame.api.board.field.Field)
+     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#move(at.ahammer.boardgame.api.subject.SetterOfPosition, at.ahammer.boardgame.api.board.field.Field)
      */
-    public void move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        getMoveBehavior().move(this, target);
+    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
+        return getMoveBehavior().move(createSetterOfPosition(), target);
     }
 
     /**
@@ -87,7 +92,8 @@ public abstract class GameSubject extends GameContextBean {
      *
      * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move to
      * @return {@code true} if the move is possible
-     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#canMove(at.ahammer.boardgame.api.board.field.Field, at.ahammer.boardgame.api.board.field.Field)
+     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#canMove(at.ahammer.boardgame.api.board.field.Field,
+     * at.ahammer.boardgame.api.board.field.Field)
      */
     public boolean canMove(Field target) {
         return getMoveBehavior().canMove(getPosition(), target);
@@ -99,7 +105,7 @@ public abstract class GameSubject extends GameContextBean {
      * @return a list of {@link at.ahammer.boardgame.api.board.field.Field}s that can be moved to
      * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#getMovableFields(at.ahammer.boardgame.api.board.field.Field)
      */
-    public List<Field> getMoveableFields() {
+    public Set<Field> getMovableFields() {
         return getMoveBehavior().getMovableFields(position);
     }
 
@@ -111,7 +117,8 @@ public abstract class GameSubject extends GameContextBean {
      *
      * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move to
      * @return {@code true} if the look is possible
-     * @see at.ahammer.boardgame.api.behavior.look.LookBehavior#canLook(at.ahammer.boardgame.api.board.field.Field, at.ahammer.boardgame.api.board.field.Field)
+     * @see at.ahammer.boardgame.api.behavior.look.LookBehavior#canLook(at.ahammer.boardgame.api.board.field.Field,
+     * at.ahammer.boardgame.api.board.field.Field)
      */
     public boolean canLook(Field target) {
         return getLookBehavior().canLook(getPosition(), target);
@@ -123,7 +130,7 @@ public abstract class GameSubject extends GameContextBean {
      * @return a list of {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to
      * @see at.ahammer.boardgame.api.behavior.look.LookBehavior#getLookableFields(at.ahammer.boardgame.api.board.field.Field)
      */
-    public List<Field> getLookableFields() {
+    public Set<Field> getLookableFields() {
         return getLookBehavior().getLookableFields(getPosition());
     }
 
@@ -147,7 +154,8 @@ public abstract class GameSubject extends GameContextBean {
      * at.ahammer.boardgame.api.artifact.Artifact}.
      *
      * @param artifact the {@link at.ahammer.boardgame.api.artifact.Artifact} to add
-     * @param handType the {@link at.ahammer.boardgame.api.subject.hand.Hand.Type} to add the {@link at.ahammer.boardgame.api.artifact.Artifact} to
+     * @param handType the {@link at.ahammer.boardgame.api.subject.hand.Hand.Type} to add the {@link
+     *                 at.ahammer.boardgame.api.artifact.Artifact} to
      * @return {@code true} it the {@link GameSubject} can handle (can use) the {@link
      * at.ahammer.boardgame.api.artifact.Artifact}
      * @see at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandManager#canHandle(at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext)
@@ -168,11 +176,15 @@ public abstract class GameSubject extends GameContextBean {
      * at.ahammer.boardgame.api.artifact.Artifact}.
      *
      * @param artifact the {@link at.ahammer.boardgame.api.artifact.Artifact} to add
-     * @param handType the {@link at.ahammer.boardgame.api.subject.hand.Hand.Type} to add the {@link at.ahammer.boardgame.api.artifact.Artifact} to
+     * @param handType the {@link at.ahammer.boardgame.api.subject.hand.Hand.Type} to add the {@link
+     *                 at.ahammer.boardgame.api.artifact.Artifact} to
      * @return {@code true} it the {@link GameSubject} can handle (can use) the {@link
      * at.ahammer.boardgame.api.artifact.Artifact}
+     * @throws at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException if the handling is not possible
+     *                                                                                  -> check via {@link #canHandle(at.ahammer.boardgame.api.artifact.Artifact,
+     *                                                                                  at.ahammer.boardgame.api.subject.hand.Hand.Type)}
+     *                                                                                  first!
      * @see at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandManager#addArtifact(at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext))
-     * @throws at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException if the handling is not possible -> check via {@link #canHandle(at.ahammer.boardgame.api.artifact.Artifact, at.ahammer.boardgame.api.subject.hand.Hand.Type)} first!
      */
     public void addArtifact(Artifact artifact, Hand.Type handType) throws ArtifactHandlingException {
         artifactHandManager.addArtifact(createAddArtifactToHandStrategyContext(artifact, handType));
@@ -186,10 +198,16 @@ public abstract class GameSubject extends GameContextBean {
     }
 
     private SetterOfArtifactsForHands createSetterOfArtifactsForHands() {
-        return ((artifactForMainHand, artifactForOffHand) -> {
+        return (artifactForMainHand, artifactForOffHand) -> {
             mainHand.setArtifact(artifactForMainHand);
             offHand.setArtifact(artifactForOffHand);
-        });
+        };
+    }
+
+    private SetterOfPosition createSetterOfPosition() {
+        return (position) -> {
+            this.position = position;
+        };
     }
 
     public abstract MoveBehavior getMoveBehavior();
