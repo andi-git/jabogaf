@@ -3,6 +3,7 @@ package at.ahammer.boardgame.core.cdi;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.core.cdi.bean.BeanWithoutGameScoped;
 import at.ahammer.boardgame.core.cdi.bean.MyGameContextBean;
+import at.ahammer.boardgame.core.cdi.bean.MyOtherGameContextBean;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import org.junit.Assert;
@@ -10,6 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(ArquillianGameContext.class)
 public class GameContextManagerTest extends ArquillianGameContextTest {
@@ -20,20 +25,56 @@ public class GameContextManagerTest extends ArquillianGameContextTest {
     @Test
     public void testResolveInjections() {
         BeanWithoutGameScoped bean = new BeanWithoutGameScoped();
-        Assert.assertNull(bean.getBeanWithGameScoped());
-        Assert.assertNull(bean.getBeanWithGameScopedInSuperclass());
+        assertNull(bean.getBeanWithGameScoped());
+        assertNull(bean.getBeanWithGameScopedInSuperclass());
         gameContextManager.resolve(bean);
-        Assert.assertNotNull(bean.getBeanWithGameScoped());
-        Assert.assertNotNull(bean.getBeanWithGameScopedInSuperclass());
-        Assert.assertEquals("i'm in GameContext", bean.getBeanWithGameScoped().getString());
-        Assert.assertEquals("qualifier", bean.getBeanWithGameScopedInSuperclass().getString());
+        assertNotNull(bean.getBeanWithGameScoped());
+        assertNotNull(bean.getBeanWithGameScopedInSuperclass());
+        assertEquals("i'm in GameContext", bean.getBeanWithGameScoped().getString());
+        assertEquals("qualifier", bean.getBeanWithGameScopedInSuperclass().getString());
     }
 
     @Test
     public void testGameContextBean() {
         MyGameContextBean myGameContextBean = new MyGameContextBean("myid");
-        Assert.assertEquals("GameContextBean", myGameContextBean.getString());
-        Assert.assertNotNull(myGameContextBean.getBeanWithGameScoped());
-        Assert.assertEquals("i'm in GameContext", myGameContextBean.getBeanWithGameScoped().getString());
+        assertEquals("GameContextBean", myGameContextBean.getString());
+        assertNotNull(myGameContextBean.getBeanWithGameScoped());
+        assertEquals("i'm in GameContext", myGameContextBean.getBeanWithGameScoped().getString());
+    }
+
+    @Test
+    public void testGetGameContextBeans() {
+        new MyGameContextBean("myid1");
+        new MyGameContextBean("myid2");
+        assertEquals(2, gameContextManager.getGameContextBeans().size());
+    }
+
+    @Test
+    public void testGetGameContextBeansByType() {
+        new MyGameContextBean("myid1");
+        new MyGameContextBean("myid2");
+        new MyOtherGameContextBean("myid3");
+        assertEquals(3, gameContextManager.getGameContextBeans().size());
+        assertEquals(2, gameContextManager.getGameContextBeans(MyGameContextBean.class).size());
+        assertEquals(1, gameContextManager.getGameContextBeans(MyOtherGameContextBean.class).size());
+    }
+
+    @Test
+    public void testGetGameContextBeanById() {
+        new MyGameContextBean("myid1");
+        new MyGameContextBean("myid2");
+        assertNotNull(gameContextManager.getGameContextBean("myid1"));
+        assertNotNull(gameContextManager.getGameContextBean("myid2"));
+        assertNull(gameContextManager.getGameContextBean("myid3"));
+    }
+
+    @Test
+    public void testGetGameContextBeanByTypeAndId() {
+        new MyGameContextBean("myid1");
+        new MyGameContextBean("myid2");
+        MyGameContextBean myGameContextBean = gameContextManager.getGameContextBean(MyGameContextBean.class, "myid1");
+        assertEquals("myid1", myGameContextBean.getId());
+        MyOtherGameContextBean myOtherGameContextBean = gameContextManager.getGameContextBean(MyOtherGameContextBean.class, "myid2");
+        assertNull(gameContextManager.getGameContextBean(MyOtherGameContextBean.class, "myid2"));
     }
 }

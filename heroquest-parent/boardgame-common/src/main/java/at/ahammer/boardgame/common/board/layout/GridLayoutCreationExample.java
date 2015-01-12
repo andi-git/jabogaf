@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.common.board;
+package at.ahammer.boardgame.common.board.layout;
 
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
@@ -8,7 +8,7 @@ import at.ahammer.boardgame.common.object.field.*;
 import java.util.Set;
 
 /**
- * A simple example of a {@link at.ahammer.boardgame.common.board.GridLayoutCreationStrategy} to build {@link at.ahammer.boardgame.common.board.GridLayout} 5x5 with fields, door, walls,...
+ * A simple example of a {@link GridLayoutCreationStrategy} to build {@link GridLayout} 5x5 with fields, door, walls,...
  * <p/>
  * This example can be used for tests.
  */

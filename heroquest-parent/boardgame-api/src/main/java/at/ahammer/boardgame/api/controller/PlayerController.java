@@ -1,6 +1,9 @@
 package at.ahammer.boardgame.api.controller;
 
+import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.GameSubject;
+
+import java.util.Set;
 
 /**
  * Manages the player, e.g. the current {@link at.ahammer.boardgame.api.subject.GameSubject}.
@@ -33,4 +36,20 @@ public interface PlayerController {
      * @param currentPlayer the current player as {@link at.ahammer.boardgame.api.subject.GameSubject}
      */
     void setCurrentPlayer(GameSubject currentPlayer);
+
+    /**
+     * Get all available {@link at.ahammer.boardgame.api.subject.GameSubject}s, i.e. players, npcs,...
+     *
+     * @return all available {@link at.ahammer.boardgame.api.subject.GameSubject}s
+     */
+    Set<GameSubject> getAllGameSubjects();
+
+    /**
+     * Get all available {@link at.ahammer.boardgame.api.subject.GameSubject}s, i.e. players, npcs,... positioned a
+     * concrete {@link at.ahammer.boardgame.api.board.field.Field}
+     *
+     * @return all available {@link at.ahammer.boardgame.api.subject.GameSubject}s positioned a concrete {@link
+     * at.ahammer.boardgame.api.board.field.Field}
+     */
+    Set<GameSubject> getAllGameSubjects(Field field);
 }

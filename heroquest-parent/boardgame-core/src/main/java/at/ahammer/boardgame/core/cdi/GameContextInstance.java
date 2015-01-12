@@ -3,6 +3,7 @@ package at.ahammer.boardgame.core.cdi;
 import at.ahammer.boardgame.api.cdi.AlternativeInGameContext;
 import at.ahammer.boardgame.api.cdi.AlternativesInGameContext;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.util.stream.OptionalDefault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameContextInstance {
 
@@ -111,17 +113,27 @@ public class GameContextInstance {
         return gameContextBeans;
     }
 
+    public <T extends GameContextBean> Set<T> getGameContextBeans(Class<T> type) {
+        return getGameContextBeans().stream().filter(bean -> type.isAssignableFrom(bean.getClass())).map(concreteBean -> (T) concreteBean).collect(Collectors.toSet());
+    }
+
     public GameContextBean getGameContextBean(String id) {
-        return getGameContextBeans().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+        Optional<GameContextBean> gameContextBean = getGameContextBeans().stream().filter(bean -> bean.getId().equals(id)).findFirst();
+        return gameContextBean.isPresent() ? gameContextBean.get() : null;
     }
 
-    public <T> T getGameContextBean(Class<T> clazz, String id) {
-        return (T) getGameContextBeans().stream().filter(b -> b.getId().equals(id)).findFirst().get();
+    public <T> T getGameContextBean(Class<T> type, String id) {
+        T result = null;
+        Optional<GameContextBean> gameContextBean = getGameContextBeans().stream().filter(bean -> bean.getId().equals(id)).findFirst();
+        if (gameContextBean.isPresent() && type.isAssignableFrom(gameContextBean.get().getClass())) {
+            result = (T) gameContextBean.get();
+        }
+        return result;
     }
 
-    public <T> T getGameContextBean(Class<T> clazz) {
+    public <T> T getGameContextBean(Class<T> type) {
         for (GameContextBean gameContextBean : GameContext.current().getGameContextBeans()) {
-            if (clazz.isAssignableFrom(gameContextBean.getClass())) {
+            if (type.isAssignableFrom(gameContextBean.getClass())) {
                 // get only first match
                 return (T) gameContextBean;
             }

@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.api.board;
+package at.ahammer.boardgame.api.board.layout;
 
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;

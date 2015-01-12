@@ -6,15 +6,17 @@ import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.stream.Stream;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(ArquillianGameContext.class)
-public class BoardTest extends TestWithExampleGridLayoutBoard {
+public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
 
     @Test
-    public void testBoard() {
-        assertTrue(getLayout() instanceof GridLayout);
-        assertEquals(25, getLayout().getFields().size());
+    public void testFieldsAsStream() {
+        assertEquals(25, getLayout().getFieldsAsStream().count());
+        assertEquals("Field:0,0", getLayout().getFieldsAsStream().findFirst().get().getId());
     }
 }

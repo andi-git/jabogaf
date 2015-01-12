@@ -3,7 +3,7 @@ package at.ahammer.boardgame.core.board;
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.board.Board;
-import at.ahammer.boardgame.api.board.Layout;
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
@@ -12,6 +12,7 @@ import at.ahammer.boardgame.core.test.BeforeInGameContext;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public abstract class AbstractBoardTest extends ArquillianGameContextTest{
 
@@ -69,6 +70,10 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest{
         fieldConnectionObjects.add(object1);
         fieldConnectionObjects.add(object2);
         layout = new Layout("layout", fields, fieldConnections, new HashSet<>()) {
+            @Override
+            public Stream getFieldsAsStream() {
+                return null;
+            }
             @Override
             public Set<FieldConnection> getLookConnections(Field position, Field target) {
                 return null;

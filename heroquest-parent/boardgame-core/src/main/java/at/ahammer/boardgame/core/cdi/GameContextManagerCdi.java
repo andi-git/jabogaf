@@ -6,6 +6,7 @@ import at.ahammer.boardgame.api.cdi.RunInGameContext;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.BeanManager;
+import java.util.Set;
 
 /**
  * CDI-Wrapper for {@link at.ahammer.boardgame.api.cdi.GameContextManager}.
@@ -38,5 +39,20 @@ public class GameContextManagerCdi implements GameContextManager {
     @Override
     public <T> T getGameContextBean(Class<T> type, String id) {
         return gameContextManager.getGameContextBean(type, id);
+    }
+
+    @Override
+    public Set<GameContextBean> getGameContextBeans() {
+        return gameContextManager.getGameContextBeans();
+    }
+
+    @Override
+    public <T extends GameContextBean> Set<T> getGameContextBeans(Class<T> type) {
+        return gameContextManager.getGameContextBeans(type);
+    }
+
+    @Override
+    public GameContextBean getGameContextBean(String id) {
+        return gameContextManager.getGameContextBean(id);
     }
 }

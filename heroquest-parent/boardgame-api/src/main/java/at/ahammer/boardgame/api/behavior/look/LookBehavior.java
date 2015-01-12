@@ -1,9 +1,8 @@
 package at.ahammer.boardgame.api.behavior.look;
 
-import at.ahammer.boardgame.api.board.Layout;
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,10 +34,10 @@ public interface LookBehavior {
 
     /**
      * Check if the current {@link at.ahammer.boardgame.api.behavior.look.LookBehavior} can be used on a {@link
-     * at.ahammer.boardgame.api.board.Layout}.
+     * at.ahammer.boardgame.api.board.layout.Layout}.
      *
      * @return {@code true} if the current {@link at.ahammer.boardgame.api.behavior.look.LookBehavior} can be used on a
-     * {@link at.ahammer.boardgame.api.board.Layout}
+     * {@link at.ahammer.boardgame.api.board.layout.Layout}
      */
     boolean canBeUsedOn(Layout layout);
 }

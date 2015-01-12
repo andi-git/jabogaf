@@ -19,10 +19,10 @@ public interface BoardManager {
 
     /**
      * Get all {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link Board} specified by the {@link
-     * Layout}.
+     * at.ahammer.boardgame.api.board.layout.Layout}.
      *
      * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.board.field.Field}s of the {@link Board}
-     * specified by the {@link Layout}
+     * specified by the {@link at.ahammer.boardgame.api.board.layout.Layout}
      */
     Set<Field> getFields();
 

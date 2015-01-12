@@ -1,6 +1,6 @@
 package at.ahammer.boardgame.api.behavior.move;
 
-import at.ahammer.boardgame.api.board.Layout;
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 
@@ -48,10 +48,10 @@ public interface MoveBehavior {
 
     /**
      * Check if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on a {@link
-     * at.ahammer.boardgame.api.board.Layout}.
+     * at.ahammer.boardgame.api.board.layout.Layout}.
      *
      * @return {@code true} if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on a
-     * {@link at.ahammer.boardgame.api.board.Layout}
+     * {@link at.ahammer.boardgame.api.board.layout.Layout}
      */
     boolean canBeUsedOn(Layout layout);
 

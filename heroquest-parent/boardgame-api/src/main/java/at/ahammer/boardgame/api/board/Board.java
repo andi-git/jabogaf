@@ -1,9 +1,10 @@
 package at.ahammer.boardgame.api.board;
 
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 
 /**
- * The board of a game. The design is specified by the current {@link Layout}.
+ * The board of a game. The design is specified by the current {@link at.ahammer.boardgame.api.board.layout.Layout}.
  */
 public class Board extends GameContextBean {
 

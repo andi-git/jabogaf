@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Set;
 
 /**
  * Basic implementation of {@link at.ahammer.boardgame.api.cdi.GameContextManager}
@@ -96,5 +97,20 @@ public class GameContextManagerBasic implements GameContextManager {
     @Override
     public <T> T getGameContextBean(Class<T> type, String id) {
         return GameContext.current().getGameContextBean(type, id);
+    }
+
+    @Override
+    public Set<GameContextBean> getGameContextBeans() {
+        return GameContext.current().getGameContextBeans();
+    }
+
+    @Override
+    public <T extends GameContextBean> Set<T> getGameContextBeans(Class<T> type) {
+        return GameContext.current().getGameContextBeans(type);
+    }
+
+    @Override
+    public GameContextBean getGameContextBean(String id) {
+        return GameContext.current().getGameContextBean(id);
     }
 }

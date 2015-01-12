@@ -1,17 +1,26 @@
-package at.ahammer.boardgame.common.board;
+package at.ahammer.boardgame.common.board.layout;
 
-import at.ahammer.boardgame.api.board.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
+import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.util.stream.StreamUtil;
 
+import javax.inject.Inject;
 import java.awt.geom.Line2D;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
- * A {@link at.ahammer.boardgame.api.board.Layout} based on a grid. To create this layout, a concrete instance of {@link GridLayoutCreationStrategy} is needed.
+ * A {@link at.ahammer.boardgame.api.board.layout.Layout} based on a grid. To create this layout, a concrete instance of
+ * {@link GridLayoutCreationStrategy} is needed.
  */
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class GridLayout extends Layout {
+
+    @Inject
+    private StreamUtil streamUtil;
 
     private final Field[][] fields;
 
@@ -20,8 +29,33 @@ public class GridLayout extends Layout {
         fields = gridLayoutCreationStrategy.getFieldsArray();
     }
 
-    public Field getField(int i, int j) {
-        return fields[i][j];
+    /**
+     * Get the {@link at.ahammer.boardgame.api.board.field.Field} on position x / y.
+     *
+     * @param x the position of x-coordinate
+     * @param y the position of y-coordinate
+     * @return the {@link at.ahammer.boardgame.api.board.field.Field} on position x / y
+     */
+    public Field getField(int x, int y) {
+        return fields[x][y];
+    }
+
+    /**
+     * Get the max count of the x-coordinate.
+     *
+     * @return the max count of the x-coordinate
+     */
+    public int getMaxX() {
+        return fields.length;
+    }
+
+    /**
+     * Get the max count of the y-coordinate.
+     *
+     * @return the max count of the y-coordinate
+     */
+    public int getMaxY() {
+        return fields[0].length;
     }
 
     private Coordinate getCoordinate(Field field) {
@@ -89,5 +123,14 @@ public class GridLayout extends Layout {
         public int getY() {
             return y;
         }
+    }
+
+    @Override
+    public Stream<Field> getFieldsAsStream() {
+        return streamUtil.getTwoDimensionalArrayAsStream(fields);
+    }
+
+    public Field[][] getFieldsAsArray() {
+        return fields;
     }
 }

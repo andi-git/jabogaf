@@ -2,8 +2,12 @@ package at.ahammer.boardgame.api.board.field;
 
 import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.api.cdi.GameContextManager;
+import at.ahammer.boardgame.api.controller.PlayerController;
+import at.ahammer.boardgame.api.subject.GameSubject;
 
 import javax.inject.Inject;
+import java.util.Set;
 
 /**
  * A basic class for a field in the game, which represents a unit where a {@link at.ahammer.boardgame.api.subject.GameSubject}
@@ -17,6 +21,9 @@ public class Field extends GameContextBean {
     @Inject
     private BoardManager boardManager;
 
+    @Inject
+    private PlayerController playerController;
+
     /**
      * Create a new {@link Field}
      *
@@ -27,11 +34,9 @@ public class Field extends GameContextBean {
     }
 
     /**
-     * Check if the {@link Field} is connected to another {@link
-     * Field}
+     * Check if the {@link Field} is connected to another {@link Field}
      *
-     * @param target the {@link Field} to check if the current {@link
-     *               Field} is conected to
+     * @param target the {@link Field} to check if the current {@link Field} is conected to
      * @return true if both {@link Field}s are connected
      */
     public boolean isConnected(Field target) {
@@ -39,16 +44,19 @@ public class Field extends GameContextBean {
     }
 
     /**
-     * Get the representation of the connection between the two {@link Field}s as
-     * {@link FieldConnection}.
+     * Get the representation of the connection between the two {@link Field}s as {@link FieldConnection}.
      * <p/>
-     * If the {@link Field}s are not connected, the null-implementation {@link
-     * FieldConnectionNull} will be returned, not null.
+     * If the {@link Field}s are not connected, the null-implementation of {@link FieldConnection} will be returned, not
+     * null.
      *
      * @param target the other {@link Field}
      * @return the representation of the connection as {@link FieldConnection}
      */
     public FieldConnection getConnectionTo(Field target) {
         return boardManager.getBoard().getLayout().getConnection(this, target);
+    }
+
+    public Set<GameSubject> getGameSubjects() {
+        return playerController.getAllGameSubjects(this);
     }
 }

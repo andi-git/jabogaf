@@ -1,6 +1,7 @@
-package at.ahammer.boardgame.core.board;
+package at.ahammer.boardgame.core.board.layout;
 
-import at.ahammer.boardgame.api.board.FunctionGetConnection;
+import at.ahammer.boardgame.api.board.layout.FunctionGetConnection;
+import at.ahammer.boardgame.core.board.AbstractBoardTest;
 import at.ahammer.boardgame.core.board.field.FieldConnectionNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import org.junit.Assert;

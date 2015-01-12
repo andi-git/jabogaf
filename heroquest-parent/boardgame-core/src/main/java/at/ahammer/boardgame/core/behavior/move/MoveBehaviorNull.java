@@ -4,10 +4,9 @@ import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveBehaviorType;
 import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
-import at.ahammer.boardgame.api.board.Layout;
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameScoped;
-import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.core.board.field.FieldNull;
 
