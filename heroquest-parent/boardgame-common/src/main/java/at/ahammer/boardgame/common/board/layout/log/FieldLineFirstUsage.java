@@ -1,24 +1,31 @@
 package at.ahammer.boardgame.common.board.layout.log;
 
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.cdi.GameContextBean;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
 @ApplicationScoped
 public class FieldLineFirstUsage extends FieldLineUsage<FieldLineFirst> {
 
     @Override
-    public boolean canBeUsedFor(int line) {
-        return line == 0;
+    public int rank() {
+        return 10;
     }
 
     @Override
-    public FieldLineFirst create(Field field, int line) {
-        return new FieldLineFirst(field, line);
+    public boolean isLast(FieldLineFactory.State state) {
+        return true;
     }
 
     @Override
-    public boolean isDefault() {
-        return false;
+    public FieldLineFirst create(FieldLineFactory.State state) {
+        return new FieldLineFirst(state.getStringUtil());
+    }
+
+    @Override
+    public boolean atLeastOnce() {
+        return true;
     }
 }

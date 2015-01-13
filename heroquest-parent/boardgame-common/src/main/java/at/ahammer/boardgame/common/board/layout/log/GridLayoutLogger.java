@@ -1,5 +1,6 @@
 package at.ahammer.boardgame.common.board.layout.log;
 
+import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.layout.log.AbstractLayoutLogger;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.common.board.layout.GridLayout;
@@ -28,9 +29,7 @@ public class GridLayoutLogger extends AbstractLayoutLogger<GridLayout> {
 
     @Override
     public String toString(GridLayout layout) {
-        FieldRepresentation[][] fieldRepresentations = arrayUtil.convertTwoDimensionalArray(layout.getFieldsAsArray(), FieldRepresentation.class, (field) -> {
-            return gameContextManager.resolve(new FieldRepresentation(field));
-        });
+        FieldRepresentation[][] fieldRepresentations = convert(layout.getFieldsAsArray());
         StringBuilder sb = new StringBuilder();
         sb.append("id:");
         sb.append(layout.getId());
@@ -47,4 +46,11 @@ public class GridLayoutLogger extends AbstractLayoutLogger<GridLayout> {
         }
         return sb.toString();
     }
+
+    private FieldRepresentation[][] convert(Field[][] fields) {
+        return arrayUtil.convertTwoDimensionalArray(fields, FieldRepresentation.class, (field) -> {
+                return gameContextManager.resolve(new FieldRepresentation(field));
+            });
+    }
+
 }

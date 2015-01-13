@@ -4,14 +4,15 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
-public class FieldLineLastUsage extends FieldLineUsage<FieldLineLast> {
+public class FieldLineFieldNameUsage extends FieldLineUsage<FieldLineFieldName> {
 
     @Override
     public int rank() {
-        return 100;
+        return 20;
     }
 
     @Override
@@ -20,8 +21,8 @@ public class FieldLineLastUsage extends FieldLineUsage<FieldLineLast> {
     }
 
     @Override
-    public FieldLineLast create(FieldLineFactory.State state) {
-        return new FieldLineLast(state.getStringUtil());
+    public FieldLineFieldName create(FieldLineFactory.State state) {
+        return new FieldLineFieldName(state.getField(), state.getStringUtil());
     }
 
     @Override

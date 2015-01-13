@@ -3,26 +3,26 @@ package at.ahammer.boardgame.common.board.layout.log;
 import at.ahammer.boardgame.util.string.StringUtil;
 
 /**
- * The first line of a {@link at.ahammer.boardgame.common.board.layout.log.FieldLine}.
+ * An empty line of a {@link FieldLine}.
  */
-public class FieldLineFirst extends FieldLine {
+public class FieldLineEmpty extends FieldLine {
 
-    public FieldLineFirst(StringUtil stringUtil) {
+    public FieldLineEmpty(StringUtil stringUtil) {
         super(stringUtil);
     }
 
     @Override
     public String text() {
-        return getStringUtil().repeatedString('-', getMaxInnerWidth());
+        return fixedLengthString(' ');
     }
 
     @Override
     public char firstChar() {
-        return '+';
+        return '|';
     }
 
     @Override
     public char lastChar() {
-        return '+';
+        return '|';
     }
 }

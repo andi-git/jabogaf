@@ -2,12 +2,12 @@ package at.ahammer.boardgame.api.board.field;
 
 import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
-import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.subject.GameSubject;
 
 import javax.inject.Inject;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A basic class for a field in the game, which represents a unit where a {@link at.ahammer.boardgame.api.subject.GameSubject}
@@ -56,7 +56,15 @@ public class Field extends GameContextBean {
         return boardManager.getBoard().getLayout().getConnection(this, target);
     }
 
-    public Set<GameSubject> getGameSubjects() {
-        return playerController.getAllGameSubjects(this);
+    /**
+     * Get a {@link java.util.List} of all available {@link at.ahammer.boardgame.api.subject.GameSubject}s on the
+     * current {@link at.ahammer.boardgame.api.board.field.Field}. The {@link at.ahammer.boardgame.api.subject.GameSubject}s
+     * are ordered by natural order.
+     *
+     * @return a {@link java.util.List} of {@link at.ahammer.boardgame.api.subject.GameSubject}s available on the
+     * current {@link at.ahammer.boardgame.api.board.field.Field} sorted by natural order.
+     */
+    public List<GameSubject> getGameSubjects() {
+        return playerController.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
     }
 }

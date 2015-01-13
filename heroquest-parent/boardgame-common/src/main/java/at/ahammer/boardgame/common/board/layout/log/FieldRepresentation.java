@@ -5,8 +5,10 @@ import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.util.string.StringUtil;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The representation of a complete {@link at.ahammer.boardgame.api.board.field.Field} to log.
@@ -14,34 +16,37 @@ import javax.inject.Inject;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class FieldRepresentation {
 
+    private final Field field;
     @Inject
     private FieldLineFactory fieldLineFactory;
-
     @Inject
     private PlayerController playerController;
-
     @Inject
     private StringUtil stringUtil;
-
-    private final Field field;
-
-    private FieldLine[] fieldLines;
+    private List<FieldLine> fieldLines = new ArrayList<>();
 
     public FieldRepresentation(Field field) {
         this.field = field;
     }
 
     public String toString(int line) {
-        return getFieldLines()[line].toString(line, field, stringUtil);
+        return getFieldLines().get(line).toString();
     }
 
-    private FieldLine[] getFieldLines() {
-        if (fieldLines == null) {
-            fieldLines = new FieldLine[GridLayoutLogger.HEIGHT];
-            for (int line = 0; line < GridLayoutLogger.HEIGHT; line++) {
-                fieldLines[line] = fieldLineFactory.get(field, line);
-            }
+    private List<FieldLine> getFieldLines() {
+        if (fieldLines.isEmpty()) {
+            fieldLines.addAll(fieldLineFactory.create(field, collectGameContextBeansOnField()));
         }
         return fieldLines;
     }
+
+    private List<GameContextBean> collectGameContextBeansOnField() {
+        List<GameContextBean> gameContextBeans = new ArrayList<>();
+        // add all GameSubjects
+        gameContextBeans.addAll(field.getGameSubjects());
+        // add other things...
+        // ... in future, e.g. GameObjects ;)
+        return gameContextBeans;
+    }
+
 }
