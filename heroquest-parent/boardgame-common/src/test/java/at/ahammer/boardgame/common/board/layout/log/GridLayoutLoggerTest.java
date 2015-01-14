@@ -23,11 +23,14 @@ public class GridLayoutLoggerTest extends TestWithExampleGridLayoutBoard {
 
     private GameSubject player2;
 
+    private GameSubject player3;
+
     @BeforeInGameContext
     public void before() {
         super.before();
-        player1 = new GameSubjectNull("player1", getField(0, 0));
-        player2 = new GameSubjectNull("player2", getField(0, 1));
+        player1 = new GameSubjectNull("player1", getField(1, 1));
+        player2 = new GameSubjectNull("player2", getField(2, 2));
+        player3 = new GameSubjectNull("player3", getField(4, 0));
     }
 
     @Test
@@ -39,28 +42,50 @@ public class GridLayoutLoggerTest extends TestWithExampleGridLayoutBoard {
     public void testToString() throws Exception {
         String string = gridLayoutLogger.toString(getLayout());
         System.out.println(string);
-        String[] lines = string.split("\n");
-        assertEquals(51, lines.length);
-        assertEquals(100, lines[1].length());
-        assertFirstOrLastLine(lines, 1, 10, 11, 20, 21, 30, 31, 40, 41, 50);
-        assertEmptyLine(lines, 4, 5, 6, 7, 8, 9, 13, 49);
-        assertEquals("|Field:0,0         ||Field:0,1         ||Field:0,2         ||Field:0,3         ||Field:0,4         |", lines[2]);
-        assertEquals("|player1           ||player2           ||                  ||                  ||                  |", lines[3]);
-        assertEquals("|Field:1,0         ||Field:1,1         ||Field:1,2         ||Field:1,3         ||Field:1,4         |", lines[12]);
-        assertEquals("|Field:2,0         ||Field:2,1         ||Field:2,2         ||Field:2,3         ||Field:2,4         |", lines[22]);
-        assertEquals("|Field:3,0         ||Field:3,1         ||Field:3,2         ||Field:3,3         ||Field:3,4         |", lines[32]);
-        assertEquals("|Field:4,0         ||Field:4,1         ||Field:4,2         ||Field:4,3         ||Field:4,4         |", lines[42]);
-    }
-
-    private void assertFirstOrLastLine(String[] lines, int... positions) {
-        for (int position : positions) {
-            assertEquals("+------------------++------------------++------------------++------------------++------------------+", lines[position]);
-        }
-    }
-
-    private void assertEmptyLine(String[] lines, int... positions) {
-        for (int position : positions) {
-            assertEquals("|                  ||                  ||                  ||                  ||                  |", lines[position]);
-        }
+        String expected = "id:dummyGridLayout\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Field:0,0         | |Field:1,0         |W|Field:2,0         | |Field:3,0         | |Field:4,0         | |Field:5,0         |\n" +
+                "|*FGroup:room0     | |*FGroup:room0     |a|*FGroup:floor4    | |*FGroup:floor4    | |*FGroup:floor5    | |*FGroup:floor5    |\n" +
+                "|                  | |                  |l|*FGroup:floor5    | |*FGroup:floor5    | |>player3          | |                  |\n" +
+                "|                  | |                  |l|                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  |:|                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  |1|                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|                  | |                  | |                  | |                  | |Door:2,4-3,4     /| |Wall:5,0-5,1      |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Field:0,1         | |Field:1,1         |D|Field:2,1         | |Field:3,1         |W|Field:4,1         | |Field:5,1         |\n" +
+                "|*FGroup:room0     | |*FGroup:room0     |o|*FGroup:floor4    | |*FGroup:floor4    |a|*FGroup:room1     | |*FGroup:room1     |\n" +
+                "|                  | |>player1          |o|                  | |                  |l|                  | |                  |\n" +
+                "|                  | |                  |r|                  | |                  |l|                  | |                  |\n" +
+                "|                  | |                  |:|                  | |                  |:|                  | |                  |\n" +
+                "|                  | |                  |1|                  | |                  |2|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  |~|                  | |                  | |                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Wall:0,1-0,2      | |SecDoor:1,1-1,2 _~| |                  | |                  | |                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Field:0,2         | |Field:1,2         | |Field:2,2         | |Field:3,2         |W|Field:4,2         | |Field:5,2         |\n" +
+                "|*FGroup:floor3    | |*FGroup:floor3    | |*FGroup:floor3    | |*FGroup:floor3    |a|*FGroup:room1     | |*FGroup:room1     |\n" +
+                "|                  | |                  | |*FGroup:floor4    | |*FGroup:floor4    |l|                  | |                  |\n" +
+                "|                  | |                  | |>player2          | |                  |l|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |:|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |3|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Wall:0,2-0,3      | |Door:1,2-1,3     ~| |Wall:2,2-2,3      | |Wall:3,2-3,3      | |                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n" +
+                "|Field:0,3         | |Field:1,3         | |Field:2,3         | |Field:3,3         |D|Field:4,3         | |Field:5,3         |\n" +
+                "|*FGroup:room2     | |*FGroup:room2     | |*FGroup:room2     | |*FGroup:room2     |o|*FGroup:room1     | |*FGroup:room1     |\n" +
+                "|                  | |                  | |                  | |                  |o|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |r|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |:|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |3|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |~|                  | |                  |\n" +
+                "+------------------+-+------------------+-+------------------+-+------------------+-+------------------+-+------------------+\n";
+        assertEquals(expected, string);
     }
 }

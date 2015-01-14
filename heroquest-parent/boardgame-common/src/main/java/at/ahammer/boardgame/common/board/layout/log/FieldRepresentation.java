@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * The representation of a complete {@link at.ahammer.boardgame.api.board.field.Field} to log.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class FieldRepresentation {
+public class FieldRepresentation implements GridLayoutLoggerElement {
 
     private final Field field;
     @Inject
@@ -29,6 +29,7 @@ public class FieldRepresentation {
         this.field = field;
     }
 
+    @Override
     public String toString(int line) {
         return getFieldLines().get(line).toString();
     }

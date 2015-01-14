@@ -43,6 +43,15 @@ public abstract class FieldLineUsage<T extends FieldLine> {
     public abstract boolean atLeastOnce();
 
     protected int getMaxHeight() {
-        return GridLayoutLogger.HEIGHT;
+        return FieldLine.HEIGHT;
     }
+
+    protected boolean isPreLastElement(FieldLineFactory.State state) {
+        return state.getFieldLines().size() == getMaxHeight() - 1;
+    }
+
+    protected<T extends FieldLine> long countAlreadyExistingFieldFieldGroups(FieldLineFactory.State state, Class<T> type) {
+        return state.getFieldLines().stream().filter(fl -> type.isAssignableFrom(fl.getClass())).count();
+    }
+
 }

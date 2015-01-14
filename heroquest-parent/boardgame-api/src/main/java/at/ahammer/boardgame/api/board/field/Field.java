@@ -67,4 +67,15 @@ public class Field extends GameContextBean {
     public List<GameSubject> getGameSubjects() {
         return playerController.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
     }
+
+    /**
+     * Get a natural sorted {@link java.util.List} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where
+     * the current {@link at.ahammer.boardgame.api.board.field.Field} is located.
+     *
+     * @return a natural sorted {@link java.util.List} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s
+     * where the current {@link at.ahammer.boardgame.api.board.field.Field} is located
+     */
+    public List<FieldGroup> getFieldsGroups() {
+        return boardManager.getBoard().getLayout().getFieldsGroupsFor(this).stream().sorted().collect(Collectors.toList());
+    }
 }

@@ -37,7 +37,7 @@ public class GridLayout extends Layout {
      * @return the {@link at.ahammer.boardgame.api.board.field.Field} on position x / y
      */
     public Field getField(int x, int y) {
-        return fields[x][y];
+        return fields[y][x];
     }
 
     /**
@@ -46,7 +46,7 @@ public class GridLayout extends Layout {
      * @return the max count of the x-coordinate
      */
     public int getMaxX() {
-        return fields.length;
+        return fields[0].length;
     }
 
     /**
@@ -55,7 +55,7 @@ public class GridLayout extends Layout {
      * @return the max count of the y-coordinate
      */
     public int getMaxY() {
-        return fields[0].length;
+        return fields.length;
     }
 
     private Coordinate getCoordinate(Field field) {

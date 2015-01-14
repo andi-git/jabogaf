@@ -7,12 +7,12 @@ public class FieldLineEmptyUsage extends FieldLineUsage<FieldLineEmpty> {
 
     @Override
     public int rank() {
-        return 40;
+        return 60;
     }
 
     @Override
     public boolean isLast(FieldLineFactory.State state) {
-        return state.getFieldLines().size() == getMaxHeight() - 1;
+        return isPreLastElement(state);
     }
 
     @Override

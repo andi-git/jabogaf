@@ -1,6 +1,8 @@
 package at.ahammer.boardgame.common.board.layout;
 
-import at.ahammer.boardgame.api.board.field.*;
+import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.board.field.FieldConnection;
+import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.core.board.field.FieldConnectionNull;
 import at.ahammer.boardgame.core.board.field.FieldNull;
 
@@ -22,38 +24,40 @@ public abstract class GridLayoutCreationStrategy {
 
     protected final Map<String, FieldGroup> fieldGroups;
 
-    public GridLayoutCreationStrategy(int x, int y) {
-        fieldsArray = new Field[y][x];
+    public GridLayoutCreationStrategy(int maxX, int maxY) {
+        fieldsArray = new Field[maxY][maxX];
         fields = new HashMap<>();
         fieldConnections = new HashMap<>();
         fieldGroups = new HashMap<>();
 
-        createFields(x, y);
-        createFieldConnections(x, y);
+        createFields(maxX, maxY);
+        createFieldConnections();
         createFieldConnectionObjects();
         createFieldGroups();
     }
 
-    protected final void createFields(int x, int y) {
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) {
-                String id = Field.class.getSimpleName() + ":" + i + "," + j;
-                fieldsArray[i][j] = createDefaultField(id);
-                fields.put(id, fieldsArray[i][j]);
+    protected final void createFields(int maxX, int maxY) {
+        for (int y = 0; y < maxY; y++) {
+            for (int x = 0; x < maxX; x++) {
+                String id = Field.class.getSimpleName() + ":" + x + "," + y;
+                fieldsArray[y][x] = createDefaultField(id);
+                fields.put(id, fieldsArray[y][x]);
             }
         }
     }
 
-    protected final void createFieldConnections(int x, int y) {
-        for (int i = 0; i < y; i++) {
-            for (int j = 0; j < x; j++) {
-                if ((i + 1) < y) {
-                    String id = FieldConnection.class.getSimpleName() + ":" + i + "," + j + "-" + (i + 1) + "," + j;
-                    fieldConnections.put(id, createDefaultFieldConnection(id, fieldsArray[i][j], fieldsArray[i + 1][j]));
+    protected final void createFieldConnections() {
+        for (int y = 0; y < fieldsArray.length; y++) {
+            for (int x = 0; x < fieldsArray[y].length; x++) {
+                if (y != fieldsArray.length - 1) {
+                    String id = FieldConnection.class.getSimpleName() + ":" + x + "," + y + "-" + x + "," + (y + 1);
+                    FieldConnection fieldConnection = createDefaultFieldConnection(id, fieldsArray[y][x], fieldsArray[y + 1][x]);
+                    fieldConnections.put(id, fieldConnection);
                 }
-                if ((j + 1) < x) {
-                    String id = FieldConnection.class.getSimpleName() + ":" + i + "," + j + "-" + i + "," + (j + 1);
-                    fieldConnections.put(id, createDefaultFieldConnection(id, fieldsArray[i][j], fieldsArray[i][j + 1]));
+                if (x != fieldsArray[y].length - 1) {
+                    String id = FieldConnection.class.getSimpleName() + ":" + x + "," + y + "-" + (x + 1) + "," + y;
+                    FieldConnection fieldConnection = createDefaultFieldConnection(id, fieldsArray[y][x], fieldsArray[y][x + 1]);
+                    fieldConnections.put(id, fieldConnection);
                 }
             }
         }
@@ -77,9 +81,9 @@ public abstract class GridLayoutCreationStrategy {
 
     public final Field[][] getFieldsArray() {
         Field[][] result = new Field[fieldsArray.length][fieldsArray[0].length];
-        for (int i = 0; i < fieldsArray.length; i++) {
-            for (int j = 0; j < fieldsArray[0].length; j++) {
-                result[i][j] = fieldsArray[i][j];
+        for (int y = 0; y < fieldsArray.length; y++) {
+            for (int x = 0; x < fieldsArray[0].length; x++) {
+                result[y][x] = fieldsArray[y][x];
             }
         }
         return result;
@@ -99,9 +103,9 @@ public abstract class GridLayoutCreationStrategy {
 
     public final Set<Field> getAllFieldsInRectangle(int fromX, int fromY, int toX, int toY) {
         Set<Field> fieldsInRectangle = new HashSet<>();
-        for (int i = fromX; i <= toX; i++) {
-            for (int j = fromY; j <= toY; j++) {
-                fieldsInRectangle.add(fieldsArray[i][j]);
+        for (int x = fromX; x <= toX; x++) {
+            for (int y = fromY; y <= toY; y++) {
+                fieldsInRectangle.add(fieldsArray[y][x]);
             }
         }
         return fieldsInRectangle;

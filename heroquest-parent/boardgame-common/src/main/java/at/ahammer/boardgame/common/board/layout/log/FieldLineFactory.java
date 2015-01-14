@@ -23,16 +23,17 @@ import java.util.List;
  * is handled by it's {@link at.ahammer.boardgame.common.board.layout.log.FieldLineUsage}.
  * <p/>
  * The maximum width of the {@link at.ahammer.boardgame.common.board.layout.log.FieldLine} is defined by {@link
- * at.ahammer.boardgame.common.board.layout.log.GridLayoutLogger#WIDTH}.
+ * at.ahammer.boardgame.common.board.layout.log.FieldLine#WIDTH}.
  * <p/>
  * The maximum number of {@link at.ahammer.boardgame.common.board.layout.log.FieldLine}s is defined by {@link
- * at.ahammer.boardgame.common.board.layout.log.GridLayoutLogger#HEIGHT}.
+ * at.ahammer.boardgame.common.board.layout.log.FieldLine#HEIGHT}.
  * <p/>
  * At the moment, the order of a field is:
  * <pre>
  *      <ul>
  *          <li>{@link at.ahammer.boardgame.common.board.layout.log.FieldLineFirst} (1)</li>
  *          <li>{@link at.ahammer.boardgame.common.board.layout.log.FieldLineFieldName} (1)</li>
+ *          <li>{@link at.ahammer.boardgame.common.board.layout.log.FieldLineFieldGroup} (number of FieldGroups)</li>
  *          <li>{@link at.ahammer.boardgame.common.board.layout.log.FieldLineGameContextBean} (number of
  * GameContextBeans on Field)</li>
  *          <li>{@link at.ahammer.boardgame.common.board.layout.log.FieldLineEmpty} (filler)</li>

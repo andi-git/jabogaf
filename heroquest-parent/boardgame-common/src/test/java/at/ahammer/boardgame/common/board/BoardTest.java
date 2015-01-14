@@ -15,6 +15,6 @@ public class BoardTest extends TestWithExampleGridLayoutBoard {
     @Test
     public void testBoard() {
         assertTrue(getLayout() instanceof GridLayout);
-        assertEquals(25, getLayout().getFields().size());
+        assertEquals(24, getLayout().getFields().size());
     }
 }

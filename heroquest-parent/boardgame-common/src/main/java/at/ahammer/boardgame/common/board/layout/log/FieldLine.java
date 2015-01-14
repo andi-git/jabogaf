@@ -22,6 +22,10 @@ import at.ahammer.boardgame.util.string.StringUtil;
  */
 public abstract class FieldLine {
 
+    public static final int WIDTH = 20;
+
+    public static final int HEIGHT = 10;
+
     private final StringUtil stringUtil;
 
     protected FieldLine(StringUtil stringUtil) {
@@ -87,14 +91,14 @@ public abstract class FieldLine {
     }
 
     /**
-     * The maximum inner-width, defined bq {@link at.ahammer.boardgame.common.board.layout.log.GridLayoutLogger#WIDTH}
+     * The maximum inner-width, defined bq {@link at.ahammer.boardgame.common.board.layout.log.FieldLine#WIDTH}
      * reduced by 2 (first and last character).
      *
-     * @return maximum inner-width, defined bq {@link at.ahammer.boardgame.common.board.layout.log.GridLayoutLogger#WIDTH}
+     * @return maximum inner-width, defined bq {@link at.ahammer.boardgame.common.board.layout.log.FieldLine#WIDTH}
      * reduced by 2 (first and last character)
      */
     protected int getMaxInnerWidth() {
-        return GridLayoutLogger.WIDTH - 2;
+        return WIDTH - 2;
     }
 
 }

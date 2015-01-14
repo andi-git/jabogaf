@@ -30,4 +30,8 @@ public class GameObject extends GameContextBean {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
+
+    public void detected() {
+        this.visible = true;
+    }
 }

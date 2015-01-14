@@ -18,7 +18,7 @@ public class FieldLineGameContextBean extends FieldLine {
 
     @Override
     public String text() {
-        return gameContextBean.getId();
+        return ">" + gameContextBean.getId();
     }
 
     @Override

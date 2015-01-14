@@ -8,6 +8,7 @@ import at.ahammer.boardgame.api.cdi.GameContextBean;
 
 import javax.inject.Inject;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -109,4 +110,15 @@ public abstract class Layout extends GameContextBean {
         return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
     }
 
+    /**
+     * Get a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where the assigned
+     * {@link at.ahammer.boardgame.api.board.field.Field} is located.
+     *
+     * @param field the {@link at.ahammer.boardgame.api.board.field.Field} to check
+     * @return a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where the
+     * assigned {@link at.ahammer.boardgame.api.board.field.Field} is located
+     */
+    public Set<FieldGroup> getFieldsGroupsFor(Field field) {
+        return fieldGroups.stream().filter(fg -> fg.contains(field)).collect(Collectors.toSet());
+    }
 }

@@ -13,12 +13,12 @@ public class FieldLineGameContextBeanUsage extends FieldLineUsage<FieldLineGameC
 
     @Override
     public int rank() {
-        return 30;
+        return 50;
     }
 
     @Override
     public boolean isLast(FieldLineFactory.State state) {
-        if (state.getFieldLines().size() == getMaxHeight() - 1) {
+        if (isPreLastElement(state)) {
             return true;
         }
         if (countAlreadyExistingFieldLineGameContextBeans(state) == state.getGameContextBeans().size()) {

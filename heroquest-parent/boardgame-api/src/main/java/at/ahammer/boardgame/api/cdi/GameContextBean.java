@@ -8,7 +8,7 @@ import java.util.UUID;
  * This is the superclass for all new instantiated beans within the {@link GameScoped}. This class only provides the
  * method getId() as abstract method and it's not an obligation to use this class as superclass.
  */
-public abstract class GameContextBean {
+public abstract class GameContextBean implements Comparable<GameContextBean> {
 
     private final String id;
 
@@ -75,5 +75,9 @@ public abstract class GameContextBean {
         return "GameContextBean{" +
                 "id='" + id + '\'' +
                 '}';
+    }
+
+    public int compareTo(GameContextBean gameContextBean) {
+        return this.getId().compareTo(gameContextBean.getId());
     }
 }

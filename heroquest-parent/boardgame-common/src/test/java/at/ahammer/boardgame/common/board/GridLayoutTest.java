@@ -16,7 +16,7 @@ public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
 
     @Test
     public void testFieldsAsStream() {
-        assertEquals(25, getLayout().getFieldsAsStream().count());
+        assertEquals(24, getLayout().getFieldsAsStream().count());
         assertEquals("Field:0,0", getLayout().getFieldsAsStream().findFirst().get().getId());
     }
 }

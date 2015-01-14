@@ -38,5 +38,5 @@ public interface BoardManager {
      * @return a {@link java.util.Set} of {@link at.ahammer.boardgame.api.object.GameObject}s of the assigned {@link
      * at.ahammer.boardgame.api.board.field.Field}
      */
-    Set<FieldConnectionObject> getAllFieldConectionObjects(Field leftHand, Field rightHand);
+    Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
 }

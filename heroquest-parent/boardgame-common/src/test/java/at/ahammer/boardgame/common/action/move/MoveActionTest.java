@@ -31,16 +31,16 @@ public class MoveActionTest extends TestWithExampleGridLayoutBoard {
     @BeforeInGameContext
     public void before() {
         super.before();
-        setCurrentPlayer(new MyGameSubject("dummyGameSubject", getField(1, 4)));
+        setCurrentPlayer(new MyGameSubject("dummyGameSubject", getField(4, 0)));
     }
 
     @Test
     public void testPerformAction() throws Exception {
         Assert.assertFalse(observeBeforeMoveActionEvent.wasObserved());
         Assert.assertFalse(observeAfterMoveActionEvent.wasObserved());
-        Door door = getById(Door.class, "Door:1,3-1,4");
+        Door door = getById(Door.class, "Door:3,3-4,3");
         Assert.assertFalse(door.isVisible());
-        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(1, 4)));
+        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
         Assert.assertTrue(observeBeforeMoveActionEvent.wasObserved());
         Assert.assertTrue(observeAfterMoveActionEvent.wasObserved());
     }
@@ -48,12 +48,12 @@ public class MoveActionTest extends TestWithExampleGridLayoutBoard {
     @Test(expected = ActionNotPossibleException.class)
     public void testPerformMoveNotPossible() throws Exception {
         setCurrentPlayer(new GameSubjectNull("anotherGameSubjectNull", null));
-        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(0, 3)));
+        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
     }
 
     @Test(expected = ActionNotPossibleException.class)
     public void testPerformNotActivePlayer() throws Exception {
         getPlayerController().setCurrentPlayer(new GameSubjectNull("nonActivePlayer", null));
-        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(1, 4)));
+        moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
     }
 }
