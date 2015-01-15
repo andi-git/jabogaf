@@ -10,9 +10,18 @@
         <module>boardgame-core-testutil</module>
         <module>boardgame-common</module>
         <module>boardgame-common-testutil</module>
-        <module>heroquest-core</module>
         <module>boardgame-util</module>
     </modules>
+
+    <profiles>
+        <profile>
+            <id>old</id>
+            <modules>
+                <module>heroquest-core</module>
+            </modules>
+        </profile>
+    </profiles>
+
     <packaging>pom</packaging>
 
     <properties>
