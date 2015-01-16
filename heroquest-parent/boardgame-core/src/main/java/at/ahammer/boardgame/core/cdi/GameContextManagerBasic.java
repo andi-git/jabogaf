@@ -40,7 +40,7 @@ public class GameContextManagerBasic implements GameContextManager {
 
     @Override
     public <T> T resolve(T bean) {
-        log.info("resolve fields for " + bean.getClass());
+        log.debug("resolve fields for " + bean.getClass());
         return resolve(bean, bean.getClass());
     }
 
@@ -51,7 +51,7 @@ public class GameContextManagerBasic implements GameContextManager {
             if (field.getAnnotation(Inject.class) != null) {
                 // get possible qualifiers
                 Annotation qualifier = getQualifier(field);
-                log.info("  inject " + field.getType().getName() + " to field " + field.getName() + (qualifier != null ? (", qualifier " + qualifier) : ""));
+                log.debug("  inject " + field.getType().getName() + " to field " + field.getName() + (qualifier != null ? (", qualifier " + qualifier) : ""));
                 field.setAccessible(true);
                 // get the cdi-bean from the GameContext
                 Object instance = GameContext.current().getFromDynamicContext(field.getType(), qualifier);

@@ -11,16 +11,6 @@ public class Wall extends FieldConnectionObject {
     }
 
     @Override
-    public boolean canMove(MoveBehavior moveBehavior) {
-        return false;
-    }
-
-    @Override
-    public boolean canLook(LookBehavior lookBehavior) {
-        return false;
-    }
-
-    @Override
     public boolean isVisible() {
         return true;
     }

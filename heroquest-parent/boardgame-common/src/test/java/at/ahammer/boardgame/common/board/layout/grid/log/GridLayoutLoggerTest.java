@@ -20,18 +20,9 @@ public class GridLayoutLoggerTest extends TestWithExampleGridLayoutBoard {
     @Inject
     private GridLayoutLogger gridLayoutLogger;
 
-    private GameSubject player1;
-
-    private GameSubject player2;
-
-    private GameSubject player3;
-
     @BeforeInGameContext
     public void before() {
         super.before();
-        player1 = new GameSubjectNull("player1", getField(1, 1));
-        player2 = new GameSubjectNull("player2", getField(2, 2));
-        player3 = new GameSubjectNull("player3", getField(4, 0));
     }
 
     @Test

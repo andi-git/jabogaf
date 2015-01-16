@@ -35,7 +35,7 @@ public class MoveNotPossibleException extends Exception {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            moveBlocks.stream().forEach(moveBlock -> sb.append(moveBlock.getClass().getSimpleName() + ","));
+            moveBlocks.stream().forEach(moveBlock -> sb.append(moveBlock + ","));
             return sb.toString();
         }
     }

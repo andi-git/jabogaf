@@ -1,12 +1,10 @@
 package at.ahammer.boardgame.core.board;
 
-import at.ahammer.boardgame.api.behavior.look.LookBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.board.Board;
-import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
+import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
 
@@ -45,26 +43,8 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
         fieldConnection23 = new FieldConnection("fieldConnection23", field3, field2);
         fieldConnections.add(fieldConnection23);
         object1 = new FieldConnectionObject("object1") {
-            @Override
-            public boolean canMove(MoveBehavior moveBehavior) {
-                return false;
-            }
-
-            @Override
-            public boolean canLook(LookBehavior lookBehavior) {
-                return false;
-            }
         };
         object2 = new FieldConnectionObject("object2") {
-            @Override
-            public boolean canMove(MoveBehavior moveBehavior) {
-                return false;
-            }
-
-            @Override
-            public boolean canLook(LookBehavior lookBehavior) {
-                return false;
-            }
         };
         fieldConnection12.addObjectOnConnection(object1, object2);
         fieldConnectionObjects.add(object1);
@@ -74,6 +54,7 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
             public Stream getFieldsAsStream() {
                 return null;
             }
+
             @Override
             public Set<FieldConnection> getLookConnections(Field position, Field target) {
                 return null;

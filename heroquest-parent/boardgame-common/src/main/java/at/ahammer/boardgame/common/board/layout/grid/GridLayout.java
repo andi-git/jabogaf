@@ -3,6 +3,7 @@ package at.ahammer.boardgame.common.board.layout.grid;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.api.board.layout.log.LayoutLogger;
 import at.ahammer.boardgame.util.stream.StreamUtil;
 
 import javax.inject.Inject;
@@ -20,6 +21,9 @@ public class GridLayout extends Layout {
 
     @Inject
     private StreamUtil streamUtil;
+
+    @Inject
+    private LayoutLogger layoutLogger;
 
     private final Field[][] fields;
 
@@ -131,5 +135,10 @@ public class GridLayout extends Layout {
 
     public Field[][] getFieldsAsArray() {
         return fields;
+    }
+
+    @Override
+    public String toString() {
+        return layoutLogger.toString(this);
     }
 }

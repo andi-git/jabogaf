@@ -3,8 +3,10 @@ package at.ahammer.boardgame.common;
 import at.ahammer.boardgame.api.board.Board;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.common.behavior.move.GameSubjectForMovement;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayout;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayoutCreationExample;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
@@ -21,12 +23,24 @@ public abstract class TestWithExampleGridLayoutBoard extends ArquillianGameConte
     @Inject
     private PlayerController playerController;
 
+    @Inject
+    private GameContextManager gameContextManager;
+
     private GameSubject currentPlayer;
+
+    private GameSubjectForMovement player1;
+
+    private GameSubjectForMovement player2;
+
+    private GameSubjectForMovement player3;
 
     @BeforeInGameContext
     public void before() {
         board = new Board("dummyBoard", new GridLayout("dummyGridLayout", new GridLayoutCreationExample()));
         setCurrentPlayer(new GameSubjectNull());
+        player1 = gameContextManager.resolve(new GameSubjectForMovement("player1", getField(1, 1)));
+        player2 = gameContextManager.resolve(new GameSubjectForMovement("player2", getField(2, 2)));
+        player3 = gameContextManager.resolve(new GameSubjectForMovement("player3", getField(4, 0)));
     }
 
     public Board getBoard() {
@@ -60,5 +74,17 @@ public abstract class TestWithExampleGridLayoutBoard extends ArquillianGameConte
     protected void setCurrentPlayer(GameSubject currentPlayer) {
         this.currentPlayer = currentPlayer;
         playerController.setCurrentPlayer(currentPlayer);
+    }
+
+    protected GameSubjectForMovement getPlayer1() {
+        return player1;
+    }
+
+    protected GameSubjectForMovement getPlayer2() {
+        return player2;
+    }
+
+    protected GameSubjectForMovement getPlayer3() {
+        return player3;
     }
 }

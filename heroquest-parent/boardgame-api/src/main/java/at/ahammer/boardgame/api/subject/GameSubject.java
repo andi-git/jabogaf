@@ -177,7 +177,7 @@ public abstract class GameSubject extends GameContextBean implements Moveable {
         };
     }
 
-    public SetterOfPosition getSetterOfPosition() {
+    protected SetterOfPosition getSetterOfPosition() {
         return (position) -> {
             this.position = position;
         };

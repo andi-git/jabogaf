@@ -14,6 +14,10 @@ import org.junit.runners.MethodSorters;
 
 import javax.inject.Inject;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(ArquillianGameContext.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MoveActionTest extends TestWithExampleGridLayoutBoard {
@@ -31,18 +35,18 @@ public class MoveActionTest extends TestWithExampleGridLayoutBoard {
     @BeforeInGameContext
     public void before() {
         super.before();
-        setCurrentPlayer(new MyGameSubject("dummyGameSubject", getField(4, 0)));
+        setCurrentPlayer(getPlayer3());
     }
 
     @Test
     public void testPerformAction() throws Exception {
-        Assert.assertFalse(observeBeforeMoveActionEvent.wasObserved());
-        Assert.assertFalse(observeAfterMoveActionEvent.wasObserved());
-        Door door = getById(Door.class, "Door:3,3-4,3");
-        Assert.assertFalse(door.isVisible());
+        assertFalse(observeBeforeMoveActionEvent.wasObserved());
+        assertFalse(observeAfterMoveActionEvent.wasObserved());
+        assertEquals(getField(4, 0), getPlayer3().getPosition());
         moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
-        Assert.assertTrue(observeBeforeMoveActionEvent.wasObserved());
-        Assert.assertTrue(observeAfterMoveActionEvent.wasObserved());
+        assertTrue(observeBeforeMoveActionEvent.wasObserved());
+        assertTrue(observeAfterMoveActionEvent.wasObserved());
+        assertEquals(getField(4, 1), getPlayer3().getPosition());
     }
 
     @Test(expected = ActionNotPossibleException.class)

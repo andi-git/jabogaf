@@ -16,16 +16,6 @@ public class Door extends FieldConnectionObject implements Closeable {
     }
 
     @Override
-    public boolean canMove(MoveBehavior moveBehavior) {
-        return false;
-    }
-
-    @Override
-    public boolean canLook(LookBehavior lookBehavior) {
-        return false;
-    }
-
-    @Override
     public boolean isLocked() {
         return locked;
     }
