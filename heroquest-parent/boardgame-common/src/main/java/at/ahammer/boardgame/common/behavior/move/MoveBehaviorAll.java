@@ -1,9 +1,6 @@
 package at.ahammer.boardgame.common.behavior.move;
 
-import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveBehaviorType;
-import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
+import at.ahammer.boardgame.api.behavior.move.*;
 import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
@@ -11,6 +8,8 @@ import at.ahammer.boardgame.api.subject.SetterOfPosition;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -20,24 +19,13 @@ import java.util.Set;
  */
 @ApplicationScoped
 @MoveBehaviorType(MoveBehaviorAll.class)
-public class MoveBehaviorAll implements MoveBehavior {
+public class MoveBehaviorAll extends MoveBehavior {
 
     @Inject
     private BoardManager boardManager;
 
     @Override
-    public boolean canMove(Field position, Field target) {
-        return true;
-    }
-
-    @Override
-    public Field move(SetterOfPosition setterOfPosition, Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        setterOfPosition.setPosition(target);
-        return target;
-    }
-
-    @Override
-    public Set<Field> getMovableFields(Field position) {
+    public Set<Field> getMovableFields(Moveable moveable) {
         return boardManager.getFields();
     }
 
@@ -45,4 +33,10 @@ public class MoveBehaviorAll implements MoveBehavior {
     public boolean canBeUsedOn(Layout layout) {
         return true;
     }
+
+    @Override
+    public Set<MoveBlock> getMoveBlocks() {
+        return Collections.unmodifiableSet(new HashSet<>());
+    }
+
 }

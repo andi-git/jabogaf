@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
+import at.ahammer.boardgame.api.behavior.move.Moveable;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext;
@@ -23,7 +24,7 @@ import java.util.Set;
  * A subject (i.e. hero, monster,...) in the game.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class GameSubject extends GameContextBean {
+public abstract class GameSubject extends GameContextBean implements Moveable {
 
     private final List<ArtifactHandlingStrategy> artifactHandlingStrategies = new ArrayList<>();
     private Hand mainHand = new Hand(Hand.Type.MAIN);
@@ -65,48 +66,19 @@ public abstract class GameSubject extends GameContextBean {
         return artifactHandlingStrategies.contains(artifactHandlingStrategy);
     }
 
-    /**
-     * Move the {@link GameSubject} from the current {@code position} to a {@link at.ahammer.boardgame.api.board.field.Field}
-     * defined by the parameter {@code target}.
-     * <p/>
-     * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior}.
-     *
-     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move the {@link GameSubject} to
-     * @return the new position as {@link Field}
-     * @throws FieldsNotConnectedException if the {@link at.ahammer.boardgame.api.board.field.Field}s {@code position}
-     *                                     and {@code target} are not connected
-     * @throws MoveNotPossibleException    if the move from {@code position} to {@code target} is not possible, because
-     *                                     it is blocked by a {@link at.ahammer.boardgame.api.object.GameObject} or
-     *                                     something
-     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#move(at.ahammer.boardgame.api.subject.SetterOfPosition, at.ahammer.boardgame.api.board.field.Field)
-     */
+    @Override
     public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        return getMoveBehavior().move(createSetterOfPosition(), target);
+        return getMoveBehavior().move(this, getSetterOfPosition(), target);
     }
 
-    /**
-     * Check if the {@link GameSubject} can move from the current {@code position} to another {@link
-     * at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
-     * <p/>
-     * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior}.
-     *
-     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move to
-     * @return {@code true} if the move is possible
-     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#canMove(at.ahammer.boardgame.api.board.field.Field,
-     * at.ahammer.boardgame.api.board.field.Field)
-     */
+    @Override
     public boolean canMove(Field target) {
-        return getMoveBehavior().canMove(getPosition(), target);
+        return getMoveBehavior().canMove(this, target);
     }
 
-    /**
-     * Get a list of all {@link at.ahammer.boardgame.api.board.field.Field}s that can be moved to.
-     *
-     * @return a list of {@link at.ahammer.boardgame.api.board.field.Field}s that can be moved to
-     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#getMovableFields(at.ahammer.boardgame.api.board.field.Field)
-     */
+    @Override
     public Set<Field> getMovableFields() {
-        return getMoveBehavior().getMovableFields(position);
+        return getMoveBehavior().getMovableFields(this);
     }
 
     /**
@@ -134,6 +106,7 @@ public abstract class GameSubject extends GameContextBean {
         return getLookBehavior().getLookableFields(getPosition());
     }
 
+    @Override
     public Field getPosition() {
         return position;
     }
@@ -204,7 +177,7 @@ public abstract class GameSubject extends GameContextBean {
         };
     }
 
-    private SetterOfPosition createSetterOfPosition() {
+    public SetterOfPosition getSetterOfPosition() {
         return (position) -> {
             this.position = position;
         };

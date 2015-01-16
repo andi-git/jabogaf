@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public abstract class AbstractBoardTest extends ArquillianGameContextTest{
+public abstract class AbstractBoardTest extends ArquillianGameContextTest {
 
     protected Field field1, field2, field3;
 
