@@ -2,7 +2,7 @@ package at.ahammer.boardgame.core.action;
 
 import at.ahammer.boardgame.api.action.event.AfterActionEvent;
 
-public class MyAfterActionEvent extends AfterActionEvent<MyGameActionParameter> {
+public class MyAfterActionEvent extends AfterActionEventBasic<MyGameActionParameter> {
 
     private final String originalInput;
 

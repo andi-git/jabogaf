@@ -17,6 +17,7 @@ import java.util.List;
 @ApplicationScoped
 public class Helper {
 
+    /*
     public AddArtifactToHandStrategyContext getDefaultContext() {
         Artifact artifact = new MyArtifact();
         MyGameSubject gameSubject = new MyGameSubject();
@@ -142,4 +143,5 @@ public class Helper {
             };
         }
     }
+    */
 }

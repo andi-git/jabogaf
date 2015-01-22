@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.api.subject.artifact.hand;
+package at.ahammer.boardgame.core.subject.artifact.hand;
 
 import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.subject.hand.Hand;

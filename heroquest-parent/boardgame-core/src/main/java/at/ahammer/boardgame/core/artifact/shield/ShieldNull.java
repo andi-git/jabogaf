@@ -7,9 +7,9 @@ import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
 /**
  * This shield can not be used instead of null.
  */
-public class NullShield extends Shield {
+public class ShieldNull extends ShieldBasic {
 
-    public NullShield() {
+    public ShieldNull() {
         super(ShieldType.NULL.toString() + System.nanoTime(), ShieldType.NULL);
     }
 }

@@ -4,10 +4,12 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.cdi.GameScoped;
 import at.ahammer.boardgame.api.controller.PlayerController;
-import at.ahammer.boardgame.api.loader.ServiceLoader;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.core.subject.GameSubjectBasic;
+import at.ahammer.boardgame.core.subject.GameSubjectNull;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +32,7 @@ public class PlayerControllerBasic implements PlayerController {
     @Override
     public GameSubject getCurrentPlayer() {
         if (currentPlayer == null) {
-            currentPlayer = ServiceLoader.get(GameSubject.class);
+            currentPlayer = new GameSubjectNull();
         }
         return currentPlayer;
     }
@@ -42,7 +44,11 @@ public class PlayerControllerBasic implements PlayerController {
 
     @Override
     public Set<GameSubject> getAllGameSubjects() {
-        return gameContextManager.getGameContextBeans(GameSubject.class);
+        Set<GameSubject> gameSubjects = new HashSet<>();
+        for (GameSubject gameSubject : gameContextManager.getGameContextBeans(GameSubjectBasic.class)) {
+            gameSubjects.add(gameSubject);
+        }
+        return Collections.unmodifiableSet(gameSubjects);
     }
 
     @Override
@@ -53,6 +59,6 @@ public class PlayerControllerBasic implements PlayerController {
                 gameSubjects.add(gameSubject);
             }
         }
-        return gameSubjects;
+        return Collections.unmodifiableSet(gameSubjects);
     }
 }

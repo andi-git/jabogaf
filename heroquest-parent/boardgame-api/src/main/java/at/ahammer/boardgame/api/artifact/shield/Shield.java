@@ -8,22 +8,7 @@ import at.ahammer.boardgame.api.artifact.Artifact;
  * <p/>
  * Every {@link Shield} relates to a {@link ShieldType}.
  */
-public abstract class Shield extends Artifact {
+public interface Shield extends Artifact {
 
-    private final ShieldType shieldType;
-
-    /**
-     * Create a new {@link Shield}.
-     *
-     * @param id         the id
-     * @param shieldType the {@link ShieldType}
-     */
-    protected Shield(String id, ShieldType shieldType) {
-        super(id, shieldType.getHandCount());
-        this.shieldType = shieldType;
-    }
-
-    public ShieldType getShieldType() {
-        return shieldType;
-    }
+    ShieldType getShieldType();
 }

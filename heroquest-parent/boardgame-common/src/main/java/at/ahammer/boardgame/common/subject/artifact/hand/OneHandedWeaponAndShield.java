@@ -5,10 +5,10 @@ import at.ahammer.boardgame.api.artifact.shield.Shield;
 import at.ahammer.boardgame.api.artifact.shield.ShieldType;
 import at.ahammer.boardgame.api.artifact.weapon.Weapon;
 import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
-import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyConcrete;
-import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
-import at.ahammer.boardgame.api.subject.artifact.hand.CanHandleArtifactStrategy;
 import at.ahammer.boardgame.api.subject.hand.Hand;
+import at.ahammer.boardgame.core.subject.artifact.hand.AddArtifactToHandStrategyConcrete;
+import at.ahammer.boardgame.core.subject.artifact.hand.ArtifactHandlingStrategyBasic;
+import at.ahammer.boardgame.core.subject.artifact.hand.CanHandleArtifactStrategy;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,7 +23,7 @@ import javax.inject.Inject;
  * A one-handed-defense will be added to the off-hand.
  */
 @ApplicationScoped
-public class OneHandedWeaponAndShield extends ArtifactHandlingStrategy {
+public class OneHandedWeaponAndShield extends ArtifactHandlingStrategyBasic {
 
     @Inject
     private ArtifactCast<Weapon> artifactWeaponCast;

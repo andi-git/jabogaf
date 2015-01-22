@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.core.cdi.bean;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Typed;
@@ -8,7 +9,7 @@ import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Typed()
-public class MyGameContextBean extends GameContextBean {
+public class MyGameContextBean extends GameContextBeanBasic {
 
     @Inject
     private BeanWithGameScoped beanWithGameScoped;

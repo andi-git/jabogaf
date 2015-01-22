@@ -1,4 +1,6 @@
-package at.ahammer.boardgame.api.subject.artifact.hand;
+package at.ahammer.boardgame.core.subject.artifact.hand;
+
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException;
 
 /**
  * The general function of how to add the {@link at.ahammer.boardgame.api.artifact.Artifact} to the hand of a {@link at.ahammer.boardgame.api.subject.GameSubject}.

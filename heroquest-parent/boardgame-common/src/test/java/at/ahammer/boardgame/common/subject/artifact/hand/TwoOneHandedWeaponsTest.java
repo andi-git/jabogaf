@@ -1,10 +1,10 @@
 package at.ahammer.boardgame.common.subject.artifact.hand;
 
-import at.ahammer.boardgame.api.subject.artifact.NullArtifact;
 import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException;
 import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import at.ahammer.boardgame.api.subject.hand.Hand;
 import at.ahammer.boardgame.common.artifact.weapon.OneHandedSword;
+import at.ahammer.boardgame.core.artifact.ArtifactNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,42 +33,42 @@ public class TwoOneHandedWeaponsTest extends ArtifactHandTest {
 
     @Test
     public void testTwoOneHandedWeaponsAddArtifact() throws ArtifactHandlingException {
-        twoOneHandedWeapons.addArtifactToHand(getContext(getOneHandedSword(), Hand.Type.MAIN));
-        assertEquals(OneHandedSword.class, getGameSubject().getMainHandArtifact().getClass());
-        assertEquals(NullArtifact.class, getGameSubject().getOffHandArtifact().getClass());
+        addArtifactToHand(twoOneHandedWeapons, getOneHandedSword(), Hand.Type.MAIN);
+        assertEquals(OneHandedSword.class, getArtifactHolder().getMainHandArtifact().getClass());
+        assertEquals(ArtifactNull.class, getArtifactHolder().getOffHandArtifact().getClass());
 
-        getGameSubject().resetHands();
-        twoOneHandedWeapons.addArtifactToHand(getContext(getOneHandedSword(), Hand.Type.OFF));
-        assertEquals(NullArtifact.class, getGameSubject().getMainHandArtifact().getClass());
-        assertEquals(OneHandedSword.class, getGameSubject().getOffHandArtifact().getClass());
+        getArtifactHolder().resetHands();
+        addArtifactToHand(twoOneHandedWeapons, getOneHandedSword(), Hand.Type.OFF);
+        assertEquals(ArtifactNull.class, getArtifactHolder().getMainHandArtifact().getClass());
+        assertEquals(OneHandedSword.class, getArtifactHolder().getOffHandArtifact().getClass());
 
     }
 
     @Test(expected = ArtifactHandlingException.class)
     public void testTwoOneHandedWeaponsAddArtifactExceptionTwoHanded() throws ArtifactHandlingException {
-        twoOneHandedWeapons.addArtifactToHand(getContext(getTwoHandedSword(), Hand.Type.MAIN));
+        addArtifactToHand(twoOneHandedWeapons, getTwoHandedSword(), Hand.Type.MAIN);
     }
 
     @Test
     public void testTwoOneHandedWeaponsViaGameSubject() throws ArtifactHandlingException {
-        getGameSubject().addArtifact(getOneHandedSword());
-        assertEquals(OneHandedSword.class, getGameSubject().getMainHandArtifact().getClass());
-        assertEquals(NullArtifact.class, getGameSubject().getOffHandArtifact().getClass());
+        getArtifactHolder().addArtifact(getOneHandedSword());
+        assertEquals(OneHandedSword.class, getArtifactHolder().getMainHandArtifact().getClass());
+        assertEquals(ArtifactNull.class, getArtifactHolder().getOffHandArtifact().getClass());
 
-        getGameSubject().addArtifact(getOneHandedSword(), Hand.Type.OFF);
-        assertEquals(OneHandedSword.class, getGameSubject().getMainHandArtifact().getClass());
-        assertEquals(OneHandedSword.class, getGameSubject().getOffHandArtifact().getClass());
+        getArtifactHolder().addArtifact(getOneHandedSword(), Hand.Type.OFF);
+        assertEquals(OneHandedSword.class, getArtifactHolder().getMainHandArtifact().getClass());
+        assertEquals(OneHandedSword.class, getArtifactHolder().getOffHandArtifact().getClass());
     }
 
     @Test
     public void testTwoOneHandedWeaponsViaGameSubjectCanHandle() {
-        assertTrue(getGameSubject().canHandle(getOneHandedSword()));
-        assertTrue(getGameSubject().canHandle(getOneHandedSword(), Hand.Type.OFF));
+        assertTrue(getArtifactHolder().canHandle(getOneHandedSword()));
+        assertTrue(getArtifactHolder().canHandle(getOneHandedSword(), Hand.Type.OFF));
     }
 
     @Test
     public void testTwoOneHandedWeaponsViaGameSubjectCantHandleTwoHanded() {
-        assertFalse(getGameSubject().canHandle(getTwoHandedSword()));
+        assertFalse(getArtifactHolder().canHandle(getTwoHandedSword()));
     }
 
     @Override

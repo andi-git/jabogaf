@@ -9,7 +9,7 @@
         <module>boardgame-core</module>
         <module>boardgame-core-testutil</module>
         <module>boardgame-common</module>
-        <module>boardgame-common-testutil</module>
+        <!--<module>boardgame-common-testutil</module>-->
         <module>boardgame-util</module>
     </modules>
 

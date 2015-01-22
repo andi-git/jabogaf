@@ -1,54 +1,24 @@
 package at.ahammer.boardgame.core.subject;
 
-import at.ahammer.boardgame.api.behavior.look.LookBehavior;
-import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
 import at.ahammer.boardgame.api.board.field.Field;
-import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.core.behavior.look.LookBehaviorNull;
+import at.ahammer.boardgame.core.behavior.move.MoveBehaviorNull;
+import at.ahammer.boardgame.core.board.field.FieldNull;
 
-public class GameSubjectNull extends GameSubject {
+import javax.enterprise.inject.Typed;
+
+@Typed
+public class GameSubjectNull extends GameSubjectBasic {
 
     public GameSubjectNull() {
-        super("GameSubjectNull", null);
+        this("GameSubjectNull", new FieldNull());
+    }
+
+    public GameSubjectNull(String id) {
+        this(id, new FieldNull());
     }
 
     public GameSubjectNull(String id, Field position) {
-        super(id, position);
-    }
-
-    @Override
-    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        throw new MoveNotPossibleException("i'm a null-object");
-    }
-
-    @Override
-    public boolean canMove(Field target) {
-        return false;
-    }
-
-    @Override
-    public boolean canLook(Field target) {
-        return false;
-    }
-
-    @Override
-    public MoveBehavior getMoveBehavior() {
-        return null;
-    }
-
-    @Override
-    public LookBehavior getLookBehavior() {
-        return null;
-    }
-
-    @Override
-    public void changeMoveBehavior(MoveBehavior moveBehavior) {
-
-    }
-
-    @Override
-    public void changeLookBehavior(LookBehavior lookBehavior) {
-
+        super(id, position, new MoveBehaviorNull(), new LookBehaviorNull());
     }
 }

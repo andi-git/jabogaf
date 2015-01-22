@@ -3,7 +3,8 @@ package at.ahammer.boardgame.common.board.layout.grid;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.layout.Layout;
-import at.ahammer.boardgame.api.board.layout.log.LayoutLogger;
+import at.ahammer.boardgame.api.board.layout.log.LayoutLoggerManager;
+import at.ahammer.boardgame.core.board.layout.LayoutBasic;
 import at.ahammer.boardgame.util.stream.StreamUtil;
 
 import javax.inject.Inject;
@@ -17,13 +18,13 @@ import java.util.stream.Stream;
  * {@link GridLayoutCreationStrategy} is needed.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class GridLayout extends Layout {
+public class GridLayout extends LayoutBasic {
 
     @Inject
     private StreamUtil streamUtil;
 
     @Inject
-    private LayoutLogger layoutLogger;
+    private LayoutLoggerManager layoutLoggerManager;
 
     private final Field[][] fields;
 
@@ -139,6 +140,6 @@ public class GridLayout extends Layout {
 
     @Override
     public String toString() {
-        return layoutLogger.toString(this);
+        return layoutLoggerManager.toString(this);
     }
 }

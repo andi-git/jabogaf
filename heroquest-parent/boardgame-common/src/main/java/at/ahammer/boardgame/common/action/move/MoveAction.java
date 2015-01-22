@@ -7,6 +7,7 @@ import at.ahammer.boardgame.api.action.GameActionPreferences;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.GameSubject;
+import at.ahammer.boardgame.core.action.GameActionPreferencesBasic;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -50,7 +51,7 @@ public class MoveAction implements GameAction<MoveActionParameter> {
         GameSubject gameSubject = moveActionParameter.getGameSubject();
         Field target = moveActionParameter.getTarget();
         gameActionLifecycle.perform(//
-                GameActionPreferences.newInstance().addPrerequisite(() -> {
+                GameActionPreferencesBasic.newInstance().addPrerequisite(() -> {
                     if (!playerController.isCurrentPlayer(gameSubject)) {
                         log.warn("{} is not the current player ({})", gameSubject, playerController.getCurrentPlayer());
                         throw new ActionNotPossibleException(gameSubject + " is not the current player (" + playerController.getCurrentPlayer() + ")");

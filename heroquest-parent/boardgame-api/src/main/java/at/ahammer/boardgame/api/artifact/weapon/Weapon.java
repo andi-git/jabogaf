@@ -8,22 +8,7 @@ import at.ahammer.boardgame.api.artifact.Artifact;
  * <p/>
  * Every {@link Weapon} relates to a {@link WeaponType}.
  */
-public abstract class Weapon extends Artifact {
+public interface Weapon extends Artifact {
 
-    private final WeaponType weaponType;
-
-    /**
-     * Create a new {@link Weapon}.
-     *
-     * @param id         the id
-     * @param weaponType the {@link WeaponType}
-     */
-    protected Weapon(String id, WeaponType weaponType) {
-        super(id, weaponType.getHandCount());
-        this.weaponType = weaponType;
-    }
-
-    public WeaponType getWeaponType() {
-        return weaponType;
-    }
+    WeaponType getWeaponType();
 }

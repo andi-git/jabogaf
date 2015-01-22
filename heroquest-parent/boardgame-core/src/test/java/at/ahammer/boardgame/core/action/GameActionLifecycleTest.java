@@ -2,7 +2,6 @@ package at.ahammer.boardgame.core.action;
 
 import at.ahammer.boardgame.api.action.ActionNotPossibleException;
 import at.ahammer.boardgame.api.action.GameActionLifecycle;
-import at.ahammer.boardgame.api.action.GameActionPreferences;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
@@ -32,7 +31,7 @@ public class GameActionLifecycleTest extends ArquillianGameContextTest {
 
     @Test
     public void testDefaultLifecycle() throws ActionNotPossibleException {
-        gameActionLifecycle.perform(GameActionPreferences.newInstance());
+        gameActionLifecycle.perform(GameActionPreferencesBasic.newInstance());
     }
 
     @Test
@@ -43,7 +42,7 @@ public class GameActionLifecycleTest extends ArquillianGameContextTest {
         final boolean[] inPrerequsites = {false};
         final boolean[] inPerform = {false};
 
-        gameActionLifecycle.perform(GameActionPreferences.newInstance()
+        gameActionLifecycle.perform(GameActionPreferencesBasic.newInstance()
                         .addBeforeActionEventCreation(() -> {
                             return myBeforeActionEvent;
                         })
@@ -67,14 +66,14 @@ public class GameActionLifecycleTest extends ArquillianGameContextTest {
 
     @Test(expected = ActionNotPossibleException.class)
     public void testPrerequisiteThrowsException() throws ActionNotPossibleException {
-        gameActionLifecycle.perform(GameActionPreferences.newInstance().addPrerequisite(() -> {
+        gameActionLifecycle.perform(GameActionPreferencesBasic.newInstance().addPrerequisite(() -> {
             throw new ActionNotPossibleException();
         }));
     }
 
     @Test(expected = ActionNotPossibleException.class)
     public void testPerformThrowsException() throws ActionNotPossibleException {
-        gameActionLifecycle.perform(GameActionPreferences.newInstance().addPerform(() -> {
+        gameActionLifecycle.perform(GameActionPreferencesBasic.newInstance().addPerform(() -> {
             throw new Exception();
         }));
     }

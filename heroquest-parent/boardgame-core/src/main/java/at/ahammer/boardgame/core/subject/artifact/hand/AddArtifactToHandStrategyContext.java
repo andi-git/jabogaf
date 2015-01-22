@@ -1,36 +1,39 @@
-package at.ahammer.boardgame.api.subject.artifact.hand;
+package at.ahammer.boardgame.core.subject.artifact.hand;
 
 import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.artifact.HandCount;
-import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfArtifactsForHands;
-import at.ahammer.boardgame.api.subject.artifact.NullArtifact;
+import at.ahammer.boardgame.api.subject.artifact.ArtifactHolder;
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import at.ahammer.boardgame.api.subject.hand.Hand;
+import at.ahammer.boardgame.core.artifact.ArtifactNull;
 
 import java.util.List;
 
 /**
- * Helper class that contains all parameters for {@link at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyGeneral} and provides some "methods-shortcuts", i. e. it acts like a facade to methods in the assigned components.
+ * Helper class that contains all parameters for {@link at.ahammer.boardgame.core.subject.artifact.hand.AddArtifactToHandStrategyGeneral}
+ * and provides some "methods-shortcuts", i. e. it acts like a facade to methods in the assigned components.
  */
 public class AddArtifactToHandStrategyContext {
 
     private Artifact artifact;
     private Hand.Type handType;
-    private GameSubject gameSubject;
+    private ArtifactHolder artifactHolder;
     private SetterOfArtifactsForHands setterOfArtifactsForHands;
     private CanHandleArtifactStrategy canHandleArtifactStrategy;
     private AddArtifactToHandStrategyConcrete addArtifactToHandStrategyConcrete;
 
-    public AddArtifactToHandStrategyContext(Artifact artifact, Hand.Type handType, GameSubject gameSubject, SetterOfArtifactsForHands setterOfArtifactsForHands, CanHandleArtifactStrategy canHandleArtifactStrategy, AddArtifactToHandStrategyConcrete addArtifactToHandStrategyConcrete) {
+    public AddArtifactToHandStrategyContext(Artifact artifact, Hand.Type handType, ArtifactHolder artifactHolder, SetterOfArtifactsForHands setterOfArtifactsForHands, CanHandleArtifactStrategy canHandleArtifactStrategy, AddArtifactToHandStrategyConcrete addArtifactToHandStrategyConcrete) {
         this.artifact = artifact;
         this.handType = handType;
-        this.gameSubject = gameSubject;
+        this.artifactHolder = artifactHolder;
         this.setterOfArtifactsForHands = setterOfArtifactsForHands;
         this.canHandleArtifactStrategy = canHandleArtifactStrategy;
         this.addArtifactToHandStrategyConcrete = addArtifactToHandStrategyConcrete;
     }
 
-    public AddArtifactToHandStrategyContext() { }
+    public AddArtifactToHandStrategyContext() {
+    }
 
     public Artifact getArtifact() {
         if (artifact == null) throw new IllegalStateException("artifact was not set");
@@ -52,13 +55,13 @@ public class AddArtifactToHandStrategyContext {
         return this;
     }
 
-    public GameSubject getGameSubject() {
-        if (gameSubject == null) throw new IllegalStateException("gameSubject was not set");
-        return gameSubject;
+    public ArtifactHolder getArtifactHolder() {
+        if (artifactHolder == null) throw new IllegalStateException("artifactHolder was not set");
+        return artifactHolder;
     }
 
-    public AddArtifactToHandStrategyContext setGameSubject(GameSubject gameSubject) {
-        this.gameSubject = gameSubject;
+    public AddArtifactToHandStrategyContext setArtifactHolder(ArtifactHolder artifactHolder) {
+        this.artifactHolder = artifactHolder;
         return this;
     }
 
@@ -83,7 +86,8 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public AddArtifactToHandStrategyConcrete getAddArtifactToHandStrategyConcrete() {
-        if (addArtifactToHandStrategyConcrete == null) throw new IllegalStateException("addArtifactToHandStrategyConcrete was not set");
+        if (addArtifactToHandStrategyConcrete == null)
+            throw new IllegalStateException("addArtifactToHandStrategyConcrete was not set");
         return addArtifactToHandStrategyConcrete;
     }
 
@@ -97,7 +101,7 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public Artifact getMainHandArtifact() {
-        return getGameSubject().getMainHandArtifact();
+        return getArtifactHolder().getMainHandArtifact();
     }
 
     public HandCount getMainHandHandCount() {
@@ -105,7 +109,7 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public Artifact getOffHandArtifact() {
-        return getGameSubject().getOffHandArtifact();
+        return getArtifactHolder().getOffHandArtifact();
     }
 
     public HandCount getOffHandHandCount() {
@@ -117,7 +121,7 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public void addArtifactToMainHand(Artifact mainHandArtifact) {
-        getSetterOfArtifactsForHands().setHands(mainHandArtifact, getGameSubject().getOffHandArtifact());
+        getSetterOfArtifactsForHands().setHands(mainHandArtifact, getArtifactHolder().getOffHandArtifact());
     }
 
     public void addArtifactToMainHand() {
@@ -125,7 +129,7 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public void addArtifactToOffHand(Artifact offHandArtifact) {
-        getSetterOfArtifactsForHands().setHands(getGameSubject().getMainHandArtifact(), offHandArtifact);
+        getSetterOfArtifactsForHands().setHands(getArtifactHolder().getMainHandArtifact(), offHandArtifact);
     }
 
     public void addArtifactToOffHand() {
@@ -141,7 +145,7 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public void resetHands() {
-        getSetterOfArtifactsForHands().setHands(new NullArtifact(), new NullArtifact());
+        getSetterOfArtifactsForHands().setHands(new ArtifactNull(), new ArtifactNull());
     }
 
     public void addArtifactToHand() {
@@ -149,6 +153,6 @@ public class AddArtifactToHandStrategyContext {
     }
 
     public List<ArtifactHandlingStrategy> getArtifactHandlingStrategies() {
-        return getGameSubject().getArtifactHandlingStrategies();
+        return getArtifactHolder().getArtifactHandlingStrategies();
     }
 }

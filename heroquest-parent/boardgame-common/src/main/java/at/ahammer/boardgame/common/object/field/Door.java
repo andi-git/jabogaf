@@ -1,11 +1,9 @@
 package at.ahammer.boardgame.common.object.field;
 
-import at.ahammer.boardgame.api.behavior.look.LookBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.board.field.Closeable;
-import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
+import at.ahammer.boardgame.core.board.field.FieldConnectionObjectBasic;
 
-public class Door extends FieldConnectionObject implements Closeable {
+public class Door extends FieldConnectionObjectBasic implements Closeable {
 
     private boolean locked = true;
 

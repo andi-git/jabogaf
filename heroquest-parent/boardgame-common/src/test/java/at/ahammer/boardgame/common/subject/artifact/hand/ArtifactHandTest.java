@@ -1,7 +1,8 @@
 package at.ahammer.boardgame.common.subject.artifact.hand;
 
 import at.ahammer.boardgame.api.artifact.Artifact;
-import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext;
+import at.ahammer.boardgame.api.subject.artifact.ArtifactHolder;
+import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException;
 import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import at.ahammer.boardgame.api.subject.hand.Hand;
 import at.ahammer.boardgame.common.artifact.shield.SimpleShield;
@@ -15,7 +16,7 @@ import at.ahammer.boardgame.core.test.BeforeInGameContext;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class ArtifactHandTest extends ArquillianGameContextTest {
 
-    private MyGameSubject gameSubject;
+    private MyArtifactHolder artifactHolder;
 
     private Artifact oneHandedSword;
 
@@ -29,9 +30,9 @@ public abstract class ArtifactHandTest extends ArquillianGameContextTest {
 
     @BeforeInGameContext
     public void before() {
-        gameSubject = new MyGameSubject();
-        gameSubject.addArtifactHandlingStrategy(getArtifactHandlingStrategy());
-        gameSubject.resetHands();
+        artifactHolder = new MyArtifactHolder();
+        artifactHolder.addArtifactHandlingStrategy(getArtifactHandlingStrategy());
+        artifactHolder.resetHands();
         oneHandedSword = new OneHandedSword();
         oneHandedAxe = new OneHandedAxe();
         twoHandedSword = new TwoHandedSword();
@@ -41,8 +42,8 @@ public abstract class ArtifactHandTest extends ArquillianGameContextTest {
 
     protected abstract ArtifactHandlingStrategy getArtifactHandlingStrategy();
 
-    protected MyGameSubject getGameSubject() {
-        return gameSubject;
+    protected MyArtifactHolder getArtifactHolder() {
+        return artifactHolder;
     }
 
     protected Artifact getOneHandedSword() {
@@ -65,11 +66,7 @@ public abstract class ArtifactHandTest extends ArquillianGameContextTest {
         return simpleShield;
     }
 
-    protected AddArtifactToHandStrategyContext getContext(Artifact artifact, Hand.Type handType) {
-        return new AddArtifactToHandStrategyContext().
-                setGameSubject(getGameSubject()).
-                setArtifact(artifact).
-                setHandType(handType).
-                setSetterOfArtifactsForHands(getGameSubject().getSetterOfArtifactsForHands());
+    protected void addArtifactToHand(ArtifactHandlingStrategy artifactHandlingStrategy, Artifact artifact, Hand.Type hand) throws ArtifactHandlingException {
+        artifactHandlingStrategy.addArtifactToHand(artifact, hand, getArtifactHolder(), getArtifactHolder().createSetterOfArtifactsForHands());
     }
 }

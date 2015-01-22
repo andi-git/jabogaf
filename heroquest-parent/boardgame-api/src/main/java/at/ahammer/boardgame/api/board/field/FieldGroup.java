@@ -9,41 +9,13 @@ import java.util.Set;
  * A virtual group of {@link Field}s. This is e.g. important to set the visibility of
  * all grouped {@link Field}s at once.
  */
-public abstract class FieldGroup extends GameContextBean {
+public interface FieldGroup extends GameContextBean {
 
-    private final Set<Field> fields = new HashSet<>();
+    void add(Field field);
 
-    /**
-     * Create a new {@link FieldGroup}
-     *
-     * @param id the id of the {@link FieldGroup}
-     */
-    protected FieldGroup(String id) {
-        super(id);
-    }
+    void clear();
 
-    /**
-     * Create a new {@link FieldGroup}
-     *
-     * @param id     the id of the {@link FieldGroup}
-     * @param fields all {@link Field}s to add
-     */
-    protected FieldGroup(String id, Set<Field> fields) {
-        super(id);
-        this.fields.addAll(fields);
-    }
-
-    public void add(Field field) {
-        fields.add(field);
-    }
-
-    public void clear() {
-        fields.clear();
-    }
-
-    public Set<Field> getFields() {
-        return fields;
-    }
+    Set<Field> getFields();
 
     /**
      * Check if the current {@link FieldGroup} contains a {@link
@@ -54,7 +26,5 @@ public abstract class FieldGroup extends GameContextBean {
      * @return {@code true} if the {@link FieldGroup} contains the {@link
      * Field}
      */
-    public boolean contains(Field field) {
-        return fields.contains(field);
-    }
+    boolean contains(Field field);
 }

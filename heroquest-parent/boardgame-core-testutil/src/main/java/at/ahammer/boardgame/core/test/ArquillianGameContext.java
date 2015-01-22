@@ -32,8 +32,8 @@ public class ArquillianGameContext extends Arquillian {
 
     private static final Logger log = LoggerFactory.getLogger(ArquillianGameContext.class);
 
-    public ArquillianGameContext(Class<?> klass) throws InitializationError {
-        super(klass);
+    public ArquillianGameContext(Class<?> type) throws InitializationError {
+        super(type);
     }
 
     @Override
@@ -58,7 +58,6 @@ public class ArquillianGameContext extends Arquillian {
 
     @Override
     protected Statement withAfterClasses(Statement originalStatement) {
-//        AlternativesHolder.clear();
         return super.withAfterClasses(originalStatement);
     }
 

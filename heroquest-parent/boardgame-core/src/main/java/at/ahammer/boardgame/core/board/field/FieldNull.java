@@ -6,7 +6,7 @@ import at.ahammer.boardgame.api.board.field.FieldConnection;
 /**
  * The null-implementation of a {@link at.ahammer.boardgame.api.board.field.Field}.
  */
-public class FieldNull extends Field {
+public class FieldNull extends FieldBasic {
 
     public FieldNull() {
         super(String.valueOf(System.nanoTime()));

@@ -6,7 +6,7 @@ import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
 /**
  * This weapon can not be used instead of null.
  */
-public class NullWeapon extends Weapon {
+public class NullWeapon extends WeaponBasic {
 
     public NullWeapon() {
         super(WeaponType.NULL.toString() + System.nanoTime(), WeaponType.NULL);

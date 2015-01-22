@@ -4,7 +4,7 @@ import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.artifact.ArtifactCast;
 import at.ahammer.boardgame.api.artifact.shield.Shield;
 import at.ahammer.boardgame.api.artifact.weapon.Weapon;
-import at.ahammer.boardgame.core.artifact.shield.NullShield;
+import at.ahammer.boardgame.core.artifact.shield.ShieldNull;
 import at.ahammer.boardgame.core.artifact.weapon.NullWeapon;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,6 +23,6 @@ public class ArtifactCastProducer {
 
     @Produces
     public ArtifactCast<Shield> getShieldCast() {
-        return (Artifact artifact) -> (artifact instanceof Shield) ? ((Shield) artifact) : new NullShield();
+        return (Artifact artifact) -> (artifact instanceof Shield) ? ((Shield) artifact) : new ShieldNull();
     }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * The null-implementation of {@link at.ahammer.boardgame.api.board.field.FieldConnection}.
  */
-public class FieldConnectionNull extends FieldConnection {
+public class FieldConnectionNull extends FieldConnectionBasic {
 
     public FieldConnectionNull() {
         super(String.valueOf(System.nanoTime()), new FieldNull(), new FieldNull());

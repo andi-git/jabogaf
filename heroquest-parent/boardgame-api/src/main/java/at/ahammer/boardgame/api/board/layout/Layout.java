@@ -17,78 +17,32 @@ import java.util.stream.Stream;
  * at.ahammer.boardgame.api.board.field.Field}s are connected via {@link at.ahammer.boardgame.api.board.field.FieldConnection}s
  * and grouped via {@link at.ahammer.boardgame.api.board.field.FieldGroup}.
  */
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class Layout extends GameContextBean {
+public interface Layout extends GameContextBean {
 
-    private final Set<Field> fields;
-
-    private final Set<FieldConnection> fieldConnections;
-
-    private final Set<FieldGroup> fieldGroups;
-
-    @Inject
-    private FunctionIsConnected functionIsConnected;
-
-    @Inject
-    private FunctionGetConnection functionGetConnection;
-
-    @Inject
-    private FunctionGetAllGameObjectsOf layoutFunctionGetAllGameObjectsOf;
-
-    /**
-     * Create a new {@link Layout}.
-     *
-     * @param id               the id of the {@link Layout}
-     * @param fields           all {@link at.ahammer.boardgame.api.board.field.Field}s of the layout
-     * @param fieldConnections all connections of the {@link at.ahammer.boardgame.api.board.field.Field}s as {@link
-     *                         at.ahammer.boardgame.api.board.field.FieldConnection}s
-     * @param fieldGroups      all groups of the {@link at.ahammer.boardgame.api.board.field.Field}s as {@link
-     *                         at.ahammer.boardgame.api.board.field.FieldGroup}s
-     */
-    protected Layout(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups) {
-        super(id);
-        if (fields == null || fieldConnections == null || fieldGroups == null) {
-            throw new IllegalArgumentException("fields,  fieldConnections and fieldGroups must not be null!");
-        }
-        this.fields = fields;
-        this.fieldConnections = fieldConnections;
-        this.fieldGroups = fieldGroups;
-    }
-
-    public Set<Field> getFields() {
-        return fields;
-    }
+    Set<Field> getFields();
 
     /**
      * Get all {@link at.ahammer.boardgame.api.board.field.Field}s as {@link java.util.stream.Stream}.
      *
      * @return the {@link at.ahammer.boardgame.api.board.field.Field}s as {@link java.util.stream.Stream}
      */
-    public abstract Stream<Field> getFieldsAsStream();
+    Stream<Field> getFieldsAsStream();
 
-    public Set<FieldConnection> getFieldConnections() {
-        return fieldConnections;
-    }
+    Set<FieldConnection> getFieldConnections();
 
-    public Set<FieldGroup> getFieldGroups() {
-        return fieldGroups;
-    }
+    Set<FieldGroup> getFieldGroups();
 
     /**
      * @see FunctionIsConnected#isConnected(java.util.Set, at.ahammer.boardgame.api.board.field.Field,
      * at.ahammer.boardgame.api.board.field.Field)
      */
-    public boolean isConnected(Field source, Field target) {
-        return functionIsConnected.isConnected(fieldConnections, source, target);
-    }
+    boolean isConnected(Field source, Field target);
 
     /**
      * @see FunctionGetConnection#getConnection(java.util.Set, at.ahammer.boardgame.api.board.field.Field,
      * at.ahammer.boardgame.api.board.field.Field)
      */
-    public FieldConnection getConnection(Field source, Field target) {
-        return functionGetConnection.getConnection(fieldConnections, source, target);
-    }
+    FieldConnection getConnection(Field source, Field target);
 
     /**
      * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s that intercepts the look from one {@link
@@ -100,15 +54,13 @@ public abstract class Layout extends GameContextBean {
      * the look from a position {@link at.ahammer.boardgame.api.board.field.Field} to the target {@link
      * at.ahammer.boardgame.api.board.field.Field}.
      */
-    public abstract Set<FieldConnection> getLookConnections(Field position, Field target);
+    Set<FieldConnection> getLookConnections(Field position, Field target);
 
     /**
      * @see FunctionGetAllGameObjectsOf#getAllGameObjectsOf(java.util.Set, at.ahammer.boardgame.api.board.field.Field,
      * at.ahammer.boardgame.api.board.field.Field)
      */
-    public Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
-        return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
-    }
+    Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
 
     /**
      * Get a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where the assigned
@@ -118,7 +70,5 @@ public abstract class Layout extends GameContextBean {
      * @return a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where the
      * assigned {@link at.ahammer.boardgame.api.board.field.Field} is located
      */
-    public Set<FieldGroup> getFieldsGroupsFor(Field field) {
-        return fieldGroups.stream().filter(fg -> fg.contains(field)).collect(Collectors.toSet());
-    }
+    Set<FieldGroup> getFieldsGroupsFor(Field field);
 }

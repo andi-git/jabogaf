@@ -1,8 +1,5 @@
 package at.ahammer.boardgame.core.subject.artifact.hand;
 
-import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyConcrete;
-import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingStrategy;
-import at.ahammer.boardgame.api.subject.artifact.hand.CanHandleArtifactStrategy;
 import at.ahammer.boardgame.util.cdi.NullImplementation;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,7 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 @NullImplementation
-public class ArtifactHandlingStrategyNull extends ArtifactHandlingStrategy {
+public class ArtifactHandlingStrategyNull extends ArtifactHandlingStrategyBasic {
 
     @Override
     protected AddArtifactToHandStrategyConcrete getAddArtifactToHandStrategyConcrete() {

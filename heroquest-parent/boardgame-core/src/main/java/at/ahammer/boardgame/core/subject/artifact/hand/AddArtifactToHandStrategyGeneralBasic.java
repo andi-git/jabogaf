@@ -1,8 +1,6 @@
 package at.ahammer.boardgame.core.subject.artifact.hand;
 
 import at.ahammer.boardgame.api.artifact.HandCount;
-import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyContext;
-import at.ahammer.boardgame.api.subject.artifact.hand.AddArtifactToHandStrategyGeneral;
 import at.ahammer.boardgame.api.subject.artifact.hand.ArtifactHandlingException;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,7 +21,10 @@ public class AddArtifactToHandStrategyGeneralBasic implements AddArtifactToHandS
             addArtifactToHandStrategyContext.addArtifactToHand();
         } else {
             // if it can't be handled, throw an exception
-            throw new ArtifactHandlingException("unable to handle artifact " + addArtifactToHandStrategyContext.getArtifact(), addArtifactToHandStrategyContext);
+            throw new ArtifactHandlingException("unable to handle artifact " + addArtifactToHandStrategyContext.getArtifact(),
+                    addArtifactToHandStrategyContext.getArtifact(),
+                    addArtifactToHandStrategyContext.getHandType(),
+                    addArtifactToHandStrategyContext.getArtifactHolder());
         }
     }
 }

@@ -2,7 +2,8 @@ package at.ahammer.boardgame.common.board.layout.grid.log;
 
 import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
-import at.ahammer.boardgame.api.board.layout.log.AbstractLayoutLogger;
+import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.api.board.layout.log.LayoutLogger;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayout;
 import at.ahammer.boardgame.util.array.ArrayUtil;
@@ -12,7 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class GridLayoutLogger extends AbstractLayoutLogger<GridLayout> {
+public class GridLayoutLogger implements LayoutLogger<GridLayout> {
 
     @Inject
     private ArrayUtil arrayUtil;
@@ -25,6 +26,11 @@ public class GridLayoutLogger extends AbstractLayoutLogger<GridLayout> {
 
     @Inject
     private BoardManager boardManager;
+
+    @Override
+    public boolean canHandle(Layout layout) {
+        return layout != null && layout.getClass() == genericType();
+    }
 
     @Override
     public Class genericType() {

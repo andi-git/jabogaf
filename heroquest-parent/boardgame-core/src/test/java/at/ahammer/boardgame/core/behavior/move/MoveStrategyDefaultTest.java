@@ -5,6 +5,8 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.core.board.AbstractBoardTest;
+import at.ahammer.boardgame.core.board.field.FieldBasic;
+import at.ahammer.boardgame.core.board.field.FieldConnectionBasic;
 import at.ahammer.boardgame.core.board.field.FieldNull;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
@@ -45,7 +47,7 @@ public class MoveStrategyDefaultTest extends ArquillianGameContextTest {
         field1 = new Field1();
         field2 = new Field2();
         field3 = new Field3();
-        fieldConnection12 = new FieldConnection("fieldConnection12", field1, field2);
+        fieldConnection12 = new FieldConnectionBasic("fieldConnection12", field1, field2);
         moveable = new GameSubjectNull("myMoveable", field1);
         position = null;
     }
@@ -80,7 +82,7 @@ public class MoveStrategyDefaultTest extends ArquillianGameContextTest {
         moveStrategy.move(moveable, (field) -> position = field, field3, moveBlocks);
     }
 
-    private static class Field1 extends Field {
+    private static class Field1 extends FieldBasic {
 
         public Field1() {
             super("field1");
@@ -92,7 +94,7 @@ public class MoveStrategyDefaultTest extends ArquillianGameContextTest {
         }
     }
 
-    private static class Field2 extends Field {
+    private static class Field2 extends FieldBasic {
 
         public Field2() {
             super("field2");
@@ -104,7 +106,7 @@ public class MoveStrategyDefaultTest extends ArquillianGameContextTest {
         }
     }
 
-    private static class Field3 extends Field {
+    private static class Field3 extends FieldBasic {
 
         public Field3() {
             super("field3");

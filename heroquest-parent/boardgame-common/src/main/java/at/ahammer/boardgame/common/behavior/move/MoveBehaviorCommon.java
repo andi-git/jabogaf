@@ -7,6 +7,7 @@ import at.ahammer.boardgame.api.behavior.move.Moveable;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayout;
+import at.ahammer.boardgame.core.behavior.move.MoveBehaviorBasic;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -16,7 +17,7 @@ import java.util.Set;
 
 @ApplicationScoped
 @MoveBehaviorType(MoveBehaviorCommon.class)
-public class MoveBehaviorCommon extends MoveBehavior {
+public class MoveBehaviorCommon extends MoveBehaviorBasic {
 
     @Inject
     private MoveBlockDoor moveBlockDoor;

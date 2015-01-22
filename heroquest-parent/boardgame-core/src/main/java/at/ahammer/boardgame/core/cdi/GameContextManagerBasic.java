@@ -3,6 +3,7 @@ package at.ahammer.boardgame.core.cdi;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.cdi.RunInGameContext;
+import at.ahammer.boardgame.util.log.LogProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,17 +50,15 @@ public class GameContextManagerBasic implements GameContextManager {
         for (Field field : clazz.getDeclaredFields()) {
             // if the annotation @Inject is available, inject the cdi-bean
             if (field.getAnnotation(Inject.class) != null) {
-                // get possible qualifiers
-                Annotation qualifier = getQualifier(field);
-                log.debug("  inject " + field.getType().getName() + " to field " + field.getName() + (qualifier != null ? (", qualifier " + qualifier) : ""));
-                field.setAccessible(true);
-                // get the cdi-bean from the GameContext
-                Object instance = GameContext.current().getFromDynamicContext(field.getType(), qualifier);
-                try {
-                    // set the cdi-bean
-                    field.set(bean, instance);
-                } catch (IllegalAccessException e) {
-                    log.error("unable to access " + field, e);
+                if (field.getType() == Logger.class) {
+                    // set logger without cdi
+                    setField(bean, field, new LogProducer().produce(clazz));
+                } else {
+                    // get possible qualifiers
+                    Annotation qualifier = getQualifier(field);
+                    log.debug("  inject " + field.getType().getName() + " to field " + field.getName() + (qualifier != null ? (", qualifier " + qualifier) : ""));
+                    // get the cdi-bean from the GameContext
+                    setField(bean, field, GameContext.current().getFromDynamicContext(field.getType(), qualifier));
                 }
             }
         }
@@ -68,6 +67,16 @@ public class GameContextManagerBasic implements GameContextManager {
             resolve(bean, clazz.getSuperclass());
         }
         return bean;
+    }
+
+    private <T> void setField(T bean, Field field, Object object) {
+        field.setAccessible(true);
+        try {
+            // set the cdi-bean
+            field.set(bean, object);
+        } catch (IllegalAccessException e) {
+            log.error("unable to access " + field, e);
+        }
     }
 
     private Annotation getQualifier(Field field) {

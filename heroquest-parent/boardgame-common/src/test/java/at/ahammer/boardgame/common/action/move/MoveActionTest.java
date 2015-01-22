@@ -51,13 +51,13 @@ public class MoveActionTest extends TestWithExampleGridLayoutBoard {
 
     @Test(expected = ActionNotPossibleException.class)
     public void testPerformMoveNotPossible() throws Exception {
-        setCurrentPlayer(new GameSubjectNull("anotherGameSubjectNull", null));
+        setCurrentPlayer(new GameSubjectNull("anotherGameSubjectNull"));
         moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
     }
 
     @Test(expected = ActionNotPossibleException.class)
     public void testPerformNotActivePlayer() throws Exception {
-        getPlayerController().setCurrentPlayer(new GameSubjectNull("nonActivePlayer", null));
+        getPlayerController().setCurrentPlayer(new GameSubjectNull("nonActivePlayer"));
         moveAction.perform(new MoveActionParameter(getCurrentPlayer(), getField(4, 1)));
     }
 }

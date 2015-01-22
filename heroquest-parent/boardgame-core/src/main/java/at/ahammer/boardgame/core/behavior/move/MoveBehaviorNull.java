@@ -11,7 +11,7 @@ import java.util.*;
 
 @GameScoped
 @MoveBehaviorType(MoveBehaviorNull.class)
-public class MoveBehaviorNull extends MoveBehavior {
+public class MoveBehaviorNull extends MoveBehaviorBasic {
 
     @Override
     public Set<Field> getMovableFields(Moveable moveable) {

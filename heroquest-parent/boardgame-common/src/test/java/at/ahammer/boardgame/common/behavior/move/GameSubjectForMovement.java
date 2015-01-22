@@ -6,11 +6,12 @@ import at.ahammer.boardgame.api.behavior.move.MoveBehaviorType;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
+import at.ahammer.boardgame.core.subject.GameSubjectBasic;
 
 import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class GameSubjectForMovement extends GameSubject {
+public class GameSubjectForMovement extends GameSubjectBasic {
 
     @Inject
     @MoveBehaviorType(MoveBehaviorCommon.class)
@@ -38,21 +39,6 @@ public class GameSubjectForMovement extends GameSubject {
     @Override
     public MoveBehavior getMoveBehavior() {
         return moveBehavior;
-    }
-
-    @Override
-    public LookBehavior getLookBehavior() {
-        return null;
-    }
-
-    @Override
-    protected void changeMoveBehavior(MoveBehavior moveBehavior) {
-
-    }
-
-    @Override
-    protected void changeLookBehavior(LookBehavior lookBehavior) {
-
     }
 
     @Override

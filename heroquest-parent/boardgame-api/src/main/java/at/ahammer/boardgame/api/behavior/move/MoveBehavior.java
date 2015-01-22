@@ -1,12 +1,9 @@
 package at.ahammer.boardgame.api.behavior.move;
 
-import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.layout.Layout;
-import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 
-import javax.inject.Inject;
 import java.util.Set;
 
 /**
@@ -15,20 +12,7 @@ import java.util.Set;
  * With {@link #canMove(at.ahammer.boardgame.api.behavior.move.Moveable, at.ahammer.boardgame.api.board.field.Field)} it
  * can be checked if it is possible to move from one {@link at.ahammer.boardgame.api.board.field.Field} to another.
  */
-@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class MoveBehavior {
-
-    @Inject
-    private PlayerController playerController;
-
-    @Inject
-    private BoardManager boardManager;
-
-    @Inject
-    private CanMoveStrategy canMoveStrategy;
-
-    @Inject
-    private MoveStrategy moveStrategy;
+public interface MoveBehavior {
 
     /**
      * Check if a move from {@code position} to {@code target} is possible. It is possible, that a {@link
@@ -39,9 +23,7 @@ public abstract class MoveBehavior {
      * @param target   the {@link at.ahammer.boardgame.api.board.field.Field} where the move ends
      * @return {@code true} if the move is possible
      */
-    public boolean canMove(Moveable moveable, Field target) {
-        return canMoveStrategy.canMove(moveable, target, getMoveBlocks());
-    }
+    boolean canMove(Moveable moveable, Field target);
 
     /**
      * Move a {@link at.ahammer.boardgame.api.subject.GameSubject} to a {@link at.ahammer.boardgame.api.board.field.Field}.
@@ -55,9 +37,7 @@ public abstract class MoveBehavior {
      * @throws FieldsNotConnectedException
      * @throws MoveNotPossibleException
      */
-    public Field move(Moveable moveable, SetterOfPosition setterOfPosition, Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        return moveStrategy.move(moveable, setterOfPosition, target, getMoveBlocks());
-    }
+    Field move(Moveable moveable, SetterOfPosition setterOfPosition, Field target) throws FieldsNotConnectedException, MoveNotPossibleException;
 
     /**
      * Get a set of all {@link at.ahammer.boardgame.api.board.field.Field}s that the {@link
@@ -67,7 +47,7 @@ public abstract class MoveBehavior {
      * @return a set of all {@link at.ahammer.boardgame.api.board.field.Field}s that the {@link
      * at.ahammer.boardgame.api.behavior.move.Moveable} can be moved to from the current position
      */
-    public abstract Set<Field> getMovableFields(Moveable moveable);
+    abstract Set<Field> getMovableFields(Moveable moveable);
 
     /**
      * Get a set of all {@link at.ahammer.boardgame.api.board.field.Field}s that the current player can be moved to from
@@ -75,9 +55,7 @@ public abstract class MoveBehavior {
      *
      * @return a set of {@link at.ahammer.boardgame.api.board.field.Field}s that the current player can be moved to
      */
-    public Set<Field> getMoveableFieldsForCurrent() {
-        return getMovableFields(playerController.getCurrentPlayer());
-    }
+    Set<Field> getMoveableFieldsForCurrent();
 
     /**
      * Check if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on a {@link
@@ -86,7 +64,7 @@ public abstract class MoveBehavior {
      * @return {@code true} if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on a
      * {@link at.ahammer.boardgame.api.board.layout.Layout}
      */
-    public abstract boolean canBeUsedOn(Layout layout);
+    abstract boolean canBeUsedOn(Layout layout);
 
     /**
      * Check if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on the current
@@ -95,14 +73,14 @@ public abstract class MoveBehavior {
      * @return {@code true} if the current {@link at.ahammer.boardgame.api.behavior.move.MoveBehavior} can be used on
      * the current {@link at.ahammer.boardgame.api.board.layout.Layout}
      */
-    public boolean canBeUsedOnLayout() {
-        return canBeUsedOn(boardManager.getBoard().getLayout());
-    }
+    boolean canBeUsedOnLayout();
 
     /**
-     * Get a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.behavior.move.MoveBlock} that are activated
+     * Get a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.behavior.move.MoveBlock} that are activated.
      *
-     * @return
+     * @return a {@link java.util.Set} of all {@link at.ahammer.boardgame.api.behavior.move.MoveBlock} that are
+     * activated
      */
-    public abstract Set<MoveBlock> getMoveBlocks();
+    Set<MoveBlock> getMoveBlocks();
+
 }

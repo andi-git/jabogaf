@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
+import at.ahammer.boardgame.core.behavior.move.MoveBehaviorBasic;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ import java.util.Set;
  */
 @ApplicationScoped
 @MoveBehaviorType(MoveBehaviorAll.class)
-public class MoveBehaviorAll extends MoveBehavior {
+public class MoveBehaviorAll extends MoveBehaviorBasic {
 
     @Inject
     private BoardManager boardManager;

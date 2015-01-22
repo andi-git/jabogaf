@@ -5,6 +5,8 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
 import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.core.board.field.*;
+import at.ahammer.boardgame.core.board.layout.LayoutBasic;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
 
@@ -32,24 +34,22 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
 
     @BeforeInGameContext
     public void before() {
-        field1 = new Field("field1");
-        field2 = new Field("field2");
-        field3 = new Field("field3");
+        field1 = new FieldBasic("field1");
+        field2 = new FieldBasic("field2");
+        field3 = new FieldBasic("field3");
         fields.add(field1);
         fields.add(field2);
         fields.add(field3);
-        fieldConnection12 = new FieldConnection("fieldConnection12", field1, field2);
+        fieldConnection12 = new FieldConnectionBasic("fieldConnection12", field1, field2);
         fieldConnections.add(fieldConnection12);
-        fieldConnection23 = new FieldConnection("fieldConnection23", field3, field2);
+        fieldConnection23 = new FieldConnectionBasic("fieldConnection23", field3, field2);
         fieldConnections.add(fieldConnection23);
-        object1 = new FieldConnectionObject("object1") {
-        };
-        object2 = new FieldConnectionObject("object2") {
-        };
+        object1 = new FieldConnectionObjectBasic("object1") { };
+        object2 = new FieldConnectionObjectBasic("object2") { };
         fieldConnection12.addObjectOnConnection(object1, object2);
         fieldConnectionObjects.add(object1);
         fieldConnectionObjects.add(object2);
-        layout = new Layout("layout", fields, fieldConnections, new HashSet<>()) {
+        layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>()) {
             @Override
             public Stream getFieldsAsStream() {
                 return null;
@@ -60,7 +60,6 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
                 return null;
             }
         };
-        board = new Board("board", layout);
+        board = new BoardBasic("board", layout);
     }
-
 }

@@ -4,6 +4,9 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.common.object.field.*;
+import at.ahammer.boardgame.core.board.field.FieldBasic;
+import at.ahammer.boardgame.core.board.field.FieldConnectionBasic;
+import at.ahammer.boardgame.core.board.field.FieldGroupBasic;
 
 import java.util.Set;
 
@@ -71,21 +74,21 @@ public class GridLayoutCreationExample extends GridLayoutCreationStrategy {
         return "FGroup:" + id;
     }
 
-    private static class DummyField extends Field {
+    private static class DummyField extends FieldBasic {
 
         protected DummyField(String id) {
             super(id);
         }
     }
 
-    private static class DummyFieldConnection extends FieldConnection {
+    private static class DummyFieldConnection extends FieldConnectionBasic {
 
         public DummyFieldConnection(String id, Field leftHand, Field rightHand) {
             super(id, leftHand, rightHand);
         }
     }
 
-    private static class DummyFieldGroup extends FieldGroup {
+    private static class DummyFieldGroup extends FieldGroupBasic {
 
         protected DummyFieldGroup(String id, Set<Field> fields) {
             super(id, fields);

@@ -11,38 +11,15 @@ import java.util.Set;
  *
  * @see AlternativeInGameContext
  */
-@ApplicationScoped
-public class AlternativesInGameContext {
+public interface AlternativesInGameContext {
 
-    /**
-     * All activated alternatives.
-     */
-    private final Set<Class<?>> alternatives = new HashSet<>();
+    Set<Class<?>> getAlternatives();
 
-    public Set<Class<?>> getAlternatives() {
-        return Collections.unmodifiableSet(alternatives);
-    }
+    void clear();
 
-    public void clear() {
-        alternatives.clear();
-    }
+    void add(Class<?> alternative);
 
-    public void add(Class<?> alternative) {
-        alternatives.add(alternative);
-    }
+    void addAll(Collection<Class<?>> alternatives);
 
-    public void addAll(Collection<Class<?>> alternatives) {
-        this.alternatives.addAll(alternatives);
-    }
-
-    public boolean contains(Class<?> clazz) {
-        boolean contains = false;
-        for (Class<?> currentClazz : alternatives) {
-            if (clazz.isAssignableFrom(currentClazz)) {
-                contains = true;
-                break;
-            }
-        }
-        return contains;
-    }
+    boolean contains(Class<?> clazz);
 }
