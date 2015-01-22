@@ -1,15 +1,15 @@
 package at.ahammer.boardgame.core.resource;
 
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.resource.*;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Typed
 public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     private final Set<Resource> resources = new HashSet<>();

@@ -40,10 +40,9 @@ import java.util.Set;
 public class GameSubjectBasic extends GameContextBeanBasic implements GameSubject {
 
     @Inject
-    private GameContextManager gameContextManager;
-
     private ArtifactHolder artifactHolder;
 
+    @Inject
     private Resources resources;
 
     private MoveBehavior moveBehavior;
@@ -72,8 +71,6 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
         this.position = position;
         this.moveBehavior = moveBehavior != null ? moveBehavior : moveBehaviorNull;
         this.lookBehavior = lookBehavior != null ? lookBehavior : lookBehaviorNull;
-        this.resources = gameContextManager.resolve(new ResourcesBasic());
-        this.artifactHolder = gameContextManager.resolve(new ArtifactHolderBasic());
     }
 
     protected void changeMoveBehavior(MoveBehavior moveBehavior) {
