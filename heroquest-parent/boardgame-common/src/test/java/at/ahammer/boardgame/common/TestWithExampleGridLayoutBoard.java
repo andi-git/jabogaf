@@ -10,6 +10,7 @@ import at.ahammer.boardgame.common.behavior.move.GameSubjectForMovement;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayout;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayoutCreationExample;
 import at.ahammer.boardgame.core.board.BoardBasic;
+import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
@@ -42,6 +43,9 @@ public abstract class TestWithExampleGridLayoutBoard extends ArquillianGameConte
         player1 = gameContextManager.resolve(new GameSubjectForMovement("player1", getField(1, 1)));
         player2 = gameContextManager.resolve(new GameSubjectForMovement("player2", getField(2, 2)));
         player3 = gameContextManager.resolve(new GameSubjectForMovement("player3", getField(4, 0)));
+        player1.earn(new MovePoint(10).asPayment());
+        player2.earn(new MovePoint(10).asPayment());
+        player3.earn(new MovePoint(10).asPayment());
     }
 
     public Board getBoard() {

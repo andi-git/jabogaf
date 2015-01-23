@@ -1,6 +1,9 @@
 package at.ahammer.boardgame.core.resource;
 
-import at.ahammer.boardgame.api.resource.*;
+import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
+import at.ahammer.boardgame.api.resource.Payment;
+import at.ahammer.boardgame.api.resource.Resource;
+import at.ahammer.boardgame.api.resource.Resources;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 import org.slf4j.Logger;
 
@@ -21,12 +24,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
     public void add(Resource resource) {
         Resource existingResource = getExistingResource(resource);
         if (existingResource != null) {
-            try {
-                existingResource.add(resource);
-            } catch (NotSameResourceException e) {
-                // here this exception is never thrown
-                log.error(e.getMessage(), e);
-            }
+            existingResource.add(resource);
         } else {
             if (resource != null && resource.getAmount() > 0) {
                 resources.add(resource);
@@ -38,12 +36,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
     public void remove(Resource resource) throws NotEnoughResourceException {
         Resource existingResource = getExistingResource(resource);
         if (existingResource != null) {
-            try {
-                existingResource.remove(resource);
-            } catch (NotSameResourceException e) {
-                // here this exception is never thrown
-                log.error(e.getMessage(), e);
-            }
+            existingResource.remove(resource);
         } else {
             if (resource != null) {
                 throw NotEnoughResourceException.newNoResourceAvailable(resource.getClass(), resource.getAmount());
@@ -83,7 +76,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
             if (existingResource.canPay(payment.getAmount())) {
                 existingResource.remove(payment.getAmount());
             } else {
-                throw new NotEnoughResourceException(payment);
+                throw new NotEnoughResourceException(payment, amountOf(payment.getResource().getClass()));
             }
         } else {
             throw NotEnoughResourceException.newNoResourceAvailable(payment);
@@ -119,12 +112,6 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
     @Override
     public List<Resource> getSortedResources(Comparator<? super Resource> comparator) {
         return resources.stream().map((r) -> r.clone()).sorted(comparator).collect(Collectors.toList());
-//        List<Resource> result = new ArrayList<>();
-//        for (Resource resource : resources) {
-//            result.add(resource.clone());
-//        }
-//        result.sort(comparator);
-//        return result;
     }
 
     @Override

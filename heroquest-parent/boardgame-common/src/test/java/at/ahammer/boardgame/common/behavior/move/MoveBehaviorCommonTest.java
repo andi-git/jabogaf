@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.common.behavior.move;
 
 import at.ahammer.boardgame.api.behavior.move.*;
+import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
 import at.ahammer.boardgame.common.TestWithExampleGridLayoutBoard;
 import at.ahammer.boardgame.common.object.field.Door;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
@@ -28,15 +29,15 @@ public class MoveBehaviorCommonTest extends TestWithExampleGridLayoutBoard {
     }
 
     @Test
-    public void testMoveOk() throws FieldsNotConnectedException, MoveNotPossibleException {
-        assertEquals(getField(0, 1), moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(0, 1)));
+    public void testMoveOk() throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        assertEquals(getField(0, 1), moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(0, 1), getPlayer1()));
         assertEquals(getField(0, 1), getPlayer1().getPosition());
     }
 
     @Test
-    public void testMoveBlock() throws FieldsNotConnectedException, MoveNotPossibleException {
+    public void testMoveBlock() throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
         try {
-            moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(2, 1));
+            moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(2, 1), getPlayer1());
             fail("should throw a " + MoveNotPossibleException.class);
         } catch (MoveNotPossibleException e) {
             assertEquals(1, e.getMoveBlocks().size());
@@ -44,7 +45,7 @@ public class MoveBehaviorCommonTest extends TestWithExampleGridLayoutBoard {
         }
         Door door = (Door) getField(1, 1).getConnectionTo(getField(2, 1)).getObjectsOnConnection().stream().findFirst().get();
         door.open();
-        assertEquals(getField(2, 1), moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(2, 1)));
+        assertEquals(getField(2, 1), moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(2, 1), getPlayer1()));
         assertEquals(getField(2, 1), getPlayer1().getPosition());
     }
 }

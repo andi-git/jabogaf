@@ -1,6 +1,5 @@
 package at.ahammer.boardgame.core.resource;
 
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
 import at.ahammer.boardgame.api.resource.NotSameResourceException;
 import at.ahammer.boardgame.api.resource.Payment;
@@ -41,9 +40,10 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public int add(Resource resource) throws NotSameResourceException {
-        checkSameResource(resource);
-        amount += resource.getAmount();
+    public int add(Resource resource) {
+        if (isResourceType(resource)) {
+            amount += resource.getAmount();
+        }
         return amount;
     }
 
@@ -57,12 +57,13 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public int remove(Resource resource) throws NotEnoughResourceException, NotSameResourceException {
-        checkSameResource(resource);
-        if (amount < resource.getAmount()) {
-            throw new NotEnoughResourceException(this, resource.getAmount());
+    public int remove(Resource resource) throws NotEnoughResourceException {
+        if (isResourceType(resource)) {
+            if (amount < resource.getAmount()) {
+                throw new NotEnoughResourceException(this, resource.getAmount());
+            }
+            amount -= resource.getAmount();
         }
-        amount -= resource.getAmount();
         return amount;
     }
 
@@ -72,14 +73,16 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public void setAmount(Resource resource) throws NotSameResourceException {
-        checkSameResource(resource);
-        this.amount = resource.getAmount();
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmount(Resource resource) throws NotSameResourceException {
+        if (!isResourceType(resource)) {
+            throw new NotSameResourceException(this, resource);
+        }
+        this.amount = resource.getAmount();
     }
 
     @Override
@@ -88,15 +91,8 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public boolean canPay(Resource resource) throws NotSameResourceException {
-        checkSameResource(resource);
-        return this.amount >= resource.getAmount();
-    }
-
-    private void checkSameResource(Resource resource) throws NotSameResourceException {
-        if (this.getClass() != resource.getClass()) {
-            throw new NotSameResourceException(this, resource);
-        }
+    public boolean canPay(Resource resource) {
+        return isResourceType(resource) && this.amount >= resource.getAmount();
     }
 
     @Override

@@ -2,18 +2,24 @@ package at.ahammer.boardgame.api.resource;
 
 public class NotEnoughResourceException extends Exception {
 
-    private final Resource resource;
+    private final Class<? extends Resource> resource;
 
     private final int amountNeeded;
 
+    private final int amountAvailable;
+
     public NotEnoughResourceException(Resource resource, int amountNeeded) {
         super("not enough " + resource + ": need " + amountNeeded + " but only have " + resource.getAmount());
-        this.resource = resource;
+        this.resource = resource.getClass();
+        this.amountAvailable = resource.getAmount();
         this.amountNeeded = amountNeeded;
     }
 
-    public NotEnoughResourceException(Payment payment) {
-        this(payment.getResource(), payment.getAmount());
+    public NotEnoughResourceException(Payment payment, int amountAvailable) {
+        super("not enough " + payment.getResource() + " for payment: need " + payment.getAmount() + " but only have " + amountAvailable);
+        this.resource = payment.getResource().getClass();
+        this.amountNeeded = payment.getAmount();
+        this.amountAvailable = amountAvailable;
     }
 
     public static NotEnoughResourceException newNoResourceAvailable(Class<? extends Resource> type, int amountNeeded) {
@@ -28,7 +34,7 @@ public class NotEnoughResourceException extends Exception {
         return newNoResourceAvailable(payment.getResource().getClass(), payment.getAmount());
     }
 
-    public Resource getResource() {
+    public Class<? extends Resource> getResource() {
         return resource;
     }
 
@@ -37,6 +43,6 @@ public class NotEnoughResourceException extends Exception {
     }
 
     public int getAmountAvailable() {
-        return resource.getAmount();
+        return amountAvailable;
     }
 }

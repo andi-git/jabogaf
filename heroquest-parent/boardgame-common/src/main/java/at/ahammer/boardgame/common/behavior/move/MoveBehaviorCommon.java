@@ -6,6 +6,7 @@ import at.ahammer.boardgame.api.behavior.move.MoveBlock;
 import at.ahammer.boardgame.api.behavior.move.Moveable;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.common.board.layout.grid.GridLayout;
 import at.ahammer.boardgame.core.behavior.move.MoveBehaviorBasic;
 
@@ -34,7 +35,7 @@ public class MoveBehaviorCommon extends MoveBehaviorBasic {
     }
 
     @Override
-    public Set<Field> getMovableFields(Moveable moveable) {
+    public Set<Field> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
         throw new RuntimeException("not yet implemented");
     }
 

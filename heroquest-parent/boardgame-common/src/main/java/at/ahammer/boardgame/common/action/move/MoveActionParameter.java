@@ -1,7 +1,9 @@
 package at.ahammer.boardgame.common.action.move;
 
 import at.ahammer.boardgame.api.action.GameActionParameter;
+import at.ahammer.boardgame.api.behavior.move.Moveable;
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.api.subject.GameSubject;
 
 /**
@@ -10,6 +12,7 @@ import at.ahammer.boardgame.api.subject.GameSubject;
 public class MoveActionParameter implements GameActionParameter {
 
     private final GameSubject gameSubject;
+
     private final Field target;
 
     public MoveActionParameter(GameSubject gameSubject, Field target) {
@@ -18,6 +21,14 @@ public class MoveActionParameter implements GameActionParameter {
     }
 
     public GameSubject getGameSubject() {
+        return gameSubject;
+    }
+
+    public Moveable getMoveable() {
+        return gameSubject;
+    }
+
+    public ResourceHolder getResourceHolder() {
         return gameSubject;
     }
 

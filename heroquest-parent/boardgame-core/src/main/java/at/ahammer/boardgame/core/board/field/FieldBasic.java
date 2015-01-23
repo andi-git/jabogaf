@@ -6,8 +6,10 @@ import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.controller.PlayerController;
+import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
+import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -55,5 +57,10 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
     @Override
     public List<FieldGroup> getFieldsGroups() {
         return boardManager.getBoard().getLayout().getFieldsGroupsFor(this).stream().sorted().collect(Collectors.toList());
+    }
+
+    @Override
+    public Resource movementCost() {
+        return new MovePoint(1);
     }
 }

@@ -14,11 +14,11 @@ public interface Resource<T extends Resource> extends GameContextBean {
 
     int add(int add);
 
-    int add(Resource resource) throws NotSameResourceException;
+    int add(Resource resource);
 
     int remove(int remove) throws NotEnoughResourceException;
 
-    int remove(Resource resource) throws NotEnoughResourceException, NotSameResourceException;
+    int remove(Resource resource) throws NotEnoughResourceException;
 
     int getAmount();
 
@@ -28,7 +28,7 @@ public interface Resource<T extends Resource> extends GameContextBean {
 
     boolean canPay(int amount);
 
-    boolean canPay(Resource resource) throws NotSameResourceException;
+    boolean canPay(Resource resource);
 
     boolean isResourceType(Resource resource);
 

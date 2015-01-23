@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.api.behavior.move;
 
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
 
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public interface Moveable {
      * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#move(at.ahammer.boardgame.api.subject.SetterOfPosition,
      * at.ahammer.boardgame.api.board.field.Field)
      */
-    Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException;
+    Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException;
 
     /**
      * Check if the {@link at.ahammer.boardgame.api.behavior.move.Moveable} can move from the current {@code position}

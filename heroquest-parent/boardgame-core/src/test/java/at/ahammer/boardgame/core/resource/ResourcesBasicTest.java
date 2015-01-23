@@ -64,7 +64,7 @@ public class ResourcesBasicTest extends ArquillianGameContextTest {
         try {
             resources.remove(new ResourceStone(3));
         } catch (NotEnoughResourceException e) {
-            assertEquals(ResourceStone.class, e.getResource().getClass());
+            assertEquals(ResourceStone.class, e.getResource());
             assertEquals(3, e.getAmountNeeded());
             assertEquals(2, e.getAmountAvailable());
         }
@@ -72,7 +72,7 @@ public class ResourcesBasicTest extends ArquillianGameContextTest {
         try {
             resources.remove(new ResourceWood(1));
         } catch (NotEnoughResourceException e) {
-            assertEquals(ResourceWood.class, e.getResource().getClass());
+            assertEquals(ResourceWood.class, e.getResource());
             assertEquals(1, e.getAmountNeeded());
             assertEquals(0, e.getAmountAvailable());
         }
@@ -105,7 +105,7 @@ public class ResourcesBasicTest extends ArquillianGameContextTest {
         try {
             resources.pay(new ResourceStone(2).asPayment());
         } catch (NotEnoughResourceException e) {
-            assertEquals(ResourceStone.class, e.getResource().getClass());
+            assertEquals(ResourceStone.class, e.getResource());
             assertEquals(2, e.getAmountNeeded());
             assertEquals(0, e.getAmountAvailable());
         }

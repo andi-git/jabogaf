@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.api.board.field;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
 
 import java.util.List;
@@ -51,4 +52,6 @@ public interface Field extends GameContextBean {
      * where the current {@link at.ahammer.boardgame.api.board.field.Field} is located
      */
     List<FieldGroup> getFieldsGroups();
+
+    Resource movementCost();
 }

@@ -37,13 +37,8 @@ public class ResourceTest extends ArquillianGameContextTest {
         assertEquals(4, resource.getAmount());
         resource.add(new ResourceStone(2));
         assertEquals(6, resource.getAmount());
-        try {
-            resource.add(new ResourceWood(2));
-            fail("should throw exception");
-        } catch (NotSameResourceException e) {
-            assertEquals(ResourceWood.class, e.getResourceAvailable().getClass());
-            assertEquals(ResourceStone.class, e.getResourceExpected().getClass());
-        }
+        resource.add(new ResourceWood(2));
+        assertEquals(6, resource.getAmount());
     }
 
     @Test
@@ -58,17 +53,12 @@ public class ResourceTest extends ArquillianGameContextTest {
             resource.remove(3);
             fail("should throw exception");
         } catch (NotEnoughResourceException e) {
-            assertEquals(ResourceStone.class, e.getResource().getClass());
+            assertEquals(ResourceStone.class, e.getResource());
             assertEquals(2, e.getAmountAvailable());
             assertEquals(3, e.getAmountNeeded());
         }
-        try {
-            resource.remove(new ResourceWood(2));
-            fail("should throw exception");
-        } catch (NotSameResourceException e) {
-            assertEquals(ResourceWood.class, e.getResourceAvailable().getClass());
-            assertEquals(ResourceStone.class, e.getResourceExpected().getClass());
-        }
+        resource.remove(new ResourceWood(2));
+        assertEquals(2, resource.getAmount());
     }
 
     @Test
@@ -92,13 +82,7 @@ public class ResourceTest extends ArquillianGameContextTest {
         assertFalse(resource.canPay(3));
         assertTrue(resource.canPay(new ResourceStone(2)));
         assertFalse(resource.canPay(new ResourceStone(3)));
-        try {
-            resource.canPay(new ResourceWood(2));
-            fail("should throw exception");
-        } catch (NotSameResourceException e) {
-            assertEquals(ResourceWood.class, e.getResourceAvailable().getClass());
-            assertEquals(ResourceStone.class, e.getResourceExpected().getClass());
-        }
+        assertFalse(resource.canPay(new ResourceWood(2)));
     }
 
     @Test

@@ -57,8 +57,8 @@ public class MoveAction implements GameAction<MoveActionParameter> {
                         throw new ActionNotPossibleException(gameSubject + " is not the current player (" + playerController.getCurrentPlayer() + ")");
                     }
                 }).addPerform(() -> {
-                    log.info("move {} to {}", gameSubject, target);
-                    gameSubject.move(target);
+                    log.info("move " + moveActionParameter.getMoveable() + " from "  + moveActionParameter.getMoveable().getPosition() + " to " + target);
+                    moveActionParameter.getMoveable().move(target);
                 }).addBeforeActionEventCreation(() -> {
                     log.info("fire {}", BeforeMoveActionEvent.class);
                     return new BeforeMoveActionEvent(moveActionParameter);

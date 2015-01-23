@@ -10,10 +10,7 @@ import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
-import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
-import at.ahammer.boardgame.api.resource.Payment;
-import at.ahammer.boardgame.api.resource.Resource;
-import at.ahammer.boardgame.api.resource.Resources;
+import at.ahammer.boardgame.api.resource.*;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.api.subject.artifact.ArtifactHolder;
@@ -177,18 +174,18 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException {
-        return moveBehavior.move(this, getSetterOfPosition(), target);
+    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        return moveBehavior.move(this, getSetterOfPosition(), target, this);
     }
 
     @Override
     public boolean canMove(Field target) {
-        return moveBehavior.canMove(this, target);
+        return moveBehavior.canMove(this, target, this);
     }
 
     @Override
     public Set<Field> getMovableFields() {
-        return moveBehavior.getMovableFields(this);
+        return moveBehavior.getMovableFields(this, this);
     }
 
     @Override
