@@ -13,6 +13,7 @@ import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -57,6 +58,16 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
     @Override
     public List<FieldGroup> getFieldsGroups() {
         return boardManager.getBoard().getLayout().getFieldsGroupsFor(this).stream().sorted().collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Field> getConnectedFields() {
+        return boardManager.getBoard().getLayout().getConnectedFields(this);
+    }
+
+    @Override
+    public Set<FieldConnection> getFieldConnections() {
+        return boardManager.getBoard().getLayout().getFieldConnections(this);
     }
 
     @Override

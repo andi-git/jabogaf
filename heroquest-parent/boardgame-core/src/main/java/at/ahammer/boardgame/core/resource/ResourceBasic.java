@@ -8,21 +8,19 @@ import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-/**
- * A resource that can be hold by a {@link at.ahammer.boardgame.api.resource.ResourceHolder} and used by a {@link
- * at.ahammer.boardgame.api.resource.Payment}.
- */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class ResourceBasic<T extends Resource> extends GameContextBeanBasic implements Resource<T> {
 
-    private int amount;
+    private final int amount;
 
     @Inject
     private Logger log;
 
     protected ResourceBasic() {
-        super();
+        this(0);
     }
 
     protected ResourceBasic(int amount) {
@@ -34,37 +32,35 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public int add(int add) {
-        amount += add;
-        return amount;
+    public Resource add(int add) {
+        return newInstance(amount + add);
     }
 
     @Override
-    public int add(Resource resource) {
+    public T add(Resource resource) {
         if (isResourceType(resource)) {
-            amount += resource.getAmount();
+            return newInstance(amount + resource.getAmount());
         }
-        return amount;
+        return clone();
     }
 
     @Override
-    public int remove(int remove) throws NotEnoughResourceException {
+    public Resource remove(int remove) throws NotEnoughResourceException {
         if (amount < remove) {
             throw new NotEnoughResourceException(this, remove);
         }
-        amount -= remove;
-        return amount;
+        return newInstance(amount - remove);
     }
 
     @Override
-    public int remove(Resource resource) throws NotEnoughResourceException {
+    public T remove(Resource resource) throws NotEnoughResourceException {
         if (isResourceType(resource)) {
             if (amount < resource.getAmount()) {
                 throw new NotEnoughResourceException(this, resource.getAmount());
             }
-            amount -= resource.getAmount();
+            return newInstance(amount - resource.getAmount());
         }
-        return amount;
+        return clone();
     }
 
     @Override
@@ -73,16 +69,16 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public Resource setAmount(int amount) {
+        return newInstance(amount);
     }
 
     @Override
-    public void setAmount(Resource resource) throws NotSameResourceException {
+    public Resource setAmount(Resource resource) throws NotSameResourceException {
         if (!isResourceType(resource)) {
             throw new NotSameResourceException(this, resource);
         }
-        this.amount = resource.getAmount();
+        return newInstance(resource.getAmount());
     }
 
     @Override
@@ -109,20 +105,68 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
         return this.getClass() == resource;
     }
 
-    public T clone() {
-        T clone = null;
+    public T newInstance(int amount) {
+        T newInstance = null;
         try {
-            clone = (T) getClass().newInstance();
-            clone.setAmount(getAmount());
+            Constructor constructor = getClass().getDeclaredConstructor(int.class);
+            newInstance = (T) constructor.newInstance(amount);
         } catch (InstantiationException e) {
             log.error(e.getMessage(), e);
         } catch (IllegalAccessException e) {
             log.error(e.getMessage(), e);
+        } catch (NoSuchMethodException e) {
+            log.error(e.getMessage(), e);
+        } catch (InvocationTargetException e) {
+            log.error(e.getMessage(), e);
         }
-        return clone;
+        return newInstance;
+    }
+
+    public T clone() {
+        return newInstance(amount);
     }
 
     public Payment asPayment() {
-        return new PaymentBasic(this.clone());
+        return new PaymentBasic(clone());
+    }
+
+    @Override
+    public boolean sameAmount(Resource resource) {
+        if (isResourceType(resource)) {
+            return amount == resource.getAmount();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean greater(Resource resource) {
+        if (isResourceType(resource)) {
+            return amount > resource.getAmount();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean greaterEquals(Resource resource) {
+        if (isResourceType(resource)) {
+            return amount >= resource.getAmount();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean lesser(Resource resource) {
+        if (isResourceType(resource)) {
+            return amount < resource.getAmount();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean lesserEquals(Resource resource) {
+        if (isResourceType(resource)) {
+            return amount <= resource.getAmount();
+        }
+        return false;
     }
 }

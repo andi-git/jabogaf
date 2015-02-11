@@ -32,4 +32,6 @@ public interface FieldConnection extends GameContextBean {
     Field getRightHand();
 
     Field getLeftHand();
+
+    boolean contains(Field field);
 }

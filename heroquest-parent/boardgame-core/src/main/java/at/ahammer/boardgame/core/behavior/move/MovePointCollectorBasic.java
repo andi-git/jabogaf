@@ -17,9 +17,17 @@ public class MovePointCollectorBasic implements MovePointCollector {
 
     @Override
     public Resource collect(Moveable moveable, Field target) {
-        Resource movePoints = new MovePoint();
-        boardManager.getAllFieldConnectionObjects(moveable.getPosition(), target).stream().forEach(fco -> movePoints.add(fco.movementCost()));
-        movePoints.add(target.movementCost());
-        return movePoints;
+        return collect(moveable.getPosition(), target);
+    }
+
+    @Override
+    public Resource collect(Field position, Field target) {
+        if (!position.isConnected(target)) {
+            throw new IllegalStateException(position + " and" + target + " are not connected");
+        }
+        return new MovePoint(
+                boardManager.getAllFieldConnectionObjects(position, target).stream().mapToInt(fco -> fco.movementCost().getAmount()).sum() +
+                        target.movementCost().getAmount()
+        );
     }
 }

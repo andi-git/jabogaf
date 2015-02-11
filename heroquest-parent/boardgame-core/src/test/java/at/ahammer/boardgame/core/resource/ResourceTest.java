@@ -33,42 +33,42 @@ public class ResourceTest extends ArquillianGameContextTest {
     @Test
     public void testAdd() throws Exception {
         assertEquals(2, resource.getAmount());
-        resource.add(2);
+        resource = resource.add(2);
         assertEquals(4, resource.getAmount());
-        resource.add(new ResourceStone(2));
+        resource = resource.add(new ResourceStone(2));
         assertEquals(6, resource.getAmount());
-        resource.add(new ResourceWood(2));
+        resource = resource.add(new ResourceWood(2));
         assertEquals(6, resource.getAmount());
     }
 
     @Test
     public void testRemove() throws Exception {
-        resource.setAmount(4);
+        resource = resource.setAmount(4);
         assertEquals(4, resource.getAmount());
-        resource.remove(1);
+        resource = resource.remove(1);
         assertEquals(3, resource.getAmount());
-        resource.remove(new ResourceStone(1));
+        resource = resource.remove(new ResourceStone(1));
         assertEquals(2, resource.getAmount());
         try {
-            resource.remove(3);
+            resource = resource.remove(3);
             fail("should throw exception");
         } catch (NotEnoughResourceException e) {
             assertEquals(ResourceStone.class, e.getResource());
             assertEquals(2, e.getAmountAvailable());
             assertEquals(3, e.getAmountNeeded());
         }
-        resource.remove(new ResourceWood(2));
+        resource = resource.remove(new ResourceWood(2));
         assertEquals(2, resource.getAmount());
     }
 
     @Test
     public void testSetAmount() throws Exception {
-        resource.setAmount(4);
+        resource = resource.setAmount(4);
         assertEquals(4, resource.getAmount());
-        resource.setAmount(new ResourceStone(6));
+        resource = resource.setAmount(new ResourceStone(6));
         assertEquals(6, resource.getAmount());
         try {
-            resource.setAmount(new ResourceWood(8));
+            resource = resource.setAmount(new ResourceWood(8));
             fail("should throw exception");
         } catch (NotSameResourceException e) {
             assertEquals(ResourceWood.class, e.getResourceAvailable().getClass());

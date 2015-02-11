@@ -58,7 +58,7 @@ public class MoveAction implements GameAction<MoveActionParameter> {
                     }
                 }).addPerform(() -> {
                     log.info("move " + moveActionParameter.getMoveable() + " from "  + moveActionParameter.getMoveable().getPosition() + " to " + target);
-                    moveActionParameter.getMoveable().move(target);
+                    gameSubject.move(target);
                 }).addBeforeActionEventCreation(() -> {
                     log.info("fire {}", BeforeMoveActionEvent.class);
                     return new BeforeMoveActionEvent(moveActionParameter);

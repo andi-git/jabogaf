@@ -6,9 +6,7 @@ import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 
-import javax.inject.Inject;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -71,4 +69,26 @@ public interface Layout extends GameContextBean {
      * assigned {@link at.ahammer.boardgame.api.board.field.Field} is located
      */
     Set<FieldGroup> getFieldsGroupsFor(Field field);
+
+    /**
+     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
+     * at.ahammer.boardgame.api.board.field.Field} is included.
+     *
+     * @param field the {@link at.ahammer.boardgame.api.board.field.Field} to get all {@link
+     *              at.ahammer.boardgame.api.board.field.FieldConnection}s of
+     * @return all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
+     * at.ahammer.boardgame.api.board.field.Field} is included
+     */
+    Set<FieldConnection> getFieldConnections(Field field);
+
+    /**
+     * Get all connected {@link at.ahammer.boardgame.api.board.field.Field} of an assigned {@link
+     * at.ahammer.boardgame.api.board.field.Field}.
+     *
+     * @param field the {@link at.ahammer.boardgame.api.board.field.Field} to get all connected {@link
+     *              at.ahammer.boardgame.api.board.field.Field}s of
+     * @return all connected {@link at.ahammer.boardgame.api.board.field.Field} of an assigned {@link
+     * at.ahammer.boardgame.api.board.field.Field}
+     */
+    Set<Field> getConnectedFields(Field field);
 }

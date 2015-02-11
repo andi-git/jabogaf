@@ -1,9 +1,6 @@
 package at.ahammer.boardgame.core.behavior.move;
 
-import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
-import at.ahammer.boardgame.api.behavior.move.MoveBlock;
-import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
-import at.ahammer.boardgame.api.behavior.move.Moveable;
+import at.ahammer.boardgame.api.behavior.move.*;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
@@ -22,6 +19,7 @@ import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -44,15 +42,24 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
 
     private Field field1, field2, field3;
 
+    private Field field5, field6, field7, field8;
+
     private MyGameSubject gameSubject;
+
+    private MovePath movePath;
 
     @BeforeInGameContext
     public void before() {
         field1 = new Field1();
         field2 = new Field2();
         field3 = new Field3();
-        gameSubject = new MyGameSubject("myMoveable", field1);
+        gameSubject = new MyGameSubject("myMoveable", field1, moveBehavior);
         gameSubject.earn(new MovePoint(10).asPayment());
+        field5 = new Field5();
+        field6 = new Field6();
+        field7 = new Field7();
+        field8 = new Field8();
+        movePath = new MovePathBasic(field5, field6, field7, field8);
     }
 
     @Test
@@ -61,14 +68,29 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
         assertTrue(moveBehavior.canMove(gameSubject, field2, gameSubject));
 
         assertFalse(moveBehavior.canMove(null, field2, gameSubject));
-        assertFalse(moveBehavior.canMove(gameSubject, null, gameSubject));
         assertFalse(moveBehavior.canMove(gameSubject, field2, null));
 
         moveBehavior.setMoveBlocks((m, t) -> true);
         assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject));
 
-        gameSubject.pay(new MovePoint(gameSubject.amountOf(MovePoint.class)).asPayment());
+        gameSubject.setResource(new MovePoint(0));
         assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject));
+    }
+
+    @Test
+    public void testCanMovePath() throws Exception {
+        gameSubject.getSetterOfPosition().setPosition(field5);
+        moveBehavior.setMoveBlocks((m, t) -> false);
+        assertTrue(moveBehavior.canMove(gameSubject, movePath, gameSubject));
+
+        assertFalse(moveBehavior.canMove(null, movePath, gameSubject));
+        assertFalse(moveBehavior.canMove(gameSubject, movePath, null));
+
+        moveBehavior.setMoveBlocks((m, t) -> true);
+        assertFalse(moveBehavior.canMove(gameSubject, movePath, gameSubject));
+
+        gameSubject.setResource(new MovePoint(2));
+        assertFalse(moveBehavior.canMove(gameSubject, movePath, gameSubject));
     }
 
     @Test
@@ -81,6 +103,16 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
         assertEquals(field1, moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), field1, gameSubject));
         assertEquals(field1, gameSubject.getPosition());
         assertEquals(6, gameSubject.amountOf(MovePoint.class));
+    }
+
+    @Test
+    public void testMovePathOk() throws Exception {
+        gameSubject.getSetterOfPosition().setPosition(field5);
+        assertEquals(10, gameSubject.amountOf(MovePoint.class));
+        moveBehavior.setMoveBlocks((m, t) -> false);
+        moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), movePath, gameSubject);
+        assertEquals(field8, gameSubject.getPosition());
+        assertEquals(7, gameSubject.amountOf(MovePoint.class));
     }
 
     @Test
@@ -107,24 +139,22 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
     @Test(expected = NotEnoughResourceException.class)
     public void testMoveNoMovePoints() throws NotEnoughResourceException, FieldsNotConnectedException, MoveNotPossibleException {
         moveBehavior.setMoveBlocks((m, t) -> false);
-        gameSubject.pay(new MovePoint(gameSubject.amountOf(MovePoint.class)).asPayment());
-        assertEquals(field2, moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), field2, gameSubject));
+        gameSubject.setResource(new MovePoint(0));
+        moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), field2, gameSubject);
+    }
+
+    @Test(expected = NotEnoughResourceException.class)
+    public void testMovePathNoMovePoints() throws NotEnoughResourceException, FieldsNotConnectedException, MoveNotPossibleException {
+        gameSubject.getSetterOfPosition().setPosition(field5);
+        gameSubject.setResource(new MovePoint(0));
+        moveBehavior.setMoveBlocks((m, t) -> false);
+        moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), movePath, gameSubject);
     }
 
     @ApplicationScoped
     public static class MoveBehaviorDummy extends MoveBehaviorBasic {
 
         private Set<MoveBlock> moveBlocks = new HashSet<>();
-
-        @Override
-        public Set<Field> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
-            return null;
-        }
-
-        @Override
-        public boolean canBeUsedOn(Layout layout) {
-            return false;
-        }
 
         @Override
         public Set<MoveBlock> getMoveBlocks() {
@@ -180,6 +210,54 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
         }
     }
 
+    private static class Field5 extends FieldBasic {
+
+        public Field5() {
+            super("field5");
+        }
+
+        @Override
+        public boolean isConnected(Field target) {
+            return "field6".equals(target.getId());
+        }
+    }
+
+    private static class Field6 extends FieldBasic {
+
+        public Field6() {
+            super("field6");
+        }
+
+        @Override
+        public boolean isConnected(Field target) {
+            return "field5".equals(target.getId()) || "field7".equals(target.getId());
+        }
+    }
+
+    private static class Field7 extends FieldBasic {
+
+        public Field7() {
+            super("field7");
+        }
+
+        @Override
+        public boolean isConnected(Field target) {
+            return "field6".equals(target.getId()) || "field8".equals(target.getId());
+        }
+    }
+
+    private static class Field8 extends FieldBasic {
+
+        public Field8() {
+            super("field8");
+        }
+
+        @Override
+        public boolean isConnected(Field target) {
+            return "field7".equals(target.getId());
+        }
+    }
+
     private static class MoveBlock1 implements MoveBlock {
 
         @Override
@@ -198,8 +276,8 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
 
     private class MyGameSubject extends GameSubjectBasic {
 
-        public MyGameSubject(String id, Field position) {
-            super(id, position);
+        public MyGameSubject(String id, Field position, MoveBehavior moveBehavior) {
+            super(id, position, moveBehavior, null);
         }
 
         @Override

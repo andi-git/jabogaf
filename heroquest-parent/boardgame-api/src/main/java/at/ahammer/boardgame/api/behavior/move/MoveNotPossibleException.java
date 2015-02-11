@@ -15,6 +15,10 @@ public class MoveNotPossibleException extends Exception {
         super(message);
     }
 
+    public MoveNotPossibleException() {
+        super("move is not possible");
+    }
+
     public MoveNotPossibleException(Set<MoveBlock> moveBlocks) {
         super("move is blocked by: " + new MoveBlockCollection(moveBlocks).toString());
         this.moveBlocks.addAll(moveBlocks);

@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * A basic class for a field in the game, which represents a unit where a {@link at.ahammer.boardgame.api.subject.GameSubject}
@@ -52,6 +53,22 @@ public interface Field extends GameContextBean {
      * where the current {@link at.ahammer.boardgame.api.board.field.Field} is located
      */
     List<FieldGroup> getFieldsGroups();
+
+    /**
+     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
+     * at.ahammer.boardgame.api.board.field.Field} is included.
+     *
+     * @return all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
+     * at.ahammer.boardgame.api.board.field.Field} is included
+     */
+    Set<FieldConnection> getFieldConnections();
+
+    /**
+     * Get all connected {@link at.ahammer.boardgame.api.board.field.Field}s.
+     *
+     * @return all connected {@link at.ahammer.boardgame.api.board.field.Field}s
+     */
+    Set<Field> getConnectedFields();
 
     Resource movementCost();
 }

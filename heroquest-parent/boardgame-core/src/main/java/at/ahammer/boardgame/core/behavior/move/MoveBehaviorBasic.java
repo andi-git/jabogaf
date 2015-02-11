@@ -5,11 +5,13 @@ import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
+import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,9 +27,31 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     @Inject
     private MovePointCollector movePointCollector;
 
+    @Inject
+    private MoveableFieldsCollector moveableFieldsCollector;
+
     @Override
     public boolean canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
         return checkMoveBlock(moveable, target, getMoveBlocks()) && checkResources(moveable, target, resourceHolder);
+    }
+
+    @Override
+    public boolean canMove(Moveable moveable, MovePath movePath, ResourceHolder resourceHolder) {
+        if (moveable == null || movePath == null || resourceHolder == null) {
+            return false;
+        }
+        Moveable testMoveable = moveable.cloneMoveable();
+        ResourceHolder testResourceHolder = resourceHolder.cloneResourceHolder();
+        boolean canMove = true;
+        for (Field field : movePath.getPathFields()) {
+            try {
+                testMoveable.move(field, testResourceHolder);
+            } catch (Exception e) {
+                canMove = false;
+                break;
+            }
+        }
+        return canMove;
     }
 
     @Override
@@ -49,16 +73,31 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     }
 
     @Override
-    public abstract Set<Field> getMovableFields(Moveable moveable, ResourceHolder resourceHolder);
-
-    @Override
-    public Set<Field> getMoveableFieldsForCurrent() {
-        return getMovableFields(playerController.getCurrentPlayer(), playerController.getCurrentPlayer());
+    public Field move(Moveable moveable, SetterOfPosition setterOfPosition, MovePath movePath, ResourceHolder resourceHolder) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        if (canMove(moveable, movePath, resourceHolder)) {
+            resourceHolder.pay(movePath.cost().asPayment());
+            setterOfPosition.setPosition(movePath.getTarget());
+            return movePath.getTarget();
+        } else if (!resourceHolder.canPay(movePath.cost().asPayment())) {
+            throw new NotEnoughResourceException(resourceHolder.get(MovePoint.class), movePath.cost().getAmount());
+        } else {
+            throw new MoveNotPossibleException();
+        }
     }
 
     @Override
-    public boolean canBeUsedOnLayout() {
-        return canBeUsedOn(boardManager.getBoard().getLayout());
+    public Map<Field, MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
+        return moveableFieldsCollector.getMovableFields(moveable, resourceHolder);
+    }
+
+    @Override
+    public MovePath getShortestPath(Moveable moveable, Field target) {
+        return null;
+    }
+
+    @Override
+    public Map<Field, MovePath> getMoveableFieldsForCurrent() {
+        return getMovableFields(playerController.getCurrentPlayer(), playerController.getCurrentPlayer());
     }
 
     protected boolean checkResources(Moveable moveable, Field target, ResourceHolder resourceHolder) {

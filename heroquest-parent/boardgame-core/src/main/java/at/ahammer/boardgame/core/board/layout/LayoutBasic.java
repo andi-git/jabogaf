@@ -8,7 +8,6 @@ import at.ahammer.boardgame.api.board.layout.FunctionGetAllGameObjectsOf;
 import at.ahammer.boardgame.api.board.layout.FunctionGetConnection;
 import at.ahammer.boardgame.api.board.layout.FunctionIsConnected;
 import at.ahammer.boardgame.api.board.layout.Layout;
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 
 import javax.inject.Inject;
@@ -101,5 +100,21 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     @Override
     public Set<FieldGroup> getFieldsGroupsFor(Field field) {
         return fieldGroups.stream().filter(fg -> fg.contains(field)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Field> getConnectedFields(Field field) {
+        return getFieldConnections(field).stream().map(fc -> {
+            if (fc.getLeftHand().equals(field)) {
+                return fc.getRightHand();
+            } else {
+                return fc.getLeftHand();
+            }
+        }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<FieldConnection> getFieldConnections(Field field) {
+        return fieldConnections.stream().filter(fc -> fc.contains(field)).collect(Collectors.toSet());
     }
 }

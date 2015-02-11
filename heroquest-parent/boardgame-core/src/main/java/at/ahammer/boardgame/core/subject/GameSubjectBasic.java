@@ -3,10 +3,7 @@ package at.ahammer.boardgame.core.subject;
 import at.ahammer.boardgame.api.artifact.Artifact;
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.look.LookBehaviorType;
-import at.ahammer.boardgame.api.behavior.move.FieldsNotConnectedException;
-import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
-import at.ahammer.boardgame.api.behavior.move.MoveBehaviorType;
-import at.ahammer.boardgame.api.behavior.move.MoveNotPossibleException;
+import at.ahammer.boardgame.api.behavior.move.*;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
@@ -20,6 +17,7 @@ import at.ahammer.boardgame.api.subject.hand.Hand;
 import at.ahammer.boardgame.core.behavior.look.LookBehaviorNull;
 import at.ahammer.boardgame.core.behavior.move.MoveBehaviorNull;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
+import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.resource.ResourcesBasic;
 import at.ahammer.boardgame.core.subject.artifact.ArtifactHolderBasic;
 
@@ -27,6 +25,7 @@ import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -174,18 +173,43 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
-        return moveBehavior.move(this, getSetterOfPosition(), target, this);
+    public Field move(Field target, ResourceHolder resourceHolder) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        return moveBehavior.move(this, getSetterOfPosition(), target, resourceHolder);
     }
 
     @Override
-    public boolean canMove(Field target) {
-        return moveBehavior.canMove(this, target, this);
+    public Field move(MovePath movePath, ResourceHolder resourceHolder) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        return moveBehavior.move(this, getSetterOfPosition(), movePath, resourceHolder);
     }
 
     @Override
-    public Set<Field> getMovableFields() {
+    public boolean canMove(Field target, ResourceHolder resourceHolder) {
+        return moveBehavior.canMove(this, target, resourceHolder);
+    }
+
+    @Override
+    public boolean canMove(MovePath movePath, ResourceHolder resourceHolder) {
+        return moveBehavior.canMove(this, movePath, resourceHolder);
+    }
+
+    @Override
+    public Map<Field, MovePath> getMovableFields() {
         return moveBehavior.getMovableFields(this, this);
+    }
+
+    @Override
+    public Moveable cloneMoveable() {
+        return new GameSubjectBasic(getId() + System.currentTimeMillis(), getPosition(), getMoveBehavior(), getLookBehavior());
+    }
+
+    @Override
+    public Resource get(Class<? extends Resource> type) {
+        return resources.get(type);
+    }
+
+    @Override
+    public void setResource(Resource resource) {
+        resources.setResource(resource);
     }
 
     @Override
@@ -221,5 +245,30 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     @Override
     public List<Resource> getSortedResources(Comparator<? super Resource> comparator) {
         return resources.getSortedResources(comparator);
+    }
+
+    @Override
+    public ResourceHolder cloneResourceHolder() {
+        return resources.cloneResourceHolder();
+    }
+
+    @Override
+    public Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        return moveBehavior.move(this, getSetterOfPosition(), target, this);
+    }
+
+    @Override
+    public Field move(MovePath movePath) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException {
+        return moveBehavior.move(this, getSetterOfPosition(), movePath, this);
+    }
+
+    @Override
+    public boolean canMove(Field target) {
+        return moveBehavior.canMove(this, target, this);
+    }
+
+    @Override
+    public boolean canMove(MovePath movePath) {
+        return moveBehavior.canMove(this, movePath, this);
     }
 }

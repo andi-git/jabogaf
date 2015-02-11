@@ -9,6 +9,10 @@ import java.util.Set;
  */
 public interface ResourceHolder {
 
+    Resource get(Class<? extends Resource> type);
+
+    void setResource(Resource resource);
+
     boolean canPay(Payment payment);
 
     void pay(Payment payment) throws NotEnoughResourceException;
@@ -22,4 +26,6 @@ public interface ResourceHolder {
     List<Resource> getSortedResources();
 
     List<Resource> getSortedResources(Comparator<? super Resource> comparator);
+
+    ResourceHolder cloneResourceHolder();
 }

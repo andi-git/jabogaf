@@ -10,4 +10,6 @@ import at.ahammer.boardgame.api.resource.Resource;
 public interface MovePointCollector {
 
     Resource collect(Moveable moveable, Field target);
+
+    Resource collect(Field position, Field target);
 }

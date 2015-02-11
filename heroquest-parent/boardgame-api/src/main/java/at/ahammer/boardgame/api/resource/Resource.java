@@ -1,30 +1,28 @@
 package at.ahammer.boardgame.api.resource;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
 
 /**
  * A resource that can be hold by a {@link at.ahammer.boardgame.api.resource.ResourceHolder} and used by a {@link
  * at.ahammer.boardgame.api.resource.Payment}.
+ * <p/>
+ * This class is immutable.
  */
 public interface Resource<T extends Resource> extends GameContextBean {
 
-    int add(int add);
+    Resource add(int add);
 
-    int add(Resource resource);
+    Resource add(Resource resource);
 
-    int remove(int remove) throws NotEnoughResourceException;
+    Resource remove(int remove) throws NotEnoughResourceException;
 
-    int remove(Resource resource) throws NotEnoughResourceException;
+    Resource remove(Resource resource) throws NotEnoughResourceException;
 
     int getAmount();
 
-    void setAmount(Resource resource) throws NotSameResourceException;
+    Resource setAmount(int amount);
 
-    void setAmount(int amount);
+    Resource setAmount(Resource resource) throws NotSameResourceException;
 
     boolean canPay(int amount);
 
@@ -37,4 +35,14 @@ public interface Resource<T extends Resource> extends GameContextBean {
     T clone();
 
     Payment asPayment();
+
+    boolean sameAmount(Resource resource);
+
+    boolean greater(Resource resource);
+
+    boolean greaterEquals(Resource resource);
+
+    boolean lesser(Resource resource);
+
+    boolean lesserEquals(Resource resource);
 }

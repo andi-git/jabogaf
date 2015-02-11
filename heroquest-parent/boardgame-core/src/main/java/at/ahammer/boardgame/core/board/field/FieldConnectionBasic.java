@@ -74,4 +74,9 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
     public Field getLeftHand() {
         return leftHand != null ? leftHand : new FieldNull();
     }
+
+    @Override
+    public boolean contains(Field field) {
+        return leftHand.equals(field) || rightHand.equals(field);
+    }
 }

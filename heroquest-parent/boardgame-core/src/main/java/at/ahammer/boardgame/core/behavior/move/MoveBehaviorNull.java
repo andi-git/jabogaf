@@ -15,16 +15,6 @@ import java.util.*;
 public class MoveBehaviorNull extends MoveBehaviorBasic {
 
     @Override
-    public Set<Field> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
-        return Collections.unmodifiableSet(new HashSet<>());
-    }
-
-    @Override
-    public boolean canBeUsedOn(Layout layout) {
-        return false;
-    }
-
-    @Override
     public Set<MoveBlock> getMoveBlocks() {
         return Collections.unmodifiableSet(new HashSet<>());
     }
