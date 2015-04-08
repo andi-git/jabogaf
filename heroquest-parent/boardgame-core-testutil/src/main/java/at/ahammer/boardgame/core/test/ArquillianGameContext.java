@@ -78,7 +78,7 @@ public class ArquillianGameContext extends Arquillian {
                             if (test instanceof ArquillianGameContextTest) {
                                 ArquillianGameContextTest arquillianGameContextTest = (ArquillianGameContextTest) test;
                                 // activate alternatives
-                                log.info("alternatives from annotation: " + getAlternativesToActivate());
+                                log.debug("alternatives from annotation: " + getAlternativesToActivate());
                                 arquillianGameContextTest.getAlternativesInGameContext().addAll(getAlternativesToActivate());
                                 // it the test-class is an instance of ArquillianGameContextTest, then start a new GameContext
                                 arquillianGameContextTest.getGameContextManager().runInGameContext(arquillianGameContextTest.getBeanManager(), (gameContextId) -> {
