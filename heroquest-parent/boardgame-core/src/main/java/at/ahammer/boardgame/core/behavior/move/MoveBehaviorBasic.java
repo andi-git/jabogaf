@@ -5,12 +5,12 @@ import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
-import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,8 +31,15 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     private MoveableFieldsCollector moveableFieldsCollector;
 
     @Override
-    public boolean canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
-        return checkMoveBlock(moveable, target, getMoveBlocks()) && checkResources(moveable, target, resourceHolder);
+    public CanMoveReport canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
+        if (moveable == null || target == null || resourceHolder == null) {
+            return new CanMoveReportBasic.CanMoveReportBuilder().buildNull();
+        }
+        return new CanMoveReportBasic.CanMoveReportBuilder().
+                setCost(movePointCollector.collect(moveable, target)).
+                setMaxPayment(resourceHolder.get(MovePoint.class)).
+                setMoveBlocks(checkMoveBlocks(moveable, target, getMoveBlocks())).
+                build();
     }
 
     @Override
@@ -59,16 +66,17 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
         if (!moveable.getPosition().isConnected(target)) {
             throw new FieldsNotConnectedException(moveable.getPosition(), target);
         }
-        if (canMove(moveable, target, resourceHolder)) {
+        CanMoveReport canMoveReport = canMove(moveable, target, resourceHolder);
+        if (canMoveReport.isPossible()) {
             resourceHolder.pay(movePointCollector.collect(moveable, target).asPayment());
             setterOfPosition.setPosition(target);
             return target;
+        } else if (!canMoveReport.canPay()) {
+            throw new NotEnoughResourceException(movePointCollector.collect(moveable, target).asPayment(), resourceHolder.amountOf(MovePoint.class));
+        } else if (canMoveReport.isBlocked()) {
+            throw new MoveNotPossibleException(getMoveBlocks().stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet()));
         } else {
-            if (!checkResources(moveable, target, resourceHolder)) {
-                throw new NotEnoughResourceException(movePointCollector.collect(moveable, target).asPayment(), resourceHolder.amountOf(MovePoint.class));
-            } else {
-                throw new MoveNotPossibleException(getMoveBlocks().stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet()));
-            }
+            throw new MoveNotPossibleException("move is not possible - unknown reason");
         }
     }
 
@@ -86,17 +94,17 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     }
 
     @Override
-    public Map<Field, MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
+    public List<MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
         return moveableFieldsCollector.getMovableFields(moveable, resourceHolder);
     }
 
     @Override
-    public MovePath getShortestPath(Moveable moveable, Field target) {
-        return null;
+    public MovePath getShortestPath(Moveable moveable, Field target, ResourceHolder resourceHolder) {
+        return getMovableFields(moveable, resourceHolder).stream().filter(mp -> mp.getTarget().equals(target)).findFirst().get();
     }
 
     @Override
-    public Map<Field, MovePath> getMoveableFieldsForCurrent() {
+    public List<MovePath> getMoveableFieldsForCurrent() {
         return getMovableFields(playerController.getCurrentPlayer(), playerController.getCurrentPlayer());
     }
 
@@ -106,6 +114,11 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
         }
         return resourceHolder.canPay(movePointCollector.collect(moveable, target).asPayment());
     }
+
+    protected Set<MoveBlock> checkMoveBlocks(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
+        return moveBlocks.stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet());
+    }
+
 
     protected boolean checkMoveBlock(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
         if (moveable == null || target == null) {

@@ -1,11 +1,13 @@
 package at.ahammer.boardgame.common.behavior.move;
 
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
+import at.ahammer.boardgame.api.behavior.move.CanMoveReport;
 import at.ahammer.boardgame.api.behavior.move.MoveBehavior;
 import at.ahammer.boardgame.api.behavior.move.MoveBehaviorType;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
+import at.ahammer.boardgame.core.behavior.move.CanMoveReportBasic;
 import at.ahammer.boardgame.core.subject.GameSubjectBasic;
 
 import javax.inject.Inject;
@@ -25,8 +27,8 @@ public class GameSubjectForMovement extends GameSubjectBasic {
     }
 
     @Override
-    public boolean canMove(Field target) {
-        return true;
+    public CanMoveReport canMove(Field target) {
+        return new CanMoveReportBasic.CanMoveReportBuilder().buildDefault();
     }
 
     @Override

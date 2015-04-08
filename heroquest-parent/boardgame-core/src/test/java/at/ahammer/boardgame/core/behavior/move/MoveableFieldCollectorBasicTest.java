@@ -24,10 +24,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -129,7 +126,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
 
     @Test
     public void testGetMovableFields2x2() throws Exception {
-        Map<Field, MovePath> movePaths;
+        List<MovePath> movePaths;
         createLayout(2, 2, 0, 0, 10);
 
         movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
@@ -162,7 +159,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
 
     @Test
     public void testGetMovableFields3x3() throws Exception {
-        Map<Field, MovePath> movePaths;
+        List<MovePath> movePaths;
         createLayout(3, 3, 1, 1, 10);
 
         movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
@@ -207,13 +204,23 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 1, 10);
     }
 
-    private void assertContainsNumberOfCost(Map<Field, MovePath> movePaths, int number, int cost) {
-        assertEquals(number, movePaths.keySet().stream().filter(f -> movePaths.get(f).cost().getAmount() == cost).count());
+    @Test
+    public void testShortestPath() {
+        createLayout(9, 9, 0, 0, 7);
+//        moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+//        assertEquals(1, gameSubject.getShortestPath(getField(1, 0)).cost().getAmount());
+//        assertEquals(2, gameSubject.getShortestPath(getField(1, 1)).cost().getAmount());
+        assertEquals(3, gameSubject.getShortestPath(getField(2, 1)).cost().getAmount());
+//        assertEquals(4, gameSubject.getShortestPath(getField(2, 2)).cost().getAmount());
     }
 
-    private void printMovePath(Map<Field, MovePath> movePaths) {
+    private void assertContainsNumberOfCost(List<MovePath> movePaths, int number, int cost) {
+        assertEquals(number, movePaths.stream().filter(mp -> mp.cost().getAmount() == cost).count());
+    }
+
+    private void printMovePath(List<MovePath> movePaths) {
         System.out.println("------------------------------------------------------");
-        movePaths.keySet().forEach(key -> System.out.println(key + "-> " + movePaths.get(key)));
+        movePaths.stream().forEach(System.out::println);
         System.out.println("------------------------------------------------------");
     }
 }

@@ -183,7 +183,7 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public boolean canMove(Field target, ResourceHolder resourceHolder) {
+    public CanMoveReport canMove(Field target, ResourceHolder resourceHolder) {
         return moveBehavior.canMove(this, target, resourceHolder);
     }
 
@@ -193,13 +193,23 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public Map<Field, MovePath> getMovableFields() {
-        return moveBehavior.getMovableFields(this, this);
+    public List<MovePath> getMovableFields(ResourceHolder resourceHolder) {
+        return moveBehavior.getMovableFields(this, resourceHolder);
+    }
+
+    @Override
+    public MovePath getShortestPath(Field target, ResourceHolder resourceHolder) {
+        return moveBehavior.getShortestPath(this, target, resourceHolder);
     }
 
     @Override
     public Moveable cloneMoveable() {
-        return new GameSubjectBasic(getId() + System.currentTimeMillis(), getPosition(), getMoveBehavior(), getLookBehavior());
+        return cloneMoveable(getPosition());
+    }
+
+    @Override
+    public Moveable cloneMoveable(Field field) {
+        return new GameSubjectBasic(getId() + System.currentTimeMillis(), field, getMoveBehavior(), getLookBehavior());
     }
 
     @Override
@@ -263,12 +273,22 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public boolean canMove(Field target) {
+    public CanMoveReport canMove(Field target) {
         return moveBehavior.canMove(this, target, this);
     }
 
     @Override
     public boolean canMove(MovePath movePath) {
         return moveBehavior.canMove(this, movePath, this);
+    }
+
+    @Override
+    public List<MovePath> getMovableFields() {
+        return moveBehavior.getMovableFields(this, this);
+    }
+
+    @Override
+    public MovePath getShortestPath(Field target) {
+        return moveBehavior.getShortestPath(this, target, this);
     }
 }

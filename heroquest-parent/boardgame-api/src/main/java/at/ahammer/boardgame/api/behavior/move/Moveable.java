@@ -4,6 +4,7 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
 import at.ahammer.boardgame.api.resource.ResourceHolder;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,7 +79,7 @@ public interface Moveable {
      * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#canMove(Moveable, at.ahammer.boardgame.api.board.field.Field,
      * at.ahammer.boardgame.api.resource.ResourceHolder)
      */
-    boolean canMove(Field target, ResourceHolder resourceHolder);
+    CanMoveReport canMove(Field target, ResourceHolder resourceHolder);
 
     /**
      * Check if the {@link at.ahammer.boardgame.api.behavior.move.Moveable} can move from the current {@code position}
@@ -104,7 +105,24 @@ public interface Moveable {
      * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#getMovableFields(Moveable,
      * at.ahammer.boardgame.api.resource.ResourceHolder)
      */
-    public Map<Field, MovePath> getMovableFields();
+    List<MovePath> getMovableFields(ResourceHolder resourceHolder);
 
-    public Moveable cloneMoveable();
+    /**
+     * Get the shortest path, e. g. the {@link at.ahammer.boardgame.api.behavior.move.MovePath} with less {@link
+     * at.ahammer.boardgame.api.resource.Resource}s, from the current position of {@link
+     * at.ahammer.boardgame.api.behavior.move.Moveable} to the target {@link at.ahammer.boardgame.api.board.field.Field}.
+     *
+     * @param target         the target {@link at.ahammer.boardgame.api.board.field.Field}
+     * @param resourceHolder the available {@link at.ahammer.boardgame.api.resource.Resource}s to perform the move
+     * @return the shortest path, e. g. the {@link at.ahammer.boardgame.api.behavior.move.MovePath} with less {@link
+     * at.ahammer.boardgame.api.resource.Resource}s, from the current position of {@link
+     * at.ahammer.boardgame.api.behavior.move.Moveable} to the target {@link at.ahammer.boardgame.api.board.field.Field}
+     * @see at.ahammer.boardgame.api.behavior.move.MoveBehavior#getShortestPath(Moveable,
+     * at.ahammer.boardgame.api.board.field.Field, at.ahammer.boardgame.api.resource.ResourceHolder)
+     */
+    MovePath getShortestPath(Field target, ResourceHolder resourceHolder);
+
+    Moveable cloneMoveable();
+
+    Moveable cloneMoveable(Field field);
 }

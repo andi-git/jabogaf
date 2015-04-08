@@ -65,16 +65,19 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
     @Test
     public void testCanMove() throws Exception {
         moveBehavior.setMoveBlocks((m, t) -> false);
-        assertTrue(moveBehavior.canMove(gameSubject, field2, gameSubject));
+        CanMoveReport canMoveReport = moveBehavior.canMove(gameSubject, field2, gameSubject);
+        assertTrue(canMoveReport.isPossible());
+        assertEquals(1, canMoveReport.moveCost().getAmount());
+        assertEquals(10, canMoveReport.maxPayment().getAmount());
 
-        assertFalse(moveBehavior.canMove(null, field2, gameSubject));
-        assertFalse(moveBehavior.canMove(gameSubject, field2, null));
+        assertFalse(moveBehavior.canMove(null, field2, gameSubject).isPossible());
+        assertFalse(moveBehavior.canMove(gameSubject, field2, null).isPossible());
 
         moveBehavior.setMoveBlocks((m, t) -> true);
-        assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject));
+        assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject).isPossible());
 
         gameSubject.setResource(new MovePoint(0));
-        assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject));
+        assertFalse(moveBehavior.canMove(gameSubject, field2, gameSubject).isPossible());
     }
 
     @Test
@@ -118,6 +121,7 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
     @Test
     public void testMoveBlock() throws FieldsNotConnectedException, NotEnoughResourceException {
         moveBehavior.setMoveBlocks((m, t) -> false, new MoveBlock1(), new MoveBlock2());
+        assertEquals(2, moveBehavior.canMove(gameSubject, field2, gameSubject).moveBlocks().size());
         try {
             moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), field2, gameSubject);
             fail("exception " + MoveNotPossibleException.class.getSimpleName() + " should be thrown");
@@ -140,6 +144,8 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
     public void testMoveNoMovePoints() throws NotEnoughResourceException, FieldsNotConnectedException, MoveNotPossibleException {
         moveBehavior.setMoveBlocks((m, t) -> false);
         gameSubject.setResource(new MovePoint(0));
+        CanMoveReport canMoveReport = moveBehavior.canMove(gameSubject, field2, gameSubject);
+        assertFalse(canMoveReport.canPay());
         moveBehavior.move(gameSubject, gameSubject.getSetterOfPosition(), field2, gameSubject);
     }
 

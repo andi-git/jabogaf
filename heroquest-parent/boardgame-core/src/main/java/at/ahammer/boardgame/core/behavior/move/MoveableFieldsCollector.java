@@ -6,9 +6,10 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.resource.ResourceHolder;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MoveableFieldsCollector {
 
-    Map<Field, MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder);
+    List<MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder);
 }
