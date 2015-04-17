@@ -9,6 +9,6 @@ import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
 public class NullWeapon extends WeaponBasic {
 
     public NullWeapon() {
-        super(WeaponType.NULL.toString() + System.nanoTime(), WeaponType.NULL);
+        super(WeaponType.NULL.toString() + randomId(), WeaponType.NULL);
     }
 }

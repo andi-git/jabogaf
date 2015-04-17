@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public class DummyLayout extends LayoutBasic {
 
     protected DummyLayout() {
-        super("DummyLayout" + System.nanoTime(), new HashSet<>(), new HashSet<>(), new HashSet<>());
+        super("DummyLayout" + randomId(), new HashSet<>(), new HashSet<>(), new HashSet<>());
     }
 
     @Override

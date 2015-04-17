@@ -9,7 +9,7 @@ import at.ahammer.boardgame.api.board.field.FieldConnection;
 public class FieldNull extends FieldBasic {
 
     public FieldNull() {
-        super(String.valueOf(System.nanoTime()));
+        super(randomId());
     }
 
     @Override

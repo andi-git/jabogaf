@@ -87,4 +87,9 @@ public interface GameContextManager {
      * @return the {@link GameContextBean}
      */
     public GameContextBean getGameContextBean(String id);
+
+    /**
+     * Fire an {@link javax.enterprise.event.Event} that the game state changed.
+     */
+    public void fireGameStateChangedEvent();
 }

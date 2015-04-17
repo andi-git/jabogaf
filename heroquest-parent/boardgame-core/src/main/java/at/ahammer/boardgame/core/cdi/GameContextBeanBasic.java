@@ -2,7 +2,9 @@ package at.ahammer.boardgame.core.cdi;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
+import at.ahammer.boardgame.core.state.GameStateChanged;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -29,6 +31,8 @@ public abstract class GameContextBeanBasic implements GameContextBean {
     /**
      * Create a new {@link at.ahammer.boardgame.core.cdi.GameContextBeanBasic}. The bean will also be registered in
      * GameContext via {@link at.ahammer.boardgame.api.cdi.GameContextManager}.
+     * <p/>
+     * Always fire an event of {@link GameStateChanged}.
      *
      * @param id the id of the {@link at.ahammer.boardgame.core.cdi.GameContextBeanBasic}.
      */
@@ -36,6 +40,7 @@ public abstract class GameContextBeanBasic implements GameContextBean {
         this.id = id;
         gameContextManager = new GameContextManagerBasic();
         gameContextManager.add(this, id);
+        gameContextManager.fireGameStateChangedEvent();
     }
 
     @Override
@@ -74,5 +79,9 @@ public abstract class GameContextBeanBasic implements GameContextBean {
     @Override
     public int compareTo(GameContextBean gameContextBean) {
         return this.getId().compareTo(gameContextBean.getId());
+    }
+
+    protected static String randomId() {
+        return String.valueOf(System.nanoTime() + new Random().nextInt());
     }
 }

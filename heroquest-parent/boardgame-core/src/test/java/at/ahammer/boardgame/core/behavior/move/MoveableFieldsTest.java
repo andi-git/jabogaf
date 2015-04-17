@@ -1,7 +1,6 @@
 package at.ahammer.boardgame.core.behavior.move;
 
 import at.ahammer.boardgame.api.behavior.move.MovePath;
-import at.ahammer.boardgame.api.board.Board;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.layout.Layout;
@@ -23,7 +22,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,20 +29,16 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianGameContext.class)
-public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
+public class MoveableFieldsTest extends ArquillianGameContextTest {
 
     @Inject
-    private MoveableFieldsCollector moveableFieldsCollector;
+    private MoveableFields moveableFields;
 
     @Inject
     private GameContextManager gameContextManager;
 
     @Inject
     private PlayerController playerController;
-
-    private Board board;
-
-    private Layout layout;
 
     private Field[][] fieldsArray;
 
@@ -60,9 +54,9 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
 
     protected void createLayout(int sizeX, int sizeY, int positionX, int positionY, int movementPoints) {
         createLayout(sizeX, sizeY);
-        layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>()) {
+        Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>()) {
             @Override
-            public Stream getFieldsAsStream() {
+            public Stream<Field> getFieldsAsStream() {
                 return null;
             }
 
@@ -71,7 +65,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
                 return null;
             }
         };
-        board = new BoardBasic("board", layout);
+        new BoardBasic("board", layout);
 
         gameSubject = new GameSubjectBasic("gameSubject", getField(positionX, positionY));
         gameSubject.earn(new MovePoint(movementPoints).asPayment());
@@ -80,11 +74,11 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
     }
 
     protected Set<Field> getFieldsAsSet() {
-        return fields.keySet().stream().map(key -> fields.get(key)).collect(Collectors.toSet());
+        return fields.keySet().stream().map(fields::get).collect(Collectors.toSet());
     }
 
     protected Set<FieldConnection> getFieldConnectionsAsSet() {
-        return fieldConnections.keySet().stream().map(key -> fieldConnections.get(key)).collect(Collectors.toSet());
+        return fieldConnections.keySet().stream().map(fieldConnections::get).collect(Collectors.toSet());
     }
 
     protected void createLayout(int x, int y) {
@@ -129,7 +123,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
         List<MovePath> movePaths;
         createLayout(2, 2, 0, 0, 10);
 
-        movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+        movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(3, movePaths.size());
         assertContainsNumberOfCost(movePaths, 2, 1);
@@ -138,7 +132,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 3);
 
         gameSubject.setResource(new MovePoint(1));
-        movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+        movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());
         assertContainsNumberOfCost(movePaths, 2, 1);
@@ -150,7 +144,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
                 return new MovePoint(3);
             }
         });
-        movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+        movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());
         assertContainsNumberOfCost(movePaths, 1, 1);
@@ -162,7 +156,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
         List<MovePath> movePaths;
         createLayout(3, 3, 1, 1, 10);
 
-        movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+        movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(8, movePaths.size());
         assertContainsNumberOfCost(movePaths, 4, 1);
@@ -194,7 +188,7 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
                 return new MovePoint(20);
             }
         });
-        movePaths = moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
+        movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(8, movePaths.size());
         assertContainsNumberOfCost(movePaths, 2, 1);
@@ -207,11 +201,11 @@ public class MoveableFieldCollectorBasicTest extends ArquillianGameContextTest {
     @Test
     public void testShortestPath() {
         createLayout(9, 9, 0, 0, 7);
-//        moveableFieldsCollector.getMovableFields(gameSubject, gameSubject);
-//        assertEquals(1, gameSubject.getShortestPath(getField(1, 0)).cost().getAmount());
-//        assertEquals(2, gameSubject.getShortestPath(getField(1, 1)).cost().getAmount());
+        moveableFields.get(new MoveableFields.Parameter(gameSubject));
+        assertEquals(1, gameSubject.getShortestPath(getField(1, 0)).cost().getAmount());
+        assertEquals(2, gameSubject.getShortestPath(getField(1, 1)).cost().getAmount());
         assertEquals(3, gameSubject.getShortestPath(getField(2, 1)).cost().getAmount());
-//        assertEquals(4, gameSubject.getShortestPath(getField(2, 2)).cost().getAmount());
+        assertEquals(4, gameSubject.getShortestPath(getField(2, 2)).cost().getAmount());
     }
 
     private void assertContainsNumberOfCost(List<MovePath> movePaths, int number, int cost) {

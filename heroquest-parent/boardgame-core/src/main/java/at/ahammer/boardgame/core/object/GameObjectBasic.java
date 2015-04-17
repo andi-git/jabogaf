@@ -3,10 +3,16 @@ package at.ahammer.boardgame.core.object;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
+import at.ahammer.boardgame.core.state.GameState;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class GameObjectBasic extends GameContextBeanBasic implements GameObject {
 
-    private boolean visible = false;
+    @Inject
+    private State state;
 
     /**
      * Create a new {@link at.ahammer.boardgame.core.object.GameObjectBasic} with an id.
@@ -19,16 +25,30 @@ public class GameObjectBasic extends GameContextBeanBasic implements GameObject 
 
     @Override
     public boolean isVisible() {
-        return visible;
+        return state.isVisible();
     }
 
     @Override
     public void setVisible(boolean visible) {
-        this.visible = visible;
+        state.setVisible(visible);
     }
 
     @Override
     public void detected() {
-        this.visible = true;
+        state.setVisible(true);
+    }
+
+    @Dependent
+    public static class State extends GameState {
+
+        private boolean visible = false;
+
+        public boolean isVisible() {
+            return visible;
+        }
+
+        public void setVisible(boolean visible) {
+            this.visible = visible;
+        }
     }
 }

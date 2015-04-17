@@ -13,7 +13,7 @@ import java.util.Set;
 public class FieldConnectionNull extends FieldConnectionBasic {
 
     public FieldConnectionNull() {
-        super(String.valueOf(System.nanoTime()), new FieldNull(), new FieldNull());
+        super(randomId(), new FieldNull(), new FieldNull());
     }
 
     @Override

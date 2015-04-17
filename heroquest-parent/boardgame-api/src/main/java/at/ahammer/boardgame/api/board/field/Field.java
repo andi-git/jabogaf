@@ -55,15 +55,6 @@ public interface Field extends GameContextBean {
     List<FieldGroup> getFieldsGroups();
 
     /**
-     * Get all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
-     * at.ahammer.boardgame.api.board.field.Field} is included.
-     *
-     * @return all {@link at.ahammer.boardgame.api.board.field.FieldConnection}s where the {@link
-     * at.ahammer.boardgame.api.board.field.Field} is included
-     */
-    Set<FieldConnection> getFieldConnections();
-
-    /**
      * Get all connected {@link at.ahammer.boardgame.api.board.field.Field}s.
      *
      * @return all connected {@link at.ahammer.boardgame.api.board.field.Field}s

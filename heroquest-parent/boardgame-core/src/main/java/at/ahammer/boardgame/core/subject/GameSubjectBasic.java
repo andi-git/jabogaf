@@ -5,8 +5,6 @@ import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.look.LookBehaviorType;
 import at.ahammer.boardgame.api.behavior.move.*;
 import at.ahammer.boardgame.api.board.field.Field;
-import at.ahammer.boardgame.api.cdi.GameContextBean;
-import at.ahammer.boardgame.api.cdi.GameContextManager;
 import at.ahammer.boardgame.api.resource.*;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
@@ -17,15 +15,13 @@ import at.ahammer.boardgame.api.subject.hand.Hand;
 import at.ahammer.boardgame.core.behavior.look.LookBehaviorNull;
 import at.ahammer.boardgame.core.behavior.move.MoveBehaviorNull;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
-import at.ahammer.boardgame.core.resource.MovePoint;
-import at.ahammer.boardgame.core.resource.ResourcesBasic;
-import at.ahammer.boardgame.core.subject.artifact.ArtifactHolderBasic;
+import at.ahammer.boardgame.core.state.GameState;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,6 +32,9 @@ import java.util.Set;
 public class GameSubjectBasic extends GameContextBeanBasic implements GameSubject {
 
     @Inject
+    private State state;
+
+    @Inject
     private ArtifactHolder artifactHolder;
 
     @Inject
@@ -44,8 +43,6 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     private MoveBehavior moveBehavior;
 
     private LookBehavior lookBehavior;
-
-    private Field position;
 
     @Inject
     @MoveBehaviorType(MoveBehaviorNull.class)
@@ -64,7 +61,7 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
         if (position == null) {
             throw new IllegalStateException("'position' must not be null");
         }
-        this.position = position;
+        this.state.setPosition(position);
         this.moveBehavior = moveBehavior != null ? moveBehavior : moveBehaviorNull;
         this.lookBehavior = lookBehavior != null ? lookBehavior : lookBehaviorNull;
     }
@@ -78,9 +75,7 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     protected SetterOfPosition getSetterOfPosition() {
-        return (position) -> {
-            this.position = position;
-        };
+        return this.state::setPosition;
     }
 
     @Override
@@ -160,11 +155,11 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
 
     @Override
     public Field getPosition() {
-        return position;
+        return this.state.getPosition();
     }
 
     protected void setPosition(Field position) {
-        this.position = position;
+        this.state.setPosition(position);
     }
 
     @Override
@@ -209,7 +204,7 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
 
     @Override
     public Moveable cloneMoveable(Field field) {
-        return new GameSubjectBasic(getId() + System.currentTimeMillis(), field, getMoveBehavior(), getLookBehavior());
+        return new GameSubjectBasic(getId() + randomId(), field, getMoveBehavior(), getLookBehavior());
     }
 
     @Override
@@ -290,5 +285,19 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     @Override
     public MovePath getShortestPath(Field target) {
         return moveBehavior.getShortestPath(this, target, this);
+    }
+
+    @Dependent
+    public static class State extends GameState {
+
+        private Field position;
+
+        public Field getPosition() {
+            return position;
+        }
+
+        public void setPosition(Field position) {
+            this.position = position;
+        }
     }
 }

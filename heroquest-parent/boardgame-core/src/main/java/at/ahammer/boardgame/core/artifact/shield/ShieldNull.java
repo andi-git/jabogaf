@@ -10,6 +10,6 @@ import at.ahammer.boardgame.api.artifact.weapon.WeaponType;
 public class ShieldNull extends ShieldBasic {
 
     public ShieldNull() {
-        super(ShieldType.NULL.toString() + System.nanoTime(), ShieldType.NULL);
+        super(ShieldType.NULL.toString() + randomId(), ShieldType.NULL);
     }
 }

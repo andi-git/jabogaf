@@ -12,14 +12,21 @@ import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.resource.ResourcesBasic;
+import at.ahammer.boardgame.core.util.cache.CachedValueMap;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Create and cache all moveable-fields of a {@link Moveable} and a {@link ResourceHolder}, i.e. a {@link GameSubject}.
+ */
 @GameScoped
-public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
+public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableFields.Parameter> {
 
     @Inject
     private MovePointCollector movePointCollector;
@@ -32,39 +39,12 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
     private Set<UnresolvedField> unresolvedFields = new HashSet<>();
 
     @Override
-    public List<MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
-        if (true) { // TODO implement cache
-            log.debug("clear maps");
-            resolvedFields.clear();
-            unresolvedFields.clear();
-            log.debug("add start position " + moveable.getPosition());
-            ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(moveable.getPosition(), moveable.getPosition(), mp(0)));
-            resolvedFields.add(firstResolvedField);
-            checkFieldsToResolve(firstResolvedField, moveable);
-            for (int movePoint = 1; movePoint <= resourceHolder.amountOf(MovePoint.class); movePoint++) {
-                MovePoint mp = mp(movePoint);
-                log.debug("check for movePoint {}", movePoint);
-                while (!unresolvedFieldsReachableWith(mp).isEmpty()) {
-                    log.debug("resolved fields   " + resolvedFields);
-                    log.debug("unresolved fields " + unresolvedFields);
-                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFields.stream().filter(f -> f.movementCost().lesserEquals(mp)).collect(Collectors.toSet());
-                    log.debug("  there are some unresolved-fields that has to be resolved {}", unresolvedFieldsToResolve);
-                    for (UnresolvedField unresolvedFieldToResolve : unresolvedFieldsToResolve) {
-                        unresolvedFields.remove(unresolvedFieldToResolve);
-                        ResolvedField resolvedField = new ResolvedField(unresolvedFieldToResolve);
-                        log.debug("  add field to resolve {}", resolvedField);
-                        resolvedFields.add(resolvedField);
-                        checkFieldsToResolve(resolvedField, moveable);
-                    }
-                }
-            }
-            resolvedFields.remove(firstResolvedField);
-        }
-        return convertToSortedList(resolvedFields);
+    protected Logger log() {
+        return log;
     }
 
     private List<MovePath> convertToSortedList(Set<ResolvedField> resolvedFields) {
-        return resolvedFields.stream().map(f -> f.getMovePath()).sorted((mp1, mp2) -> mp1.cost().getAmount() - mp2.cost().getAmount()).collect(Collectors.toList());
+        return resolvedFields.stream().map(ResolvedField::getMovePath).sorted((mp1, mp2) -> mp1.cost().getAmount() - mp2.cost().getAmount()).collect(Collectors.toList());
     }
 
     private void checkFieldsToResolve(ResolvedField resolvedField, Moveable moveable) {
@@ -97,10 +77,6 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
         return resolvedFields.stream().anyMatch(f -> f.getTarget().equals(field));
     }
 
-    private boolean unresolvedFieldsContains(Field field) {
-        return unresolvedFields.stream().anyMatch(f -> f.getTarget().equals(field));
-    }
-
     private boolean unresolvedFieldsContains(UnresolvedField field) {
         return unresolvedFields.contains(field);
     }
@@ -111,6 +87,38 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
 
     private MovePoint mp(int movePoint) {
         return new MovePoint(movePoint);
+    }
+
+    @Override
+    protected Function<Parameter, List<MovePath>> create() {
+        return parameter -> {
+            log.debug("clear maps");
+            resolvedFields.clear();
+            unresolvedFields.clear();
+            log.debug("add start position " + parameter.getMoveable().getPosition());
+            ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)));
+            resolvedFields.add(firstResolvedField);
+            checkFieldsToResolve(firstResolvedField, parameter.getMoveable());
+            for (int movePoint = 1; movePoint <= parameter.getResourceHolder().amountOf(MovePoint.class); movePoint++) {
+                MovePoint mp = mp(movePoint);
+                log.debug("check for movePoint {}", movePoint);
+                while (!unresolvedFieldsReachableWith(mp).isEmpty()) {
+                    log.debug("resolved fields   " + resolvedFields);
+                    log.debug("unresolved fields " + unresolvedFields);
+                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFields.stream().filter(f -> f.movementCost().lesserEquals(mp)).collect(Collectors.toSet());
+                    log.debug("  there are some unresolved-fields that has to be resolved {}", unresolvedFieldsToResolve);
+                    for (UnresolvedField unresolvedFieldToResolve : unresolvedFieldsToResolve) {
+                        unresolvedFields.remove(unresolvedFieldToResolve);
+                        ResolvedField resolvedField = new ResolvedField(unresolvedFieldToResolve);
+                        log.debug("  add field to resolve {}", resolvedField);
+                        resolvedFields.add(resolvedField);
+                        checkFieldsToResolve(resolvedField, parameter.getMoveable());
+                    }
+                }
+            }
+            resolvedFields.remove(firstResolvedField);
+            return convertToSortedList(resolvedFields);
+        };
     }
 
     private static class ResolvedField implements Field {
@@ -131,10 +139,6 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
 
         public MovePath getMovePath() {
             return movePath;
-        }
-
-        public Resource getCost() {
-            return movePath.cost();
         }
 
         @Override
@@ -179,11 +183,6 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
         }
 
         @Override
-        public Set<FieldConnection> getFieldConnections() {
-            return getMovePath().getTarget().getFieldConnections();
-        }
-
-        @Override
         public Set<Field> getConnectedFields() {
             return getMovePath().getTarget().getConnectedFields();
         }
@@ -198,6 +197,7 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
             return getMovePath().getTarget().getId();
         }
 
+        @SuppressWarnings("NullableProblems")
         @Override
         public int compareTo(GameContextBean o) {
             return getMovePath().getTarget().compareTo(o);
@@ -280,11 +280,6 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
         }
 
         @Override
-        public Set<FieldConnection> getFieldConnections() {
-            return getTarget().getFieldConnections();
-        }
-
-        @Override
         public Set<Field> getConnectedFields() {
             return getTarget().getConnectedFields();
         }
@@ -299,9 +294,52 @@ public class MoveableFieldCollectorBasic implements MoveableFieldsCollector {
             return getTarget().getId();
         }
 
+        @SuppressWarnings("NullableProblems")
         @Override
         public int compareTo(GameContextBean o) {
             return getTarget().compareTo(o);
+        }
+    }
+
+    public static class Parameter {
+
+        private final Moveable moveable;
+
+        private final ResourceHolder resourceHolder;
+
+        public Parameter(GameSubject gameSubject) {
+            this(gameSubject, gameSubject);
+        }
+
+        public Parameter(Moveable moveable, ResourceHolder resourceHolder) {
+            this.moveable = moveable;
+            this.resourceHolder = resourceHolder;
+        }
+
+        public Moveable getMoveable() {
+            return moveable;
+        }
+
+        public ResourceHolder getResourceHolder() {
+            return resourceHolder;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Parameter parameter = (Parameter) o;
+
+            return moveable.equals(parameter.moveable) && resourceHolder.equals(parameter.resourceHolder);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = moveable.hashCode();
+            result = 31 * result + resourceHolder.hashCode();
+            return result;
         }
     }
 }

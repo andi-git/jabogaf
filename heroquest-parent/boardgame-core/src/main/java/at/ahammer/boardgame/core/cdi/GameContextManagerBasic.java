@@ -2,11 +2,14 @@ package at.ahammer.boardgame.core.cdi;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameContextManager;
+import at.ahammer.boardgame.api.cdi.GameScoped;
 import at.ahammer.boardgame.api.cdi.RunInGameContext;
+import at.ahammer.boardgame.core.state.GameStateChanged;
 import at.ahammer.boardgame.util.log.LogProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Typed;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
@@ -121,5 +124,20 @@ public class GameContextManagerBasic implements GameContextManager {
     @Override
     public GameContextBean getGameContextBean(String id) {
         return GameContext.current().getGameContextBean(id);
+    }
+
+    public void fireGameStateChangedEvent() {
+        GameContext.current().getFromDynamicContext(HelperToFireGameStateChangedEvent.class).fire();
+    }
+
+    @GameScoped
+    public static class HelperToFireGameStateChangedEvent {
+
+        @Inject
+        private Event<GameStateChanged> gameStateChangedEvent;
+
+        public void fire() {
+            gameStateChangedEvent.fire(new GameStateChanged(null));
+        }
     }
 }

@@ -2,8 +2,9 @@ package at.ahammer.boardgame.core.resource;
 
 import at.ahammer.boardgame.api.resource.*;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
-import org.slf4j.Logger;
+import at.ahammer.boardgame.core.state.GameState;
 
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.*;
@@ -12,21 +13,19 @@ import java.util.stream.Collectors;
 @Typed
 public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
-    private final Set<Resource> resources = new HashSet<>();
-
     @Inject
-    private Logger log;
+    private State state;
 
     @Override
     public void add(Resource resource) {
         Resource existingResource = getExistingResource(resource);
         if (existingResource != null) {
             Resource newResource = existingResource.add(resource);
-            resources.remove(existingResource);
-            resources.add(newResource);
+            state.removeResource(existingResource);
+            state.addResource(newResource);
         } else {
             if (resource != null && resource.getAmount() > 0) {
-                resources.add(resource);
+                state.addResource(resource);
             }
         }
     }
@@ -36,8 +35,8 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
         Resource existingResource = getExistingResource(resource);
         if (existingResource != null) {
             Resource newResource = existingResource.remove(resource);
-            resources.remove(existingResource);
-            resources.add(newResource);
+            state.removeResource(existingResource);
+            state.addResource(newResource);
         } else {
             if (resource != null) {
                 throw NotEnoughResourceException.newNoResourceAvailable(resource.getClass(), resource.getAmount());
@@ -57,7 +56,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     @Override
     public void clear() {
-        resources.clear();
+        state.clearResource();
     }
 
     @Override
@@ -67,18 +66,14 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     @Override
     public void setResource(Resource resource) {
-        resources.remove(getExistingResource(resource.getClass()));
-        resources.add(resource.clone());
+        state.removeResource(getExistingResource(resource.getClass()));
+        state.addResource(resource.clone());
     }
 
     @Override
     public boolean canPay(Payment payment) {
         Resource existingResource = getExistingResource(payment.getResource());
-        if (existingResource != null) {
-            return existingResource.canPay(payment.getAmount());
-        } else {
-            return false;
-        }
+        return existingResource != null && existingResource.canPay(payment.getAmount());
     }
 
     @Override
@@ -87,8 +82,8 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
         if (existingResource != null) {
             if (existingResource.canPay(payment.getAmount())) {
                 Resource newResource = existingResource.remove(payment.getResource());
-                resources.remove(existingResource);
-                resources.add(newResource);
+                state.removeResource(existingResource);
+                state.addResource(newResource);
             } else {
                 throw new NotEnoughResourceException(payment, amountOf(payment.getResource().getClass()));
             }
@@ -116,24 +111,18 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     @Override
     public Set<Resource> getResources() {
-        Set<Resource> result = new HashSet<>();
-        for (Resource resource : resources) {
-            result.add(resource.clone());
-        }
-        return Collections.unmodifiableSet(result);
+        return Collections.unmodifiableSet(state.getResources().stream().map(Resource::clone).collect(Collectors.toSet()));
     }
 
     @Override
     public List<Resource> getSortedResources(Comparator<? super Resource> comparator) {
-        return resources.stream().map((r) -> r.clone()).sorted(comparator).collect(Collectors.toList());
+        return state.getResources().stream().map(Resource::clone).sorted(comparator).collect(Collectors.toList());
     }
 
     @Override
     public ResourceHolder cloneResourceHolder() {
         ResourceHolder resourceHolder = new ResourcesBasic();
-        for (Resource resource : resources) {
-            resourceHolder.setResource(resource);
-        }
+        state.getResources().forEach(resourceHolder::setResource);
         return resourceHolder;
     }
 
@@ -144,7 +133,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     private Resource getExistingResource(Class<? extends Resource> resource) {
         Resource existingResource = null;
-        Optional<Resource> first = resources.stream().filter(r -> r.isResourceType(resource)).findFirst();
+        Optional<Resource> first = state.getResources().stream().filter(r -> r.isResourceType(resource)).findFirst();
         if (first.isPresent()) {
             existingResource = first.get();
         }
@@ -153,5 +142,28 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
 
     private Resource getExistingResource(Resource resource) {
         return resource != null ? getExistingResource(resource.getClass()) : null;
+    }
+
+    @Dependent
+    public static class State extends GameState {
+
+        private final Set<Resource> resources = new HashSet<>();
+
+        public Set<Resource> getResources() {
+            return resources;
+        }
+
+        public void addResource(Resource resource) {
+            resources.add(resource);
+        }
+
+        public void clearResource() {
+            resources.clear();
+        }
+
+        public void removeResource(Resource resource) {
+            resources.remove(resource);
+        }
+
     }
 }

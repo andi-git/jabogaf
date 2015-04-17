@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -25,7 +26,7 @@ public class LayoutLoggerBasicTest extends ArquillianGameContextTest {
 
     @Test
     public void testToString() throws Exception {
-        Layout nullLayout = new LayoutBasic("nullLayout" + System.nanoTime(), new HashSet<>(), new HashSet<>(), new HashSet<>()) {
+        Layout nullLayout = new LayoutBasic("nullLayout" + System.nanoTime() + new Random().nextInt(), new HashSet<>(), new HashSet<>(), new HashSet<>()) {
 
             @Override
             public Stream getFieldsAsStream() {

@@ -7,6 +7,7 @@ import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 import org.slf4j.Logger;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,10 +15,11 @@ import java.lang.reflect.InvocationTargetException;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class ResourceBasic<T extends Resource> extends GameContextBeanBasic implements Resource<T> {
 
-    private final int amount;
-
     @Inject
     private Logger log;
+
+    @Inject
+    private State state;
 
     protected ResourceBasic() {
         this(0);
@@ -28,44 +30,44 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
         if (amount < 0) {
             throw new IllegalStateException("amount is " + amount + " but must be > 0");
         }
-        this.amount = amount;
+        state.setAmount(amount);
     }
 
     @Override
     public Resource add(int add) {
-        return newInstance(amount + add);
+        return newInstance(state.getAmount() + add);
     }
 
     @Override
     public T add(Resource resource) {
         if (isResourceType(resource)) {
-            return newInstance(amount + resource.getAmount());
+            return newInstance(state.getAmount() + resource.getAmount());
         }
         return clone();
     }
 
     @Override
     public Resource remove(int remove) throws NotEnoughResourceException {
-        if (amount < remove) {
+        if (state.getAmount() < remove) {
             throw new NotEnoughResourceException(this, remove);
         }
-        return newInstance(amount - remove);
+        return newInstance(state.getAmount() - remove);
     }
 
     @Override
     public T remove(Resource resource) throws NotEnoughResourceException {
         if (isResourceType(resource)) {
-            if (amount < resource.getAmount()) {
+            if (state.getAmount() < resource.getAmount()) {
                 throw new NotEnoughResourceException(this, resource.getAmount());
             }
-            return newInstance(amount - resource.getAmount());
+            return newInstance(state.getAmount() - resource.getAmount());
         }
         return clone();
     }
 
     @Override
     public int getAmount() {
-        return amount;
+        return state.getAmount();
     }
 
     @Override
@@ -83,12 +85,12 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
 
     @Override
     public boolean canPay(int amount) {
-        return this.amount >= amount;
+        return state.getAmount() >= amount;
     }
 
     @Override
     public boolean canPay(Resource resource) {
-        return isResourceType(resource) && this.amount >= resource.getAmount();
+        return isResourceType(resource) && state.getAmount() >= resource.getAmount();
     }
 
     @Override
@@ -108,22 +110,16 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     public T newInstance(int amount) {
         T newInstance = null;
         try {
-            Constructor constructor = getClass().getDeclaredConstructor(int.class);
-            newInstance = (T) constructor.newInstance(amount);
-        } catch (InstantiationException e) {
-            log.error(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            log.error(e.getMessage(), e);
-        } catch (NoSuchMethodException e) {
-            log.error(e.getMessage(), e);
-        } catch (InvocationTargetException e) {
+            Constructor<T> constructor = (Constructor<T>) getClass().getDeclaredConstructor(int.class);
+            newInstance = constructor.newInstance(amount);
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             log.error(e.getMessage(), e);
         }
         return newInstance;
     }
 
     public T clone() {
-        return newInstance(amount);
+        return newInstance(state.getAmount());
     }
 
     public Payment asPayment() {
@@ -132,41 +128,40 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
 
     @Override
     public boolean sameAmount(Resource resource) {
-        if (isResourceType(resource)) {
-            return amount == resource.getAmount();
-        }
-        return false;
+        return isResourceType(resource) && state.getAmount() == resource.getAmount();
     }
 
     @Override
     public boolean greater(Resource resource) {
-        if (isResourceType(resource)) {
-            return amount > resource.getAmount();
-        }
-        return false;
+        return isResourceType(resource) && state.getAmount() > resource.getAmount();
     }
 
     @Override
     public boolean greaterEquals(Resource resource) {
-        if (isResourceType(resource)) {
-            return amount >= resource.getAmount();
-        }
-        return false;
+        return isResourceType(resource) && state.getAmount() >= resource.getAmount();
     }
 
     @Override
     public boolean lesser(Resource resource) {
-        if (isResourceType(resource)) {
-            return amount < resource.getAmount();
-        }
-        return false;
+        return isResourceType(resource) && state.getAmount() < resource.getAmount();
     }
 
     @Override
     public boolean lesserEquals(Resource resource) {
-        if (isResourceType(resource)) {
-            return amount <= resource.getAmount();
+        return isResourceType(resource) && state.getAmount() <= resource.getAmount();
+    }
+
+    @Dependent
+    public static class State {
+
+        private int amount;
+
+        public int getAmount() {
+            return amount;
         }
-        return false;
+
+        public void setAmount(int amount) {
+            this.amount = amount;
+        }
     }
 }

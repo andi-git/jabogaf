@@ -4,7 +4,6 @@ import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
@@ -12,7 +11,6 @@ import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
 import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,8 +32,6 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
     private PlayerController playerController;
 
     private Set<Field> connectedFieldsCache = new HashSet<>();
-
-    private Set<FieldConnection> fieldConnectionCache = new HashSet<>();
 
     /**
      * Create a new {@link at.ahammer.boardgame.core.board.field.FieldBasic}
@@ -72,14 +68,6 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
             connectedFieldsCache.addAll(boardManager.getBoard().getLayout().getConnectedFields(this));
         }
         return connectedFieldsCache;
-    }
-
-    @Override
-    public Set<FieldConnection> getFieldConnections() {
-        if (fieldConnectionCache.isEmpty()) {
-            fieldConnectionCache.addAll(boardManager.getBoard().getLayout().getFieldConnections(this));
-        }
-        return Collections.unmodifiableSet(fieldConnectionCache);
     }
 
     @Override

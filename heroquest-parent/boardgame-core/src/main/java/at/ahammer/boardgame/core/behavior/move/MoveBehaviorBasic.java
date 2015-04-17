@@ -1,7 +1,6 @@
 package at.ahammer.boardgame.core.behavior.move;
 
 import at.ahammer.boardgame.api.behavior.move.*;
-import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
@@ -11,7 +10,6 @@ import at.ahammer.boardgame.core.resource.MovePoint;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,13 +20,10 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     private PlayerController playerController;
 
     @Inject
-    private BoardManager boardManager;
-
-    @Inject
     private MovePointCollector movePointCollector;
 
     @Inject
-    private MoveableFieldsCollector moveableFieldsCollector;
+    private MoveableFields moveableFields;
 
     @Override
     public CanMoveReport canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
@@ -95,7 +90,7 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
 
     @Override
     public List<MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder) {
-        return moveableFieldsCollector.getMovableFields(moveable, resourceHolder);
+        return moveableFields.get(new MoveableFields.Parameter(moveable, resourceHolder));
     }
 
     @Override
@@ -109,25 +104,15 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     }
 
     protected boolean checkResources(Moveable moveable, Field target, ResourceHolder resourceHolder) {
-        if (resourceHolder == null) {
-            return false;
-        }
-        return resourceHolder.canPay(movePointCollector.collect(moveable, target).asPayment());
+        return resourceHolder != null && resourceHolder.canPay(movePointCollector.collect(moveable, target).asPayment());
     }
 
     protected Set<MoveBlock> checkMoveBlocks(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
         return moveBlocks.stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet());
     }
 
-
     protected boolean checkMoveBlock(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
-        if (moveable == null || target == null) {
-            return false;
-        }
-        if (moveBlocks == null || moveBlocks.isEmpty()) {
-            return true;
-        }
-        return !moveBlocks.stream().anyMatch(moveBlock -> moveBlock.blocks(moveable, target));
+        return !(moveable == null || target == null) && (moveBlocks == null || moveBlocks.isEmpty() || !moveBlocks.stream().anyMatch(moveBlock -> moveBlock.blocks(moveable, target)));
     }
 
 }
