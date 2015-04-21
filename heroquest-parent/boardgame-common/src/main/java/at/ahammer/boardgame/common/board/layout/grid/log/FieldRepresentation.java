@@ -17,7 +17,7 @@ public class FieldRepresentation implements GridLayoutLoggerElement {
 
     private final Field field;
     @Inject
-    private FieldLineFactory fieldLineFactory;
+    private FactoryForFieldLines factoryForFieldLines;
     @Inject
     private PlayerController playerController;
     @Inject
@@ -29,13 +29,13 @@ public class FieldRepresentation implements GridLayoutLoggerElement {
     }
 
     @Override
-    public String toString(int line) {
-        return getFieldLines().get(line).toString();
+    public String toString(int line, GridLayoutLoggerParameter parameter) {
+        return getFieldLines(parameter).get(line).toString();
     }
 
-    private List<FieldLine> getFieldLines() {
+    private List<FieldLine> getFieldLines(GridLayoutLoggerParameter parameter) {
         if (fieldLines.isEmpty()) {
-            fieldLines.addAll(fieldLineFactory.create(field, collectGameContextBeansOnField()));
+            fieldLines.addAll(factoryForFieldLines.create(field, collectGameContextBeansOnField(), parameter));
         }
         return fieldLines;
     }

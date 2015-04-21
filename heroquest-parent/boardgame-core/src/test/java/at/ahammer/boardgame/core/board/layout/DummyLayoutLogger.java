@@ -6,7 +6,7 @@ import at.ahammer.boardgame.api.board.layout.log.LayoutLogger;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class DummyLayoutLogger implements LayoutLogger<DummyLayout> {
+public class DummyLayoutLogger implements LayoutLogger<DummyLayout, DummyLayoutParameter> {
 
     @Override
     public boolean canHandle(Layout layout) {
@@ -19,7 +19,7 @@ public class DummyLayoutLogger implements LayoutLogger<DummyLayout> {
     }
 
     @Override
-    public String toString(DummyLayout layout) {
+    public String toString(DummyLayout layout, DummyLayoutParameter parameter) {
         return "String of DummyLayout";
     }
 }

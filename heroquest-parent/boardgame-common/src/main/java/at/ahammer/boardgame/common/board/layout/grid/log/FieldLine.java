@@ -4,11 +4,10 @@ import at.ahammer.boardgame.util.string.StringUtil;
 
 /**
  * The representation of a line (as {@link java.lang.String}) of a {@link at.ahammer.boardgame.api.board.field.Field}
- * used in {@link FieldRepresentation}. Every {@link
- * at.ahammer.boardgame.api.board.field.Field} consists of multiple {@link FieldLine}s.
+ * used in {@link FieldRepresentation}. Every {@link at.ahammer.boardgame.api.board.field.Field} consists of multiple
+ * {@link FieldLine}s.
  * <p/>
- * Every concrete {@link FieldLine} has a concrete {@link
- * FieldLineUsage} to specify, when to use the current {@link
+ * Every concrete {@link FieldLine} has a concrete {@link FieldLineUsage} to specify, when to use the current {@link
  * FieldLine}.
  * <p/>
  * The method {@link #toString()} will be concat the String by:
@@ -91,14 +90,67 @@ public abstract class FieldLine {
     }
 
     /**
-     * The maximum inner-width, defined bq {@link FieldLine#WIDTH}
-     * reduced by 2 (first and last character).
+     * The maximum inner-width, defined bq {@link FieldLine#WIDTH} reduced by 2 (first and last character).
      *
-     * @return maximum inner-width, defined bq {@link FieldLine#WIDTH}
-     * reduced by 2 (first and last character)
+     * @return maximum inner-width, defined bq {@link FieldLine#WIDTH} reduced by 2 (first and last character)
      */
     protected int getMaxInnerWidth() {
         return WIDTH - 2;
     }
 
+    /**
+     * This class knows, when to use a concrete {@link FieldLine} and is a factory for this concrete class.
+     *
+     * @param <T> the concrete type of {@link FieldLine}
+     */
+    public static abstract class FieldLineUsage<T extends FieldLine> {
+
+        /**
+         * To have the right order of {@link FieldLine}s, this method is used.
+         *
+         * @return the rank (position) of the current {@link FieldLine}
+         */
+        public abstract int rank();
+
+        /**
+         * Check if it was the last occurrence of {@link FieldLine} in the {@link FieldLineUsage}.
+         *
+         * @param state the current {@link FactoryForFieldLines.State}
+         * @return {@code true} if the last occurrence was reached
+         */
+        public abstract boolean isLast(FactoryForFieldLines.State state);
+
+        /**
+         * Factory-method to create a new concrete {@link FieldLine} of type T.
+         *
+         * @param state the current {@link FactoryForFieldLines.State}
+         * @return a new concrete {@link FieldLine} of type T
+         */
+        public abstract T create(FactoryForFieldLines.State state);
+
+        /**
+         * Check if at least one occurrence of the concrete {@link FieldLine} should be used.
+         *
+         * @return {@code true}, if at least one occurrence of the concrete {@link FieldLine} should be used
+         */
+        public abstract boolean atLeastOnce();
+
+        protected int getMaxHeight() {
+            return FieldLine.HEIGHT;
+        }
+
+        /**
+         * Check if the last element was already reached, i. e. if there is a line to add the element to.
+         *
+         * @param state - the current {@link FactoryForFieldLines.State}
+         * @return {@code true} if the last element is not reached, i. e. a new element can be added
+         */
+        protected boolean isPreLastElement(FactoryForFieldLines.State state) {
+            return state.getFieldLines().size() == getMaxHeight() - 1;
+        }
+
+        protected <T extends FieldLine> long countAlreadyExistingFieldLineElements(FactoryForFieldLines.State state, Class<T> type) {
+            return state.getFieldLines().stream().filter(fl -> type.isAssignableFrom(fl.getClass())).count();
+        }
+    }
 }

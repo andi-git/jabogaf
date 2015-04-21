@@ -40,7 +40,7 @@ public class FieldConnectionHorizontalRepresentation extends FieldConnectionRepr
     }
 
     @Override
-    public String toString(int line) {
+    public String toString(int line, GridLayoutLoggerParameter parameter) {
         return getStringRepresentation();
     }
 }

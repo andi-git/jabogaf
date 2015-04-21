@@ -140,6 +140,6 @@ public class GridLayout extends LayoutBasic {
 
     @Override
     public String toString() {
-        return layoutLoggerManager.toString(this);
+        return layoutLoggerManager.toString(this, null);
     }
 }

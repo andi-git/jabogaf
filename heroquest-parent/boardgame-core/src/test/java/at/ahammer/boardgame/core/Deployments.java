@@ -19,9 +19,7 @@ public class Deployments {
                 addPackages(true, "at.ahammer.boardgame.api").
                 addPackages(true, "at.ahammer.boardgame.core").
                 addPackages(true, "at.ahammer.boardgame.util");
-//                addClass(AlternativesInGameContext.class).// TODO WTF?
-//                addAsLibraries(new File(new File("").getAbsolutePath(), "target/arquillianLibs").listFiles());
-        System.out.println(webArchive.toString(true));
+//        System.out.println(webArchive.toString(true));
         return webArchive;
     }
 

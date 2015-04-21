@@ -14,11 +14,9 @@ public class Deployments {
     public static WebArchive deploy() throws IOException {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war").//
                 addAsWebInfResource("META-INF/beans.xml", "beans.xml").
-//                addAsResource("META-INF/services/javax.enterprise.inject.spi.Extension", "META-INF/services/javax.enterprise.inject.spi.Extension").//
-//                addAsResource("META-INF/services/at.ahammer.boardgame.api.cdi.GameContextManager", "META-INF/services/at.ahammer.boardgame.api.cdi.GameContextManager").//
                 addPackages(true, "at.ahammer.boardgame.util").
                 addPackages(true, "at.ahammer.boardgame.core");
-        System.out.println(webArchive.toString(true));
+//        System.out.println(webArchive.toString(true));
         return webArchive;
     }
 

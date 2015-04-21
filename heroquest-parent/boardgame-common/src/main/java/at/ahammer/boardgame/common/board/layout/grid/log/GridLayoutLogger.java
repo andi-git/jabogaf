@@ -13,7 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class GridLayoutLogger implements LayoutLogger<GridLayout> {
+public class GridLayoutLogger implements LayoutLogger<GridLayout, GridLayoutLoggerParameter> {
 
     @Inject
     private ArrayUtil arrayUtil;
@@ -33,12 +33,12 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout> {
     }
 
     @Override
-    public Class genericType() {
+    public Class<? extends Layout> genericType() {
         return GridLayout.class;
     }
 
     @Override
-    public String toString(GridLayout layout) {
+    public String toString(GridLayout layout, GridLayoutLoggerParameter parameter) {
         Field[][] fieldsArray = layout.getFieldsAsArray();
         if (fieldsArray.length == 0 || fieldsArray[0].length == 0) {
             return GridLayout.class.getSimpleName() + " is empty!";
@@ -66,7 +66,7 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout> {
             }
             for (int h = 0; h < height; h++) {
                 for (int j = 0; j < gridLayoutLoggerElements[i].length; j++) {
-                    sb.append(gridLayoutLoggerElements[i][j].toString(h));
+                    sb.append(gridLayoutLoggerElements[i][j].toString(h, parameter));
                     if (j == gridLayoutLoggerElements[i].length - 1) {
                         sb.append("\n");
                     }
@@ -77,12 +77,10 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout> {
     }
 
     private FieldRepresentation[][] convert(Field[][] fields) {
-        return arrayUtil.convertTwoDimensionalArray(fields, FieldRepresentation.class, (field) -> {
-            return gameContextManager.resolve(new FieldRepresentation(field));
-        });
+        return arrayUtil.convertTwoDimensionalArray(fields, FieldRepresentation.class, (field) -> gameContextManager.resolve(new FieldRepresentation(field)));
     }
 
-    private static enum ElementDetector {
+    private enum ElementDetector {
         Field {
             @Override
             protected boolean canBeUsed(int x, int y) {
