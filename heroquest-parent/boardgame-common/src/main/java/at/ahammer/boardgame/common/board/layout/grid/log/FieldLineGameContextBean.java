@@ -8,63 +8,64 @@ import javax.enterprise.context.ApplicationScoped;
 /**
  * A line with the id of a concrete {@link at.ahammer.boardgame.api.cdi.GameContextBean}.
  */
-public class FieldLineGameContextBean extends FieldLine {
+@ApplicationScoped
+public class FieldLineGameContextBean extends FieldLine<FieldLineGameContextBean.Representation> {
 
-    private final GameContextBean gameContextBean;
-
-    public FieldLineGameContextBean(GameContextBean gameContextBean, StringUtil stringUtil) {
-        super(stringUtil);
-        this.gameContextBean = gameContextBean;
+    @Override
+    public int rank() {
+        return 50;
     }
 
     @Override
-    public String text() {
-        return ">" + gameContextBean.getId();
+    public boolean isLast(FactoryForFieldLines.State state) {
+        return isPreLastElement(state) || areAllGameContextBeansAlreadyAdded(state);
     }
 
     @Override
-    public char firstChar() {
-        return '|';
+    public FieldLineGameContextBean.Representation create(FactoryForFieldLines.State state) {
+        return new FieldLineGameContextBean.Representation(getNextGameContextBean(state), state.getStringUtil());
     }
 
     @Override
-    public char lastChar() {
-        return '|';
+    public boolean atLeastOnce() {
+        return false;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineGameContextBean> {
+    private boolean areAllGameContextBeansAlreadyAdded(FactoryForFieldLines.State state) {
+        return countAlreadyExistingFieldLineGameContextBeans(state) == state.getGameContextBeans().size();
+    }
 
-        @Override
-        public int rank() {
-            return 50;
+    private GameContextBean getNextGameContextBean(FactoryForFieldLines.State state) {
+        return state.getGameContextBeans().get((int) countAlreadyExistingFieldLineGameContextBeans(state));
+    }
+
+    private long countAlreadyExistingFieldLineGameContextBeans(FactoryForFieldLines.State state) {
+        return state.getFieldLineRepresentations().stream().filter(f -> f instanceof FieldLineGameContextBean.Representation).count();
+    }
+
+    public static class Representation extends FieldLine.Representation {
+
+        private final GameContextBean gameContextBean;
+
+        public Representation(GameContextBean gameContextBean, StringUtil stringUtil) {
+            super(stringUtil);
+            this.gameContextBean = gameContextBean;
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            return isPreLastElement(state) || areAllGameContextBeansAlreadyAdded(state);
+        public String text() {
+            return ">" + gameContextBean.getId();
         }
 
         @Override
-        public FieldLineGameContextBean create(FactoryForFieldLines.State state) {
-            return new FieldLineGameContextBean(getNextGameContextBean(state), state.getStringUtil());
+        public char firstChar() {
+            return '|';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return false;
+        public char lastChar() {
+            return '|';
         }
 
-        private boolean areAllGameContextBeansAlreadyAdded(FactoryForFieldLines.State state) {
-            return countAlreadyExistingFieldLineGameContextBeans(state) == state.getGameContextBeans().size();
-        }
-
-        private GameContextBean getNextGameContextBean(FactoryForFieldLines.State state) {
-            return state.getGameContextBeans().get((int) countAlreadyExistingFieldLineGameContextBeans(state));
-        }
-
-        private long countAlreadyExistingFieldLineGameContextBeans(FactoryForFieldLines.State state) {
-            return state.getFieldLines().stream().filter(f -> f instanceof FieldLineGameContextBean).count();
-        }
     }
 }

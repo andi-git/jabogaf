@@ -16,13 +16,17 @@ import java.util.List;
 public class FieldRepresentation implements GridLayoutLoggerElement {
 
     private final Field field;
+
     @Inject
     private FactoryForFieldLines factoryForFieldLines;
+
     @Inject
     private PlayerController playerController;
+
     @Inject
     private StringUtil stringUtil;
-    private List<FieldLine> fieldLines = new ArrayList<>();
+
+    private List<FieldLine.Representation> fieldLineRepresentations = new ArrayList<>();
 
     public FieldRepresentation(Field field) {
         this.field = field;
@@ -33,11 +37,11 @@ public class FieldRepresentation implements GridLayoutLoggerElement {
         return getFieldLines(parameter).get(line).toString();
     }
 
-    private List<FieldLine> getFieldLines(GridLayoutLoggerParameter parameter) {
-        if (fieldLines.isEmpty()) {
-            fieldLines.addAll(factoryForFieldLines.create(field, collectGameContextBeansOnField(), parameter));
+    private List<FieldLine.Representation> getFieldLines(GridLayoutLoggerParameter parameter) {
+        if (fieldLineRepresentations.isEmpty()) {
+            fieldLineRepresentations.addAll(factoryForFieldLines.create(field, collectGameContextBeansOnField(), parameter));
         }
-        return fieldLines;
+        return fieldLineRepresentations;
     }
 
     private List<GameContextBean> collectGameContextBeansOnField() {

@@ -3,81 +3,88 @@ package at.ahammer.boardgame.common.board.layout.grid.log;
 import at.ahammer.boardgame.api.behavior.move.MovePath;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.subject.GameSubject;
-import at.ahammer.boardgame.core.behavior.move.MoveableFields;
 import at.ahammer.boardgame.util.string.StringUtil;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import java.util.List;
 import java.util.Optional;
 
 /**
  * A line with the id of a concrete {@link GameContextBean}.
  */
-public class FieldLineMoveableFields extends FieldLine {
+@ApplicationScoped
+public class FieldLineMoveableFields extends FieldLine<FieldLineMoveableFields.Representation> {
 
-    private final GameSubject gameSubject;
-
-    private final int movePoints;
-
-    public FieldLineMoveableFields(GameSubject gameSubject, int movePoints, StringUtil stringUtil) {
-        super(stringUtil);
-        this.gameSubject = gameSubject;
-        this.movePoints = movePoints;
+    @Override
+    public int rank() {
+        return 60;
     }
 
     @Override
-    public String text() {
-        return ">mp-" + gameSubject.getId() + ":" + movePoints;
+    public boolean isLast(FactoryForFieldLines.State state) {
+        boolean isLast = true;
+        if (!isAMovePointAlreadyExisting(state) && state.getParameter().getGameSubjectOfInterest() != null) {
+            isLast = isPreLastElement(state) || !getMovePath(state).isPresent();
+        }
+        return isLast;
     }
 
     @Override
-    public char firstChar() {
-        return '|';
+    public FieldLineMoveableFields.Representation create(FactoryForFieldLines.State state) {
+        FieldLineMoveableFields.Representation representation = null;
+        Optional<GameSubject> gameSubject = state.getParameter().getGameSubjectOfInterest();
+        Optional<MovePath> movePath = getMovePath(state);
+        if (gameSubject.isPresent() && movePath.isPresent()) {
+            representation = new FieldLineMoveableFields.Representation(gameSubject.get(), movePath.get().cost().getAmount(), state.getStringUtil());
+        }
+        return representation;
     }
 
     @Override
-    public char lastChar() {
-        return '|';
+    public boolean atLeastOnce() {
+        return false;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineMoveableFields> {
+    private Optional<MovePath> getMovePath(FactoryForFieldLines.State state) {
+        Optional<MovePath> movePath = Optional.empty();
+        if (state.getParameter().getGameSubjectOfInterest().isPresent()) {
+            movePath = state.getParameter().getGameSubjectOfInterest().get().
+                    getMovableFields().
+                    stream().
+                    filter(mp -> mp.getTarget().equals(state.getField())).
+                    findFirst();
+        }
+        return movePath;
+    }
 
-        @Inject
-        private MoveableFields moveableFields;
+    private boolean isAMovePointAlreadyExisting(FactoryForFieldLines.State state) {
+        return state.getFieldLineRepresentations().stream().anyMatch(f -> f instanceof FieldLineMoveableFields.Representation);
+    }
 
-        @Override
-        public int rank() {
-            return 60;
+    public static class Representation extends FieldLine.Representation {
+
+        private final GameSubject gameSubject;
+
+        private final int movePoints;
+
+        public Representation(GameSubject gameSubject, int movePoints, StringUtil stringUtil) {
+            super(stringUtil);
+            this.gameSubject = gameSubject;
+            this.movePoints = movePoints;
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            boolean isLast = true;
-            if (!isAMovePointAlreadyExisting(state) && state.getParameter().getGameSubjectToShowPossibleMoves() != null) {
-                isLast = isPreLastElement(state) || !getMovePath(state).isPresent();
-            }
-            return isLast;
+        public String text() {
+            return ">mp-" + gameSubject.getId() + ":" + movePoints;
         }
 
         @Override
-        public FieldLineMoveableFields create(FactoryForFieldLines.State state) {
-            return new FieldLineMoveableFields(state.getParameter().getGameSubjectToShowPossibleMoves(), getMovePath(state).get().cost().getAmount(), state.getStringUtil());
+        public char firstChar() {
+            return '|';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return false;
-        }
-
-        private Optional<MovePath> getMovePath(FactoryForFieldLines.State state) {
-            List<MovePath> movePaths = moveableFields.get(new MoveableFields.Parameter(state.getParameter().getGameSubjectToShowPossibleMoves()));
-            return movePaths.stream().filter(mp -> mp.getTarget().equals(state.getField())).findFirst();
-        }
-
-        private boolean isAMovePointAlreadyExisting(FactoryForFieldLines.State state) {
-            return state.getFieldLines().stream().anyMatch(f -> f instanceof FieldLineMoveableFields);
+        public char lastChar() {
+            return '|';
         }
     }
 }

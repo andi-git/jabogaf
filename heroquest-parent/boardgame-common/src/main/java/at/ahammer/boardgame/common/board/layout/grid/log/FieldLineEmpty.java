@@ -7,48 +7,48 @@ import javax.enterprise.context.ApplicationScoped;
 /**
  * An empty line of a {@link FieldLine}.
  */
-public class FieldLineEmpty extends FieldLine {
+@ApplicationScoped
+public class FieldLineEmpty extends FieldLine<FieldLineEmpty.Representation> {
 
-    public FieldLineEmpty(StringUtil stringUtil) {
-        super(stringUtil);
+    @Override
+    public int rank() {
+        return 90;
     }
 
     @Override
-    public String text() {
-        return fixedLengthString(' ');
+    public boolean isLast(FactoryForFieldLines.State state) {
+        return isPreLastElement(state);
     }
 
     @Override
-    public char firstChar() {
-        return '|';
+    public Representation create(FactoryForFieldLines.State state) {
+        return new Representation(state.getStringUtil());
     }
 
     @Override
-    public char lastChar() {
-        return '|';
+    public boolean atLeastOnce() {
+        return false;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineEmpty> {
+    public static class Representation extends FieldLine.Representation {
 
-        @Override
-        public int rank() {
-            return 90;
+        public Representation(StringUtil stringUtil) {
+            super(stringUtil);
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            return isPreLastElement(state);
+        public String text() {
+            return fixedLengthString(' ');
         }
 
         @Override
-        public FieldLineEmpty create(FactoryForFieldLines.State state) {
-            return new FieldLineEmpty(state.getStringUtil());
+        public char firstChar() {
+            return '|';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return false;
+        public char lastChar() {
+            return '|';
         }
     }
 }

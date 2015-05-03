@@ -60,7 +60,7 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout, GridLayoutLogg
         sb.append(layout.getId());
         sb.append("\n");
         for (int i = 0; i < gridLayoutLoggerElements.length; i++) {
-            int height = FieldLine.HEIGHT;
+            int height = FieldLine.Representation.HEIGHT;
             if (i % 2 == 1) {
                 height = 1;
             }

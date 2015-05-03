@@ -8,51 +8,52 @@ import javax.enterprise.context.ApplicationScoped;
 /**
  * The line to add the name of a {@link at.ahammer.boardgame.api.board.field.Field}.
  */
-public class FieldLineFieldName extends FieldLine {
+@ApplicationScoped
+public class FieldLineFieldName extends FieldLine<FieldLineFieldName.Representation> {
 
-    private final Field field;
-
-    public FieldLineFieldName(Field field, StringUtil stringUtil) {
-        super(stringUtil);
-        this.field = field;
+    @Override
+    public int rank() {
+        return 20;
     }
 
     @Override
-    public String text() {
-        return field.getId();
+    public boolean isLast(FactoryForFieldLines.State state) {
+        return true;
     }
 
     @Override
-    public char firstChar() {
-        return '|';
+    public FieldLineFieldName.Representation create(FactoryForFieldLines.State state) {
+        return new FieldLineFieldName.Representation(state.getField(), state.getStringUtil());
     }
 
     @Override
-    public char lastChar() {
-        return '|';
+    public boolean atLeastOnce() {
+        return true;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineFieldName> {
+    public static class Representation extends FieldLine.Representation {
 
-        @Override
-        public int rank() {
-            return 20;
+        private final Field field;
+
+        public Representation(Field field, StringUtil stringUtil) {
+            super(stringUtil);
+            this.field = field;
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            return true;
+        public String text() {
+            return field.getId();
         }
 
         @Override
-        public FieldLineFieldName create(FactoryForFieldLines.State state) {
-            return new FieldLineFieldName(state.getField(), state.getStringUtil());
+        public char firstChar() {
+            return '|';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return true;
+        public char lastChar() {
+            return '|';
         }
+
     }
 }

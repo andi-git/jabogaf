@@ -27,9 +27,9 @@ public class FieldConnectionVerticalRepresentation extends FieldConnectionRepres
             sb.append("-");
             FieldConnectionObject fieldConnectionObject = getFirstFieldConnectionObject();
             if (fieldConnectionObject != null) {
-                sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.HEIGHT - 4));
+                sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.Representation.HEIGHT - 4));
             } else {
-                sb.append(stringUtil.repeatedString(' ', FieldLine.HEIGHT - 4));
+                sb.append(stringUtil.repeatedString(' ', FieldLine.Representation.HEIGHT - 4));
             }
             sb.append(hiddenChar());
             sb.append(openCloseChar());

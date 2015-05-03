@@ -34,7 +34,7 @@ public abstract class FieldConnectionRepresentation implements GridLayoutLoggerE
 
     protected char hiddenChar() {
         if (getFirstFieldConnectionObject() instanceof Hidden) {
-            if (!((Hidden) getFirstFieldConnectionObject()).isVisible()) {
+            if (!getFirstFieldConnectionObject().isVisible()) {
                 return '_';
             } else {
                 return '#';

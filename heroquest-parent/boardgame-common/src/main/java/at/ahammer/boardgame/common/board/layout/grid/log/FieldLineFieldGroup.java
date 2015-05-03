@@ -9,63 +9,63 @@ import javax.enterprise.context.ApplicationScoped;
  * A line for a {@link at.ahammer.boardgame.api.board.field.FieldGroup} where the {@link
  * at.ahammer.boardgame.api.board.field.Field} is located.
  */
-public class FieldLineFieldGroup extends FieldLine {
+@ApplicationScoped
+public class FieldLineFieldGroup extends FieldLine<FieldLineFieldGroup.Representation> {
 
-    private final FieldGroup fieldGroup;
-
-    public FieldLineFieldGroup(FieldGroup fieldGroup, StringUtil stringUtil) {
-        super(stringUtil);
-        this.fieldGroup = fieldGroup;
+    @Override
+    public int rank() {
+        return 30;
     }
 
     @Override
-    public String text() {
-        return "*" + fieldGroup.getId();
+    public boolean isLast(FactoryForFieldLines.State state) {
+        return isPreLastElement(state) || areAllFieldGroupsAlreadyAdded(state);
     }
 
     @Override
-    public char firstChar() {
-        return '|';
+    public FieldLineFieldGroup.Representation create(FactoryForFieldLines.State state) {
+        return new FieldLineFieldGroup.Representation(getNextFieldGroup(state), state.getStringUtil());
     }
 
     @Override
-    public char lastChar() {
-        return '|';
+    public boolean atLeastOnce() {
+        return false;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineFieldGroup> {
+    private boolean areAllFieldGroupsAlreadyAdded(FactoryForFieldLines.State state) {
+        return getAlreadyExistingLineGroupElements(state) == state.getField().getFieldsGroups().size();
+    }
 
-        @Override
-        public int rank() {
-            return 30;
+    private int getAlreadyExistingLineGroupElements(FactoryForFieldLines.State state) {
+        return (int) countAlreadyExistingFieldLineElements(state, FieldLineFieldGroup.Representation.class);
+    }
+
+    private FieldGroup getNextFieldGroup(FactoryForFieldLines.State state) {
+        return state.getField().getFieldsGroups().get(getAlreadyExistingLineGroupElements(state));
+    }
+
+    public static class Representation extends FieldLine.Representation {
+
+        private final FieldGroup fieldGroup;
+
+        public Representation(FieldGroup fieldGroup, StringUtil stringUtil) {
+            super(stringUtil);
+            this.fieldGroup = fieldGroup;
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            return isPreLastElement(state) || areAllFieldGroupsAlreadyAdded(state);
+        public String text() {
+            return "*" + fieldGroup.getId();
         }
 
         @Override
-        public FieldLineFieldGroup create(FactoryForFieldLines.State state) {
-            return new FieldLineFieldGroup(getNextFieldGroup(state), state.getStringUtil());
+        public char firstChar() {
+            return '|';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return false;
-        }
-
-        private boolean areAllFieldGroupsAlreadyAdded(FactoryForFieldLines.State state) {
-            return getAlreadyExistingLineGroupElements(state) == state.getField().getFieldsGroups().size();
-        }
-
-        private int getAlreadyExistingLineGroupElements(FactoryForFieldLines.State state) {
-            return (int) countAlreadyExistingFieldLineElements(state, FieldLineFieldGroup.class);
-        }
-
-        private FieldGroup getNextFieldGroup(FactoryForFieldLines.State state) {
-            return state.getField().getFieldsGroups().get(getAlreadyExistingLineGroupElements(state));
+        public char lastChar() {
+            return '|';
         }
     }
 }

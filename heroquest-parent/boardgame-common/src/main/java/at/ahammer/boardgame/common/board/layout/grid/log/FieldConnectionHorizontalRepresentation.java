@@ -27,9 +27,9 @@ public class FieldConnectionHorizontalRepresentation extends FieldConnectionRepr
             sb.append("|");
             FieldConnectionObject fieldConnectionObject = getFirstFieldConnectionObject();
             if (fieldConnectionObject != null) {
-                sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.WIDTH - 4));
+                sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.Representation.WIDTH - 4));
             } else {
-                sb.append(stringUtil.repeatedString(' ', FieldLine.WIDTH - 4));
+                sb.append(stringUtil.repeatedString(' ', FieldLine.Representation.WIDTH - 4));
             }
             sb.append(hiddenChar());
             sb.append(openCloseChar());

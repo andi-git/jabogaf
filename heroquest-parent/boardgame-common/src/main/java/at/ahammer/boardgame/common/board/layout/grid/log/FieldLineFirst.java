@@ -7,49 +7,49 @@ import javax.enterprise.context.ApplicationScoped;
 /**
  * The first line of a {@link FieldLine}.
  */
-public class FieldLineFirst extends FieldLine {
+@ApplicationScoped
+public class FieldLineFirst extends FieldLine<FieldLineFirst.Representation> {
 
-    public FieldLineFirst(StringUtil stringUtil) {
-        super(stringUtil);
+    @Override
+    public int rank() {
+        return 10;
     }
 
     @Override
-    public String text() {
-        return getStringUtil().repeatedString('-', getMaxInnerWidth());
+    public boolean isLast(FactoryForFieldLines.State state) {
+        return true;
     }
 
     @Override
-    public char firstChar() {
-        return '+';
+    public FieldLineFirst.Representation create(FactoryForFieldLines.State state) {
+        return new FieldLineFirst.Representation(state.getStringUtil());
     }
 
     @Override
-    public char lastChar() {
-        return '+';
+    public boolean atLeastOnce() {
+        return true;
     }
 
-    @ApplicationScoped
-    public static class Usage extends FieldLineUsage<FieldLineFirst> {
+    public static class Representation extends FieldLine.Representation {
 
-        @Override
-        public int rank() {
-            return 10;
+        public Representation(StringUtil stringUtil) {
+            super(stringUtil);
         }
 
         @Override
-        public boolean isLast(FactoryForFieldLines.State state) {
-            return true;
+        public String text() {
+            return getStringUtil().repeatedString('-', getMaxInnerWidth());
         }
 
         @Override
-        public FieldLineFirst create(FactoryForFieldLines.State state) {
-            return new FieldLineFirst(state.getStringUtil());
+        public char firstChar() {
+            return '+';
         }
 
         @Override
-        public boolean atLeastOnce() {
-            return true;
+        public char lastChar() {
+            return '+';
         }
+
     }
-
 }
