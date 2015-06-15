@@ -1,26 +1,32 @@
 package at.ahammer.boardgame.core.object;
 
-import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.object.GameObject;
+import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
+import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.state.GameState;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class GameObjectBasic extends GameContextBeanBasic implements GameObject {
+public abstract class GameObjectBasic<POSITION> extends GameContextBeanBasic implements GameObject<POSITION> {
 
     @Inject
-    private State state;
+    private State<POSITION> state;
 
     /**
-     * Create a new {@link at.ahammer.boardgame.core.object.GameObjectBasic} with an id.
+     * Create a new {@link GameObjectBasic} with an id.
      *
-     * @param id the id of the {@link at.ahammer.boardgame.core.object.GameObjectBasic}
+     * @param id the id of the {@link GameObjectBasic}
      */
     public GameObjectBasic(String id) {
+        this(id, null);
+    }
+
+    public GameObjectBasic(String id, POSITION position) {
         super(id);
+        state.setPosition(position);
     }
 
     @Override
@@ -38,10 +44,22 @@ public class GameObjectBasic extends GameContextBeanBasic implements GameObject 
         state.setVisible(true);
     }
 
+    @Override
+    public POSITION getPosition() {
+        return state.getPosition();
+    }
+
+    @Override
+    public Resource movementCost() {
+        return new MovePoint(0);
+    }
+
     @Dependent
-    public static class State extends GameState {
+    public static class State<POSITION> extends GameState {
 
         private boolean visible = false;
+
+        private POSITION position;
 
         public boolean isVisible() {
             return visible;
@@ -49,6 +67,14 @@ public class GameObjectBasic extends GameContextBeanBasic implements GameObject 
 
         public void setVisible(boolean visible) {
             this.visible = visible;
+        }
+
+        public POSITION getPosition() {
+            return position;
+        }
+
+        public void setPosition(POSITION position) {
+            this.position = position;
         }
     }
 }

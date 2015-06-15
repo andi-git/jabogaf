@@ -9,25 +9,30 @@ import java.util.Set;
  */
 public interface Lookable {
 
-
     /**
-     * Check if the {@link at.ahammer.boardgame.api.behavior.look.Lookable} can look from the current {@code position}
-     * to another {@link at.ahammer.boardgame.api.board.field.Field} defined by the assigned {@code target}.
-     * <p/>
-     * The result is influenced by the available {@link at.ahammer.boardgame.api.behavior.look.LookBehavior}.
+     * Get the current position as {@link Field}.
      *
-     * @param target the {@link at.ahammer.boardgame.api.board.field.Field} to move to
-     * @return {@code true} if the look is possible
-     * @see at.ahammer.boardgame.api.behavior.look.LookBehavior#canLook(at.ahammer.boardgame.api.board.field.Field,
-     * at.ahammer.boardgame.api.board.field.Field)
+     * @return the current position as {@link Field}
      */
-    boolean canLook(Field target);
+    Field getPosition();
 
     /**
-     * Get a list of all {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to.
+     * Check if the {@link Lookable} can look from the current {@code position} to another {@link Field} defined by the
+     * assigned {@code target}.
+     * <p/>
+     * The result is influenced by the available {@link LookBehavior}.
      *
-     * @return a list of {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to
-     * @see at.ahammer.boardgame.api.behavior.look.LookBehavior#getLookableFields(at.ahammer.boardgame.api.board.field.Field)
+     * @param target the {@link Field} to move to
+     * @return a {@link CanLookReport} about the look, e.g. if the look is possible
+     * @see LookBehavior#canLook(Lookable, Field)
+     */
+    CanLookReport canLook(Field target);
+
+    /**
+     * Get a list of all {@link Field}s that can be looked to.
+     *
+     * @return a list of {@link Field}s that can be looked to
+     * @see LookBehavior#getLookableFields(Lookable)
      */
     Set<Field> getLookableFields();
 

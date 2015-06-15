@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.api.controller.PlayerController;
+import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
@@ -54,7 +55,12 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
 
     @Override
     public List<GameSubject> getGameSubjects() {
-        return playerController.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
+        return boardManager.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GameObject> getGameObjects() {
+        return boardManager.getAllGameObjects(this).stream().sorted().collect(Collectors.toList());
     }
 
     @Override

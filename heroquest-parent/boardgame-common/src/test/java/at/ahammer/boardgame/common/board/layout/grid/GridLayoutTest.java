@@ -1,11 +1,15 @@
 package at.ahammer.boardgame.common.board.layout.grid;
 
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
+import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.common.TestWithExampleGridLayoutBoard;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -54,4 +58,12 @@ public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
         assertFalse(fieldGroup.contains(field33));
     }
 
+    @Test
+    public void testLook() {
+        Set<FieldConnection> fieldConnectionsForLook = getLayout().getLookConnections(getField(1, 0), getField(2, 2));
+        assertEquals(3, fieldConnectionsForLook.size());
+        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:1,0-1,1")));
+        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:1,1-2,1")));
+        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:2,1-2,2")));
+    }
 }

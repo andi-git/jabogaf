@@ -11,8 +11,8 @@ public interface MoveBlock {
     /**
      * Check if the move is blocked
      *
-     * @param moveable the {@link at.ahammer.boardgame.api.behavior.move.Moveable} to move
-     * @param target   the {@link at.ahammer.boardgame.api.board.field.Field} to move to
+     * @param moveable the {@link Moveable} to move
+     * @param target   the {@link Field} to move to
      * @return {@code true} if the move is BLOCKED (i.e. the move is not possitble)
      */
     boolean blocks(Moveable moveable, Field target);

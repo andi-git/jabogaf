@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.core.subject;
 
 import at.ahammer.boardgame.api.artifact.Artifact;
+import at.ahammer.boardgame.api.behavior.look.CanLookReport;
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.look.LookBehaviorType;
 import at.ahammer.boardgame.api.behavior.move.*;
@@ -139,13 +140,13 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
     }
 
     @Override
-    public boolean canLook(Field target) {
-        return lookBehavior.canLook(getPosition(), target);
+    public CanLookReport canLook(Field target) {
+        return lookBehavior.canLook(this, target);
     }
 
     @Override
     public Set<Field> getLookableFields() {
-        return lookBehavior.getLookableFields(getPosition());
+        return lookBehavior.getLookableFields(this);
     }
 
     @Override

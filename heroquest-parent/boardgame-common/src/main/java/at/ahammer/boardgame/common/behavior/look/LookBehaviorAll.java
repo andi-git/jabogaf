@@ -1,13 +1,18 @@
 package at.ahammer.boardgame.common.behavior.look;
 
+import at.ahammer.boardgame.api.behavior.look.CanLookReport;
 import at.ahammer.boardgame.api.behavior.look.LookBehavior;
 import at.ahammer.boardgame.api.behavior.look.LookBehaviorType;
+import at.ahammer.boardgame.api.behavior.look.Lookable;
+import at.ahammer.boardgame.api.behavior.move.MoveBlock;
 import at.ahammer.boardgame.api.board.BoardManager;
 import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.core.behavior.look.CanLookReportBasic;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -23,17 +28,17 @@ public class LookBehaviorAll implements LookBehavior {
     private BoardManager boardManager;
 
     @Override
-    public boolean canLook(Field position, Field target) {
-        return true;
+    public CanLookReport canLook(Lookable lookable, Field target) {
+        return new CanLookReportBasic();
     }
 
     @Override
-    public Set<Field> getLookableFields(Field position) {
+    public Set<Field> getLookableFields(Lookable lookable) {
         return boardManager.getFields();
     }
 
     @Override
-    public boolean canBeUsedOn(Layout layout) {
-        return true;
+    public Set<MoveBlock> getLookBlocks() {
+        return new HashSet<>();
     }
 }

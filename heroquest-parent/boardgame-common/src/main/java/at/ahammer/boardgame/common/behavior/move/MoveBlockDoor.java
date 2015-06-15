@@ -9,9 +9,6 @@ import at.ahammer.boardgame.common.object.field.Door;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @ApplicationScoped
 public class MoveBlockDoor implements MoveBlock {
@@ -21,12 +18,15 @@ public class MoveBlockDoor implements MoveBlock {
 
     @Override
     public boolean blocks(Moveable moveable, Field target) {
+        boolean isBlocked = false;
         FieldConnection fieldConnection = boardManager.getBoard().getLayout().getConnection(moveable.getPosition(), target);
         if (fieldConnection != null && !fieldConnection.getObjectsOnConnection().isEmpty()) {
-            Stream<Door> doors = fieldConnection.getObjectsOnConnection().stream().filter(o -> o instanceof Door).map(o -> (Door) o);
-            return doors.anyMatch(d -> d.isClosed());
+            isBlocked = fieldConnection.getObjectsOnConnection().stream().
+                    filter(o -> o instanceof Door).
+                    map(o -> (Door) o).
+                    anyMatch(Door::isClosed);
         }
-        return false;
+        return isBlocked;
     }
 
     @Override

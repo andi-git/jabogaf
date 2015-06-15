@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.action.GameActionLifecycle;
 import at.ahammer.boardgame.api.action.GameActionPreferences;
 import at.ahammer.boardgame.api.action.event.AfterActionEvent;
 import at.ahammer.boardgame.api.action.event.BeforeActionEvent;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -24,6 +25,7 @@ public class GameActionLifecycleBasic implements GameActionLifecycle {
     private Event<AfterActionEvent> afterActionEvent;
 
     @Inject
+    @SLF4J
     private Logger log;
 
     @Override

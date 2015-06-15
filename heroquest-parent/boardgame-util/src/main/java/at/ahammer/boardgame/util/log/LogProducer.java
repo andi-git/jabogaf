@@ -20,6 +20,7 @@ public class LogProducer {
      * @return
      */
     @Produces
+    @SLF4J
     public Logger produce(InjectionPoint injectionPoint) {
         return LoggerFactory.getLogger(injectionPoint.getMember().getDeclaringClass());
     }

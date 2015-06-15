@@ -15,8 +15,10 @@ import java.util.Set;
 public class MoveBehaviorCommon extends MoveBehaviorBasic {
 
     private final Set<MoveBlock> moveBlocks = new HashSet<>();
+
     @Inject
     private MoveBlockDoor moveBlockDoor;
+
     @Inject
     private MoveBlockWall moveBlockWall;
 

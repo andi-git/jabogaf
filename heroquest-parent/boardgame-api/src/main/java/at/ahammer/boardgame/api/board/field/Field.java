@@ -1,6 +1,7 @@
 package at.ahammer.boardgame.api.board.field;
 
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.subject.GameSubject;
 
@@ -8,10 +9,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A basic class for a field in the game, which represents a unit where a {@link at.ahammer.boardgame.api.subject.GameSubject}
- * can be positioned.
+ * A basic class for a field in the game, which represents a unit where a {@link GameSubject} can be positioned.
  * <p/>
- * A field is a {@link at.ahammer.boardgame.api.object.GameObject} and is always visible.
+ * A field is a {@link GameObject} and is always visible.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public interface Field extends GameContextBean {
@@ -36,28 +36,32 @@ public interface Field extends GameContextBean {
     FieldConnection getConnectionTo(Field target);
 
     /**
-     * Get a {@link java.util.List} of all available {@link at.ahammer.boardgame.api.subject.GameSubject}s on the
-     * current {@link at.ahammer.boardgame.api.board.field.Field}. The {@link at.ahammer.boardgame.api.subject.GameSubject}s
+     * Get a {@link List} of all available {@link GameSubject}s on the current {@link Field}. The {@link GameSubject}s
      * are ordered by natural order.
      *
-     * @return a {@link java.util.List} of {@link at.ahammer.boardgame.api.subject.GameSubject}s available on the
-     * current {@link at.ahammer.boardgame.api.board.field.Field} sorted by natural order.
+     * @return a {@link List} of {@link GameSubject}s available on the current {@link Field} sorted by natural order.
      */
     List<GameSubject> getGameSubjects();
 
     /**
-     * Get a natural sorted {@link java.util.List} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s where
-     * the current {@link at.ahammer.boardgame.api.board.field.Field} is located.
+     * Get a {@link List} of all available {@link GameObject}s on the current {@link Field}. The {@link GameObject}s are
+     * ordered by natural order.
      *
-     * @return a natural sorted {@link java.util.List} of all {@link at.ahammer.boardgame.api.board.field.FieldGroup}s
-     * where the current {@link at.ahammer.boardgame.api.board.field.Field} is located
+     * @return a {@link List} of {@link GameObject}s available on the current {@link Field} sorted by natural order.
+     */
+    List<GameObject> getGameObjects();
+
+    /**
+     * Get a natural sorted {@link List} of all {@link FieldGroup}s where the current {@link Field} is located.
+     *
+     * @return a natural sorted {@link List} of all {@link FieldGroup}s where the current {@link Field} is located
      */
     List<FieldGroup> getFieldsGroups();
 
     /**
-     * Get all connected {@link at.ahammer.boardgame.api.board.field.Field}s.
+     * Get all connected {@link Field}s.
      *
-     * @return all connected {@link at.ahammer.boardgame.api.board.field.Field}s
+     * @return all connected {@link Field}s
      */
     Set<Field> getConnectedFields();
 

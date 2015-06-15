@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.behavior.move.MoveBlock;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.core.resource.MovePoint;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,7 +50,7 @@ public class CanMoveReportBasic implements CanMoveReport {
 
     @Override
     public Set<MoveBlock> moveBlocks() {
-        return moveBlocks;
+        return Collections.unmodifiableSet(moveBlocks);
     }
 
     public static class CanMoveReportBuilder {

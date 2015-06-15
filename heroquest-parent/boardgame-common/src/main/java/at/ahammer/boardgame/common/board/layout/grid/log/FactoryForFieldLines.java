@@ -2,6 +2,7 @@ package at.ahammer.boardgame.common.board.layout.grid.log;
 
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
+import at.ahammer.boardgame.util.log.SLF4J;
 import at.ahammer.boardgame.util.string.StringUtil;
 import org.slf4j.Logger;
 
@@ -48,6 +49,7 @@ public class FactoryForFieldLines {
     private StringUtil stringUtil;
 
     @Inject
+    @SLF4J
     private Logger log;
 
     /**

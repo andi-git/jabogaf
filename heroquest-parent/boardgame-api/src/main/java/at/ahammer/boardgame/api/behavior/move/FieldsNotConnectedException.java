@@ -3,7 +3,7 @@ package at.ahammer.boardgame.api.behavior.move;
 import at.ahammer.boardgame.api.board.field.Field;
 
 /**
- * {@link at.ahammer.boardgame.api.board.field.Field}s are not connected.
+ * {@link Field}s are not connected.
  */
 public class FieldsNotConnectedException extends Exception {
 

@@ -2,7 +2,6 @@ package at.ahammer.boardgame.common.board.layout.grid;
 
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.board.field.FieldConnection;
-import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.common.object.field.*;
 import at.ahammer.boardgame.core.board.field.FieldBasic;
 import at.ahammer.boardgame.core.board.field.FieldConnectionBasic;

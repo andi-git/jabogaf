@@ -82,9 +82,7 @@ public abstract class GridLayoutCreationStrategy {
     public final Field[][] getFieldsArray() {
         Field[][] result = new Field[fieldsArray.length][fieldsArray[0].length];
         for (int y = 0; y < fieldsArray.length; y++) {
-            for (int x = 0; x < fieldsArray[0].length; x++) {
-                result[y][x] = fieldsArray[y][x];
-            }
+            System.arraycopy(fieldsArray[y], 0, result[y], 0, fieldsArray[0].length);
         }
         return result;
     }

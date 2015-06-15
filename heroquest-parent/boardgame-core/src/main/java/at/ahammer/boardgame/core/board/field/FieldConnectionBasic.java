@@ -37,10 +37,8 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
 
     @Override
     public boolean connects(Field field1, Field field2) {
-        if (field1 == null || field2 == null) {
-            return false;
-        }
-        return (field1.equals(leftHand) && field2.equals(rightHand)) || (field2.equals(leftHand) && field1.equals(rightHand));
+        return !(field1 == null || field2 == null)
+                && ((field1.equals(leftHand) && field2.equals(rightHand)) || (field2.equals(leftHand) && field1.equals(rightHand)));
     }
 
     @Override
@@ -55,9 +53,7 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
 
     @Override
     public void addObjectOnConnection(FieldConnectionObject... fieldConnectionObject) {
-        for (FieldConnectionObject f : fieldConnectionObject) {
-            fieldConnectionObjects.add(f);
-        }
+        Collections.addAll(fieldConnectionObjects, fieldConnectionObject);
     }
 
     @Override

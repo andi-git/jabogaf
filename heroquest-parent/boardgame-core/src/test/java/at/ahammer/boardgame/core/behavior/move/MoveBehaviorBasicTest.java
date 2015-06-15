@@ -2,30 +2,23 @@ package at.ahammer.boardgame.core.behavior.move;
 
 import at.ahammer.boardgame.api.behavior.move.*;
 import at.ahammer.boardgame.api.board.field.Field;
-import at.ahammer.boardgame.api.board.field.FieldConnection;
-import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
-import at.ahammer.boardgame.api.board.layout.Layout;
 import at.ahammer.boardgame.api.resource.NotEnoughResourceException;
 import at.ahammer.boardgame.api.resource.Resource;
-import at.ahammer.boardgame.api.resource.ResourceHolder;
-import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.api.subject.SetterOfPosition;
 import at.ahammer.boardgame.core.board.field.FieldBasic;
-import at.ahammer.boardgame.core.board.field.FieldConnectionBasic;
-import at.ahammer.boardgame.core.board.field.FieldConnectionObjectBasic;
 import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.subject.GameSubjectBasic;
-import at.ahammer.boardgame.core.subject.GameSubjectNull;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
 import at.ahammer.boardgame.core.test.BeforeInGameContext;
-import org.junit.Ignore;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,14 +28,13 @@ import static org.junit.Assert.*;
 public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
 
     @Inject
+    @SLF4J
     private Logger log;
 
     @Inject
     private MoveBehaviorDummy moveBehavior;
 
-    private Field field1, field2, field3;
-
-    private Field field5, field6, field7, field8;
+    private Field field1, field2, field3, field5, field8;
 
     private MyGameSubject gameSubject;
 
@@ -56,10 +48,8 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
         gameSubject = new MyGameSubject("myMoveable", field1, moveBehavior);
         gameSubject.earn(new MovePoint(10).asPayment());
         field5 = new Field5();
-        field6 = new Field6();
-        field7 = new Field7();
         field8 = new Field8();
-        movePath = new MovePathBasic(field5, field6, field7, field8);
+        movePath = new MovePathBasic(field5, new Field6(), new Field7(), field8);
     }
 
     @Test
@@ -169,9 +159,7 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
 
         public void setMoveBlocks(MoveBlock... moveBlocks) {
             this.moveBlocks.clear();
-            for (MoveBlock moveBlock : moveBlocks) {
-                this.moveBlocks.add(moveBlock);
-            }
+            Collections.addAll(this.moveBlocks, moveBlocks);
         }
     }
 

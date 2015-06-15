@@ -1,5 +1,6 @@
 package at.ahammer.boardgame.core.state;
 
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.slf4j.Logger;
 
 import javax.annotation.Priority;
@@ -23,6 +24,7 @@ public class SetterFiresGameStateChangedInterceptor {
     private Event<GameStateChanged> gameStateChangedEvent;
 
     @Inject
+    @SLF4J
     private Logger log;
 
     private Set<String> setterMethods = new HashSet<>();

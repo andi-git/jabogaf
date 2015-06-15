@@ -12,6 +12,7 @@ import javax.inject.Inject;
 public class LogTest {
 
     @Inject
+    @SLF4J
     private Logger log;
 
     @Test

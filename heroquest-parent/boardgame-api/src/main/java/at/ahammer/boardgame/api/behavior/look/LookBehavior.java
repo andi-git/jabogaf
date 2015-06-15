@@ -1,43 +1,43 @@
 package at.ahammer.boardgame.api.behavior.look;
 
-import at.ahammer.boardgame.api.board.layout.Layout;
+import at.ahammer.boardgame.api.behavior.move.MoveBlock;
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.object.GameObject;
+import at.ahammer.boardgame.api.subject.GameSubject;
 
 import java.util.Set;
 
 /**
- * The strategy of a look from one {@link at.ahammer.boardgame.api.board.field.Field} to another,
+ * The strategy of a look from one {@link Field} to another,
  * <p/>
- * With {@link #canLook(at.ahammer.boardgame.api.board.field.Field, at.ahammer.boardgame.api.board.field.Field)} it can
- * be checked if it is possible to look from one {@link at.ahammer.boardgame.api.board.field.Field} to another.
+ * With {@link #canLook(Lookable, Field)} it can be checked if it is possible to look from one {@link Field} to
+ * another.
  */
 public interface LookBehavior {
 
     /**
-     * Check if a look from {@code position} to {@code target} is possible. It is possible, that a {@link
-     * at.ahammer.boardgame.api.object.GameObject} or {@link at.ahammer.boardgame.api.subject.GameSubject} blocks the
-     * look.
+     * Check if a look from {@code position} to {@code target} is possible. It is possible, that a {@link GameObject} or
+     * {@link GameSubject} blocks the look.
      *
-     * @param position the {@link at.ahammer.boardgame.api.board.field.Field} where to look starts
-     * @param target   the {@link at.ahammer.boardgame.api.board.field.Field} where the look ends
-     * @return {@code true} if the look is possible
+     * @param lookable the {@link Lookable} to check for
+     * @param target   the {@link Field} where the look ends
+     * @return the {@link CanLookReport} that knows if the look is possible
      */
-    boolean canLook(Field position, Field target);
+    CanLookReport canLook(Lookable lookable, Field target);
 
     /**
-     * Get a set of all {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to.
+     * Get a set of all {@link Field}s that can be looked to.
      *
-     * @param position the {@link at.ahammer.boardgame.api.board.field.Field} where to look starts
-     * @return a set of {@link at.ahammer.boardgame.api.board.field.Field}s that can be looked to
+     * @param lookable the {@link Lookable} to check for
+     * @return a set of {@link Field}s that can be looked to
      */
-    Set<Field> getLookableFields(Field position);
+    Set<Field> getLookableFields(Lookable lookable);
 
     /**
-     * Check if the current {@link at.ahammer.boardgame.api.behavior.look.LookBehavior} can be used on a {@link
-     * at.ahammer.boardgame.api.board.layout.Layout}.
+     * Get a {@link Set} of all {@link LookBlock}s that are activated.
      *
-     * @return {@code true} if the current {@link at.ahammer.boardgame.api.behavior.look.LookBehavior} can be used on a
-     * {@link at.ahammer.boardgame.api.board.layout.Layout}
+     * @return a {@link Set} of all {@link LookBlock}s that are activated
      */
-    boolean canBeUsedOn(Layout layout);
+    Set<MoveBlock> getLookBlocks();
+
 }

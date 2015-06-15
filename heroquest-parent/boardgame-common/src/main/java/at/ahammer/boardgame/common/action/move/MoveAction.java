@@ -3,11 +3,11 @@ package at.ahammer.boardgame.common.action.move;
 import at.ahammer.boardgame.api.action.ActionNotPossibleException;
 import at.ahammer.boardgame.api.action.GameAction;
 import at.ahammer.boardgame.api.action.GameActionLifecycle;
-import at.ahammer.boardgame.api.action.GameActionPreferences;
 import at.ahammer.boardgame.api.controller.PlayerController;
 import at.ahammer.boardgame.api.board.field.Field;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.action.GameActionPreferencesBasic;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -28,6 +28,7 @@ public class MoveAction implements GameAction<MoveActionParameter> {
     private PlayerController playerController;
 
     @Inject
+    @SLF4J
     private Logger log;
 
     /**

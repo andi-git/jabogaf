@@ -5,6 +5,7 @@ import at.ahammer.boardgame.api.resource.NotSameResourceException;
 import at.ahammer.boardgame.api.resource.Payment;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.core.cdi.GameContextBeanBasic;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.slf4j.Logger;
 
 import javax.enterprise.context.Dependent;
@@ -16,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 public abstract class ResourceBasic<T extends Resource> extends GameContextBeanBasic implements Resource<T> {
 
     @Inject
+    @SLF4J
     private Logger log;
 
     @Inject
@@ -118,6 +120,7 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
         return newInstance;
     }
 
+    @SuppressWarnings("CloneDoesntCallSuperClone")
     public T clone() {
         return newInstance(state.getAmount());
     }

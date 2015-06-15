@@ -7,12 +7,14 @@ import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldGroup;
 import at.ahammer.boardgame.api.cdi.GameContextBean;
 import at.ahammer.boardgame.api.cdi.GameScoped;
+import at.ahammer.boardgame.api.object.GameObject;
 import at.ahammer.boardgame.api.resource.Resource;
 import at.ahammer.boardgame.api.resource.ResourceHolder;
 import at.ahammer.boardgame.api.subject.GameSubject;
 import at.ahammer.boardgame.core.resource.MovePoint;
 import at.ahammer.boardgame.core.resource.ResourcesBasic;
 import at.ahammer.boardgame.core.util.cache.CachedValueMap;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
@@ -23,7 +25,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Create and cache all moveable-fields of a {@link Moveable} and a {@link ResourceHolder}, i.e. a {@link GameSubject}.
+ * Create and cache all moveable {@link Field}s of a {@link Moveable} and a {@link ResourceHolder}, i.e. a {@link
+ * GameSubject}.
  */
 @GameScoped
 public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableFields.Parameter> {
@@ -32,6 +35,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     private MovePointCollector movePointCollector;
 
     @Inject
+    @SLF4J
     private Logger log;
 
     private Set<ResolvedField> resolvedFields = new HashSet<>();
@@ -178,6 +182,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
+        public List<GameObject> getGameObjects() {
+            return getMovePath().getTarget().getGameObjects();
+        }
+
+        @Override
         public List<FieldGroup> getFieldsGroups() {
             return getMovePath().getTarget().getFieldsGroups();
         }
@@ -272,6 +281,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         @Override
         public List<GameSubject> getGameSubjects() {
             return getTarget().getGameSubjects();
+        }
+
+        @Override
+        public List<GameObject> getGameObjects() {
+            return getTarget().getGameObjects();
         }
 
         @Override

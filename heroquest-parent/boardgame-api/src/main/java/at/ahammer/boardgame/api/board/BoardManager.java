@@ -1,7 +1,10 @@
 package at.ahammer.boardgame.api.board;
 
 import at.ahammer.boardgame.api.board.field.Field;
+import at.ahammer.boardgame.api.board.field.FieldConnection;
 import at.ahammer.boardgame.api.board.field.FieldConnectionObject;
+import at.ahammer.boardgame.api.object.GameObject;
+import at.ahammer.boardgame.api.subject.GameSubject;
 
 import java.util.Set;
 
@@ -39,4 +42,39 @@ public interface BoardManager {
      * at.ahammer.boardgame.api.board.field.Field}
      */
     Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
+
+    /**
+     * Get all available {@link GameSubject}s, i.e. players, npcs,...
+     *
+     * @return all available {@link GameSubject}s
+     */
+    Set<GameSubject> getAllGameSubjects();
+
+    /**
+     * Get all available {@link GameSubject}s, i.e. players, npcs,... positioned a concrete {@link Field}
+     *
+     * @return all available {@link GameSubject}s positioned a concrete {@link Field}
+     */
+    Set<GameSubject> getAllGameSubjects(Field field);
+
+    /**
+     * Get all available {@link GameObject}s, i.e. table, tree,...
+     *
+     * @return all available {@link GameObject}s
+     */
+    Set<GameObject> getAllGameObjects();
+
+    /**
+     * Get all available {@link GameObject}s, i.e. table, tree,... positioned a concrete {@link Field}
+     *
+     * @return all available {@link GameObject}s positioned a concrete {@link Field}
+     */
+    Set<GameObject> getAllGameObjects(Field field);
+
+    /**
+     * Get all available {@link GameObject}s, i.e. table, tree,... positioned a concrete {@link Field}
+     *
+     * @return all available {@link GameObject}s positioned a concrete {@link Field}
+     */
+    Set<GameObject> getAllGameObjects(FieldConnection fieldConnection);
 }

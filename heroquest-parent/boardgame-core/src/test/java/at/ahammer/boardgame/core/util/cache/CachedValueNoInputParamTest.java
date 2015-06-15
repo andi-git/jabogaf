@@ -4,6 +4,7 @@ import at.ahammer.boardgame.api.cdi.GameScoped;
 import at.ahammer.boardgame.core.state.GameStateChanged;
 import at.ahammer.boardgame.core.test.ArquillianGameContext;
 import at.ahammer.boardgame.core.test.ArquillianGameContextTest;
+import at.ahammer.boardgame.util.log.SLF4J;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class CachedValueNoInputParamTest extends ArquillianGameContextTest {
     public static class CachedValueNoInputParam1 extends CachedValueNoInputParam<Integer> {
 
         @Inject
+        @SLF4J
         private Logger log;
 
         private int count;

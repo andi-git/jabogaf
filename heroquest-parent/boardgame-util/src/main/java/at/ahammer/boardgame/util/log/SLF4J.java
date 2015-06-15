@@ -1,4 +1,4 @@
-package at.ahammer.boardgame.api.behavior.move;
+package at.ahammer.boardgame.util.log;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
@@ -8,17 +8,11 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * This qualifier is used to specify the concrete {@link MoveBehavior}.
+ * The null-implementation of a type.
  */
 @Qualifier
 @Retention(RUNTIME)
 @Target({TYPE, METHOD, FIELD, PARAMETER})
-public @interface MoveBehaviorType {
+public @interface SLF4J {
 
-    /**
-     * The concrete type of {@link MoveBehavior}.
-     *
-     * @return
-     */
-    public Class<? extends MoveBehavior> value();
 }
