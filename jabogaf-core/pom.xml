@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jabogaf-parent</artifactId>
+        <artifactId>jabogaf</artifactId>
         <groupId>org.jabogaf</groupId>
         <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jabogaf-common</artifactId>
+    <artifactId>jabogaf-core</artifactId>
 
     <build>
         <plugins>
@@ -23,7 +23,7 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>jabogaf-api,jabogaf-core,jabogaf-core-testutil</includeArtifactIds>
+                            <includeArtifactIds>jabogaf-api,jabogaf-core-testutil</includeArtifactIds>
                             <outputDirectory>${project.build.directory}/arquillianLibs</outputDirectory>
                             <overWriteReleases>true</overWriteReleases>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -39,11 +39,6 @@
         <dependency>
             <groupId>org.jabogaf</groupId>
             <artifactId>jabogaf-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
