@@ -1,2 +1,2 @@
 # jabogaf
-JAva BOard GAme Framework
+jabogaf stands for "JAva BOard GAme Framework"
