@@ -21,7 +21,7 @@
         <!-- plugin -->
         <version.maven-copiler-plugin>2.5.1</version.maven-copiler-plugin>
         <version.maven-surefire-plugin>2.12.4</version.maven-surefire-plugin>
-        <version.maven-dependency-plugin>2.9</version.maven-dependency-plugin>
+        <version.maven-dependency-plugin>2.10</version.maven-dependency-plugin>
         <!-- runtime -->
         <version.javaee-api>7.0</version.javaee-api>
         <version.slf4j-api>1.6.1</version.slf4j-api>
