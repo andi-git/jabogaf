@@ -27,6 +27,7 @@ public class CachedValueInputParamTest extends ArquillianGameContextTest {
 
     @Test
     public void testGet() throws Exception {
+        // FIXME there are test-failures: actual is 42000
         int before = cachedValueInputParam1.getLastEventChange().getNano();
         assertEquals("hello bob", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("bob")));
         int after = cachedValueInputParam1.getLastEventChange().getNano();
