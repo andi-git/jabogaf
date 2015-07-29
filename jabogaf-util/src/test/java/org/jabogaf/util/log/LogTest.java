@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 
 import javax.inject.Inject;
 
+import static org.junit.Assert.assertNotNull;
+
 @RunWith(Arquillian.class)
 public class LogTest {
 
@@ -15,8 +17,12 @@ public class LogTest {
     @SLF4J
     private Logger log;
 
+    @Inject
+    private LogProducer logProducer;
+
     @Test
     public void testLog() {
-        Assert.assertNotNull(log);
+        assertNotNull(log);
+        assertNotNull(logProducer.produce(LogTest.class));
     }
 }
