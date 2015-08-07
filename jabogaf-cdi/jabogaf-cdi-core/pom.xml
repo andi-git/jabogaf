@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-events</artifactId>
+            <artifactId>jabogaf-events-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
