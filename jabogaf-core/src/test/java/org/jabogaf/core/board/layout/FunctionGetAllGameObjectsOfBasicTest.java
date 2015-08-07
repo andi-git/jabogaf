@@ -2,7 +2,7 @@ package org.jabogaf.core.board.layout;
 
 import org.jabogaf.api.board.layout.FunctionGetAllGameObjectsOf;
 import org.jabogaf.core.board.AbstractBoardTest;
-import org.jabogaf.core.test.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

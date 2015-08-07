@@ -4,7 +4,7 @@ import org.jabogaf.api.behavior.move.*;
 import org.jabogaf.api.resource.NotEnoughResourceException;
 import org.jabogaf.common.TestWithExampleGridLayoutBoard;
 import org.jabogaf.common.object.field.Door;
-import org.jabogaf.core.test.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

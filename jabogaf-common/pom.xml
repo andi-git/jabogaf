@@ -28,6 +28,11 @@
             <artifactId>jabogaf-util</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-events-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- test -->
         <dependency>
@@ -62,7 +67,7 @@
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-core-testutil</artifactId>
+            <artifactId>jabogaf-cdi-testutil</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

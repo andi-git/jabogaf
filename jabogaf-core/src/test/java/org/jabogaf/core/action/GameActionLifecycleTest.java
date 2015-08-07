@@ -2,9 +2,9 @@ package org.jabogaf.core.action;
 
 import org.jabogaf.api.action.ActionNotPossibleException;
 import org.jabogaf.api.action.GameActionLifecycle;
-import org.jabogaf.core.test.ArquillianGameContext;
-import org.jabogaf.core.test.ArquillianGameContextTest;
-import org.jabogaf.core.test.BeforeInGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.BeforeInGameContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

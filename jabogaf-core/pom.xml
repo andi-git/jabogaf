@@ -20,6 +20,11 @@
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-events-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
             <artifactId>jabogaf-util</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -57,9 +62,14 @@
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-core-testutil</artifactId>
+            <artifactId>jabogaf-cdi-testutil</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-cdi-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

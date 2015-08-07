@@ -7,6 +7,7 @@ import org.jabogaf.api.behavior.look.LookBehaviorType;
 import org.jabogaf.api.behavior.move.*;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.*;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.api.subject.artifact.ArtifactHolder;
@@ -16,7 +17,6 @@ import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
-import org.jabogaf.core.state.GameState;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;

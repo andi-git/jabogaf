@@ -2,8 +2,8 @@ package org.jabogaf.core.util.cache;
 
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.core.state.GameStateChanged;
-import org.jabogaf.core.test.ArquillianGameContext;
-import org.jabogaf.core.test.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.jabogaf.util.log.SLF4J;
 import org.junit.Test;
 import org.junit.runner.RunWith;

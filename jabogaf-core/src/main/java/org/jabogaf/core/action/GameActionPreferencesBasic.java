@@ -20,13 +20,9 @@ public class GameActionPreferencesBasic implements GameActionPreferences {
     private ActionPerform actionPerform = () -> {
     };
 
-    private ActionEventCreation<BeforeActionEvent> beforeActionEventCreation = () -> {
-        return new BeforeActionEventDefault();
-    };
+    private ActionEventCreation<BeforeActionEvent> beforeActionEventCreation = BeforeActionEventDefault::new;
 
-    private ActionEventCreation<AfterActionEvent> afterActionEventCreation = () -> {
-        return new AfterActionEventDefault();
-    };
+    private ActionEventCreation<AfterActionEvent> afterActionEventCreation = AfterActionEventDefault::new;
 
     private GameActionPreferencesBasic() {
         // private constructor

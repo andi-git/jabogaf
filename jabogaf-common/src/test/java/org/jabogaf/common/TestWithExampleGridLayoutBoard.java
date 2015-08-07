@@ -12,8 +12,8 @@ import org.jabogaf.common.board.layout.grid.GridLayoutCreationExample;
 import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.subject.GameSubjectNull;
-import org.jabogaf.core.test.ArquillianGameContextTest;
-import org.jabogaf.core.test.BeforeInGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.BeforeInGameContext;
 
 import javax.inject.Inject;
 

@@ -6,7 +6,7 @@ import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.common.artifact.shield.SimpleShield;
 import org.jabogaf.common.artifact.weapon.OneHandedSword;
 import org.jabogaf.core.artifact.ArtifactNull;
-import org.jabogaf.core.test.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

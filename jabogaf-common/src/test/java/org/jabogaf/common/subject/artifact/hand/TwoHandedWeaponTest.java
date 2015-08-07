@@ -4,7 +4,7 @@ import org.jabogaf.api.subject.artifact.hand.ArtifactHandlingException;
 import org.jabogaf.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.common.artifact.weapon.TwoHandedSword;
-import org.jabogaf.core.test.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

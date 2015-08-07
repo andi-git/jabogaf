@@ -4,7 +4,7 @@ import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
-import org.jabogaf.core.state.GameState;
+import org.jabogaf.api.state.GameState;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;

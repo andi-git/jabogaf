@@ -7,8 +7,8 @@ import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.core.board.field.*;
 import org.jabogaf.core.board.layout.LayoutBasic;
-import org.jabogaf.core.test.ArquillianGameContextTest;
-import org.jabogaf.core.test.BeforeInGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.BeforeInGameContext;
 
 import java.util.HashSet;
 import java.util.Set;

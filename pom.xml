@@ -7,9 +7,10 @@
     <modules>
         <module>jabogaf-api</module>
         <module>jabogaf-core</module>
-        <module>jabogaf-core-testutil</module>
         <module>jabogaf-common</module>
         <module>jabogaf-util</module>
+        <module>jabogaf-cdi</module>
+        <module>jabogaf-events</module>
     </modules>
 
     <packaging>pom</packaging>

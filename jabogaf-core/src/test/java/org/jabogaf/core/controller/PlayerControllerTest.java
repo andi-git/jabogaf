@@ -3,8 +3,8 @@ package org.jabogaf.core.controller;
 import org.jabogaf.api.controller.PlayerController;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.subject.GameSubjectNull;
-import org.jabogaf.core.test.ArquillianGameContext;
-import org.jabogaf.core.test.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -11,4 +11,16 @@
 
     <artifactId>jabogaf-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-cdi-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-events-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

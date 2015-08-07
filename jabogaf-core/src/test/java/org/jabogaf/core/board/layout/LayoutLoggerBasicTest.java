@@ -5,8 +5,8 @@ import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
 import org.jabogaf.api.board.layout.log.LayoutLoggerParameter;
-import org.jabogaf.core.test.ArquillianGameContext;
-import org.jabogaf.core.test.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

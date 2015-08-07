@@ -3,8 +3,8 @@ package org.jabogaf.common.action.move;
 import org.jabogaf.api.action.ActionNotPossibleException;
 import org.jabogaf.api.action.GameAction;
 import org.jabogaf.api.action.GameActionLifecycle;
-import org.jabogaf.api.controller.PlayerController;
 import org.jabogaf.api.board.field.Field;
+import org.jabogaf.api.controller.PlayerController;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.action.GameActionPreferencesBasic;
 import org.jabogaf.util.log.SLF4J;
@@ -32,12 +32,12 @@ public class MoveAction implements GameAction<MoveActionParameter> {
     private Logger log;
 
     /**
-     * Perform a move on the assigned {@link org.jabogaf.api.subject.GameSubject} to the assigned {@link
-     * org.jabogaf.api.board.field.Field} via {@link org.jabogaf.api.subject.GameSubject#move(org.jabogaf.api.board.field.Field)}
+     * Perform a move on the assigned {@link GameSubject} to the assigned {@link
+     * Field} via {@link GameSubject#move(Field)}
      * <p/>
-     * Prerequisites: {@link org.jabogaf.api.subject.GameSubject} is the current player
+     * Prerequisites: {@link GameSubject} is the current player
      * <p/>
-     * Action: Move {@link org.jabogaf.api.subject.GameSubject} to a {@link org.jabogaf.api.board.field.Field}
+     * Action: Move {@link GameSubject} to a {@link Field}
      * <p/>
      * Events: {@link BeforeMoveActionEvent}, {@link
      * AfterMoveActionEvent}

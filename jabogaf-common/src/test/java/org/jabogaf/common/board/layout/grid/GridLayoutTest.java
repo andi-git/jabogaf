@@ -4,7 +4,7 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.common.TestWithExampleGridLayoutBoard;
-import org.jabogaf.core.test.ArquillianGameContext;
+import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
