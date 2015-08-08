@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +30,7 @@ public class CachedValueNoInputParamTest extends ArquillianGameContextTest {
     public void testGet() throws Exception {
         assertEquals(0, cachedValueNoInputParam1.get().intValue());
         assertEquals(0, cachedValueNoInputParam1.get().intValue());
-        gameStateChangedEvent.fire(new GameStateChanged());
+        gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), null, new ArrayList<>()));
         assertEquals(1, cachedValueNoInputParam1.get().intValue());
     }
 

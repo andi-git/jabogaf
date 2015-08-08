@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
@@ -45,7 +47,7 @@ public class CachedValueMapTest extends ArquillianGameContextTest {
         assertEquals("hello charlie", cachedValueMap1.get(new CachedValueMap1.Parameter("charlie")));
         assertEquals(3, cachedValueMap1.getMap().size());
 
-        gameStateChangedEvent.fire(new GameStateChanged());
+        gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), null, new ArrayList<>()));
 
         assertEquals(0, cachedValueMap1.getMap().size());
         assertEquals("hello bob", cachedValueMap1.get(new CachedValueMap1.Parameter("bob")));

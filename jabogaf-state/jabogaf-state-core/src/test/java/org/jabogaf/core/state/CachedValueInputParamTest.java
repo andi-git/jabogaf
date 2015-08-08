@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import static org.junit.Assert.*;
@@ -38,7 +40,7 @@ public class CachedValueInputParamTest extends ArquillianGameContextTest {
         assertTrue(cachedValueInputParam1.isValid());
         assertEquals(before, after);
 
-        gameStateChangedEvent.fire(new GameStateChanged());
+        gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), null, new ArrayList<>()));
 
         assertFalse(cachedValueInputParam1.isValid());
         assertEquals("hello bob", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("bob")));

@@ -2,9 +2,11 @@ package org.jabogaf.core.state;
 
 import org.jabogaf.api.event.GameStateChanged;
 import org.jabogaf.api.state.ChangesGameState;
+import org.jabogaf.api.state.GameStateChangedCollector;
 import org.jabogaf.api.state.SetterFiresGameStateChanged;
 import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.cdi.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,6 +36,11 @@ public class SetterFiresGameStateChangedInterceptorTest extends ArquillianGameCo
 
     @Inject
     private MethodHolder methodHolder;
+
+    @BeforeInGameContext
+    public void before() {
+        methodHolder.clear();
+    }
 
     @Test
     public void testInterceptor() {

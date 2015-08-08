@@ -11,5 +11,11 @@
 
     <artifactId>jabogaf-state-api</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-events-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

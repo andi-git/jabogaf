@@ -1,6 +1,7 @@
 package org.jabogaf.core.state;
 
 import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.api.state.GameStateChangedCollector;
 import org.jabogaf.api.state.SetterFiresGameStateChanged;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
@@ -13,8 +14,8 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Instant;
+import java.util.Arrays;
 
 @Interceptor
 @SetterFiresGameStateChanged
@@ -38,8 +39,8 @@ public class SetterFiresGameStateChangedInterceptor {
         log.debug("intercept method {}", method.getName());
         // if it is a setter, fire the event
         if (mutableMethods.isMutableMethod(method)) {
-            log.debug("  is a setter method");
-            gameStateChangedEvent.fire(new GameStateChanged(method));
+            log.debug("  is a setter method with value {}", context.getParameters());
+            gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), method, Arrays.asList(context.getParameters())));
         } else {
             log.debug("  is not a setter method");
         }
