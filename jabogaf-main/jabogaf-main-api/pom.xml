@@ -3,23 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jabogaf-events</artifactId>
+        <artifactId>jabogaf-main</artifactId>
         <groupId>org.jabogaf</groupId>
         <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jabogaf-events-common</artifactId>
+    <artifactId>jabogaf-main-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-main-api</artifactId>
+            <artifactId>jabogaf-cdi-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-events-core</artifactId>
+            <artifactId>jabogaf-events-api</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -5,13 +5,11 @@
     <artifactId>jabogaf</artifactId>
     <version>0.0.3-SNAPSHOT</version>
     <modules>
-        <module>jabogaf-api</module>
-        <module>jabogaf-core</module>
-        <module>jabogaf-common</module>
-        <module>jabogaf-util</module>
+        <module>jabogaf-main</module>
         <module>jabogaf-cdi</module>
         <module>jabogaf-events</module>
         <module>jabogaf-state</module>
+        <module>jabogaf-util</module>
     </modules>
 
     <packaging>pom</packaging>
