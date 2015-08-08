@@ -1,5 +1,8 @@
 package org.jabogaf.api.action;
 
+import org.jabogaf.api.event.AfterActionEvent;
+import org.jabogaf.api.event.BeforeActionEvent;
+
 /**
  * This is the lifecycle of a {@link GameAction}. For details see {@link #perform(GameActionPreferences)}
  * <p/>
@@ -11,10 +14,10 @@ public interface GameActionLifecycle {
      * Performs the current action with the following lifecycle:
      *
      * <ul>
-     *     <li>fire the {@link org.jabogaf.api.action.event.BeforeActionEvent}</li>
+     *     <li>fire the {@link BeforeActionEvent}</li>
      *     <li>check the prerequisites</li>
      *     <li>perform the action</li>
-     *     <li>fire the {@link org.jabogaf.api.action.event.AfterActionEvent}</li>
+     *     <li>fire the {@link AfterActionEvent}</li>
      * </ul>
      *
      * All the functions / data to perform the action are stored in the assigned {@link GameActionPreferences}

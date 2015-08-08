@@ -1,6 +1,6 @@
 package org.jabogaf.core.action;
 
-import org.jabogaf.api.action.event.AfterActionEvent;
+import org.jabogaf.core.event.AfterActionEventBasic;
 
 public class MyAfterActionEvent extends AfterActionEventBasic<MyGameActionParameter> {
 

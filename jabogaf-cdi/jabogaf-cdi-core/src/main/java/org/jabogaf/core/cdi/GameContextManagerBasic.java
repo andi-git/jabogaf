@@ -4,7 +4,7 @@ import org.jabogaf.api.cdi.GameContextBean;
 import org.jabogaf.api.cdi.GameContextManager;
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.cdi.RunInGameContext;
-import org.jabogaf.core.state.GameStateChanged;
+import org.jabogaf.api.event.GameStateChanged;
 import org.jabogaf.util.log.LogProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

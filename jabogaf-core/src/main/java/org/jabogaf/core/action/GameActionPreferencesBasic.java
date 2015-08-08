@@ -4,9 +4,11 @@ import org.jabogaf.api.action.ActionPerform;
 import org.jabogaf.api.action.ActionPrerequisite;
 import org.jabogaf.api.action.GameActionParameter;
 import org.jabogaf.api.action.GameActionPreferences;
-import org.jabogaf.api.action.event.ActionEventCreation;
-import org.jabogaf.api.action.event.AfterActionEvent;
-import org.jabogaf.api.action.event.BeforeActionEvent;
+import org.jabogaf.api.event.ActionEventCreation;
+import org.jabogaf.api.event.AfterActionEvent;
+import org.jabogaf.api.event.BeforeActionEvent;
+import org.jabogaf.core.event.AfterActionEventBasic;
+import org.jabogaf.core.event.BeforeActionEventBasic;
 
 /**
  * All data or functions to perform a {@link org.jabogaf.api.action.GameAction}. An instance of this class

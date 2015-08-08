@@ -1,7 +1,7 @@
-package org.jabogaf.core.action;
+package org.jabogaf.core.event;
 
 import org.jabogaf.api.action.GameActionParameter;
-import org.jabogaf.api.action.event.ActionEvent;
+import org.jabogaf.api.event.ActionEvent;
 
 public abstract class ActionEventBasic<T extends GameActionParameter> implements ActionEvent<T> {
 

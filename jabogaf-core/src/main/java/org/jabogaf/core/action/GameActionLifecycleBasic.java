@@ -3,8 +3,8 @@ package org.jabogaf.core.action;
 import org.jabogaf.api.action.ActionNotPossibleException;
 import org.jabogaf.api.action.GameActionLifecycle;
 import org.jabogaf.api.action.GameActionPreferences;
-import org.jabogaf.api.action.event.AfterActionEvent;
-import org.jabogaf.api.action.event.BeforeActionEvent;
+import org.jabogaf.api.event.AfterActionEvent;
+import org.jabogaf.api.event.BeforeActionEvent;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 

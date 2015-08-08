@@ -1,8 +1,8 @@
 package org.jabogaf.api.action;
 
-import org.jabogaf.api.action.event.ActionEventCreation;
-import org.jabogaf.api.action.event.AfterActionEvent;
-import org.jabogaf.api.action.event.BeforeActionEvent;
+import org.jabogaf.api.event.ActionEventCreation;
+import org.jabogaf.api.event.AfterActionEvent;
+import org.jabogaf.api.event.BeforeActionEvent;
 
 /**
  * All data or functions to perform a {@link GameAction}.

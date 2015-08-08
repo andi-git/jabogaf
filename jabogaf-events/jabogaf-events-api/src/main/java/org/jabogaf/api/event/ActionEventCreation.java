@@ -1,4 +1,4 @@
-package org.jabogaf.api.action.event;
+package org.jabogaf.api.event;
 
 /**
  * The strategy to create an {@link ActionEvent}.

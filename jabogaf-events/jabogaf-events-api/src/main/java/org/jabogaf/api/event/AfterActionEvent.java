@@ -1,4 +1,4 @@
-package org.jabogaf.api.action.event;
+package org.jabogaf.api.event;
 
 import org.jabogaf.api.action.GameActionParameter;
 

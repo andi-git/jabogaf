@@ -1,5 +1,6 @@
 package org.jabogaf.core.state;
 
+import org.jabogaf.api.event.GameStateChanged;
 import org.jabogaf.api.state.SetterFiresGameStateChanged;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;

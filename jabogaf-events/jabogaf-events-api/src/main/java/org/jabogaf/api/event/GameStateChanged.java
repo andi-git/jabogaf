@@ -1,4 +1,4 @@
-package org.jabogaf.core.state;
+package org.jabogaf.api.event;
 
 import java.lang.reflect.Method;
 

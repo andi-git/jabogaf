@@ -1,6 +1,6 @@
 package org.jabogaf.core.action;
 
-import org.jabogaf.api.action.event.BeforeActionEvent;
+import org.jabogaf.core.event.BeforeActionEventBasic;
 
 public class MyBeforeActionEvent extends BeforeActionEventBasic<MyGameActionParameter> {
 

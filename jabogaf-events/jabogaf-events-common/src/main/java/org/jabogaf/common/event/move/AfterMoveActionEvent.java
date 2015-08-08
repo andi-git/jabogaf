@@ -1,8 +1,8 @@
-package org.jabogaf.common.action.move;
+package org.jabogaf.common.event.move;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.subject.GameSubject;
-import org.jabogaf.core.action.AfterActionEventBasic;
+import org.jabogaf.core.event.AfterActionEventBasic;
 
 /**
  * This event will be fired after a {@link MoveAction} and holds the {@link

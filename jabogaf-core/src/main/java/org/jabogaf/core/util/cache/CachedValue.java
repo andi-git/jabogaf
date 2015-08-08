@@ -1,6 +1,6 @@
 package org.jabogaf.core.util.cache;
 
-import org.jabogaf.core.state.GameStateChanged;
+import org.jabogaf.api.event.GameStateChanged;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;

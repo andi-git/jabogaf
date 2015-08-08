@@ -2,7 +2,7 @@ package org.jabogaf.core.cdi;
 
 import org.jabogaf.api.cdi.GameContextBean;
 import org.jabogaf.api.cdi.GameContextManager;
-import org.jabogaf.core.state.GameStateChanged;
+import org.jabogaf.api.event.GameStateChanged;
 
 import java.util.Random;
 import java.util.UUID;

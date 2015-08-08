@@ -1,4 +1,4 @@
-package org.jabogaf.common.action.move;
+package org.jabogaf.common.event.move;
 
 import org.jabogaf.api.action.GameActionParameter;
 import org.jabogaf.api.behavior.move.Moveable;

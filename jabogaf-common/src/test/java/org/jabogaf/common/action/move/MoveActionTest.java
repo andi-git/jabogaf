@@ -2,6 +2,7 @@ package org.jabogaf.common.action.move;
 
 import org.jabogaf.api.action.ActionNotPossibleException;
 import org.jabogaf.common.TestWithExampleGridLayoutBoard;
+import org.jabogaf.common.event.move.MoveActionParameter;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.subject.GameSubjectNull;
 import org.jabogaf.test.cdi.ArquillianGameContext;
