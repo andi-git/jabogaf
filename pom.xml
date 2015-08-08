@@ -11,6 +11,7 @@
         <module>jabogaf-util</module>
         <module>jabogaf-cdi</module>
         <module>jabogaf-events</module>
+        <module>jabogaf-state</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -13,7 +13,7 @@ import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.resource.ResourcesBasic;
-import org.jabogaf.core.util.cache.CachedValueMap;
+import org.jabogaf.core.state.CachedValueMap;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 

@@ -3,34 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>jabogaf</artifactId>
+        <artifactId>jabogaf-state</artifactId>
         <groupId>org.jabogaf</groupId>
         <version>0.0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jabogaf-core</artifactId>
+    <artifactId>jabogaf-state-core</artifactId>
 
     <dependencies>
-        <!-- production -->
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-api</artifactId>
+            <artifactId>jabogaf-state-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-cdi-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-events-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-state-core</artifactId>
+            <artifactId>jabogaf-events-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -76,5 +65,12 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-cdi-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

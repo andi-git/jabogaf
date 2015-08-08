@@ -8,6 +8,8 @@ import org.jabogaf.api.subject.GameSubject;
 
 /**
  * Parameters for a {@code MoveAction}.
+ *
+ * FIXME: move to another module
  */
 public class MoveActionParameter implements GameActionParameter {
 

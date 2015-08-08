@@ -5,7 +5,7 @@ import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.subject.GameSubject;
-import org.jabogaf.core.util.cache.CachedValueMap;
+import org.jabogaf.core.state.CachedValueMap;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 

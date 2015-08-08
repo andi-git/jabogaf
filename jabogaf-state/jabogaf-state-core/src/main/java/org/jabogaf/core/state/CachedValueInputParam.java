@@ -1,4 +1,4 @@
-package org.jabogaf.core.util.cache;
+package org.jabogaf.core.state;
 
 import java.util.function.Function;
 
