@@ -13,8 +13,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.util.function.Function;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 @RunWith(ArquillianGameContext.class)
 public class CachedValueInputParamTest extends ArquillianGameContextTest {
@@ -28,22 +27,28 @@ public class CachedValueInputParamTest extends ArquillianGameContextTest {
     @Test
     public void testGet() throws Exception {
         // FIXME there are test-failures: actual is 42000
+        assertFalse(cachedValueInputParam1.isValid());
         int before = cachedValueInputParam1.getLastEventChange().getNano();
         assertEquals("hello bob", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("bob")));
         int after = cachedValueInputParam1.getLastEventChange().getNano();
+        assertTrue(cachedValueInputParam1.isValid());
         assertEquals(before, after);
         assertEquals("hello alice", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("alice")));
         after = cachedValueInputParam1.getLastEventChange().getNano();
+        assertTrue(cachedValueInputParam1.isValid());
         assertEquals(before, after);
 
         gameStateChangedEvent.fire(new GameStateChanged());
 
+        assertFalse(cachedValueInputParam1.isValid());
         assertEquals("hello bob", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("bob")));
         after = cachedValueInputParam1.getLastEventChange().getNano();
+        assertTrue(cachedValueInputParam1.isValid());
         assertNotEquals(before, after);
         before = after;
         assertEquals("hello bob", cachedValueInputParam1.get(new CachedValueInputParam1.Parameter("bob")));
         after = cachedValueInputParam1.getLastEventChange().getNano();
+        assertTrue(cachedValueInputParam1.isValid());
         assertEquals(before, after);
     }
 

@@ -29,8 +29,6 @@ public class SetterFiresGameStateChangedInterceptor {
     @SLF4J
     private Logger log;
 
-    private Set<String> setterMethods = new HashSet<>();
-
     @Inject
     private MutableMethods mutableMethods;
 
@@ -39,23 +37,12 @@ public class SetterFiresGameStateChangedInterceptor {
         Method method = context.getMethod();
         log.debug("intercept method {}", method.getName());
         // if it is a setter, fire the event
-        if (isSetterMethod(method)) {
+        if (mutableMethods.isMutableMethod(method)) {
             log.debug("  is a setter method");
             gameStateChangedEvent.fire(new GameStateChanged(method));
         } else {
             log.debug("  is not a setter method");
         }
         return context.proceed();
-    }
-
-    private boolean isSetterMethod(Method method) {
-        String name = method.getName();
-        if (setterMethods.contains(method.getName())) {
-            return true;
-        } else if (mutableMethods.isMutableMethod(method)) {
-            setterMethods.add(name);
-            return true;
-        }
-        return false;
     }
 }

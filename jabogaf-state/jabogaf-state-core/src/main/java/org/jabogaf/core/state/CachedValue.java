@@ -34,6 +34,7 @@ public abstract class CachedValue<VALUE> {
                 valid = true;
             } catch (Exception e) {
                 log().error(e.getMessage());
+                valid = false;
             }
         }
         return value;
