@@ -7,9 +7,11 @@ import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.controller.PlayerController;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
+import org.jabogaf.core.state.GameStateNull;
 
 import javax.inject.Inject;
 import java.util.HashSet;
@@ -79,5 +81,10 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
     @Override
     public Resource movementCost() {
         return new MovePoint(1);
+    }
+
+    @Override
+    public GameState getState() {
+        return new GameStateNull();
     }
 }

@@ -57,7 +57,7 @@ public class GameContextManagerCdi implements GameContextManager {
     }
 
     @Override
-    public void fireGameStateChangedEvent() {
-        gameContextManager.fireGameStateChangedEvent();
+    public <T extends GameContextBean> T fireGameStateChangedEvent(T gameContextBean) {
+        return gameContextManager.fireGameStateChangedEvent(gameContextBean);
     }
 }

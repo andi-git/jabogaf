@@ -2,6 +2,7 @@ package org.jabogaf.core.state;
 
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.core.event.GameStateChangedValue;
 import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.jabogaf.util.log.SLF4J;
@@ -47,7 +48,7 @@ public class CachedValueMapTest extends ArquillianGameContextTest {
         assertEquals("hello charlie", cachedValueMap1.get(new CachedValueMap1.Parameter("charlie")));
         assertEquals(3, cachedValueMap1.getMap().size());
 
-        gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), null, new ArrayList<>()));
+        gameStateChangedEvent.fire(new GameStateChangedValue(Instant.now(), null, new ArrayList<>()));
 
         assertEquals(0, cachedValueMap1.getMap().size());
         assertEquals("hello bob", cachedValueMap1.get(new CachedValueMap1.Parameter("bob")));

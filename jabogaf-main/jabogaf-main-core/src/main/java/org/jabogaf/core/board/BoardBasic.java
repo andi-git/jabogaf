@@ -2,7 +2,9 @@ package org.jabogaf.core.board;
 
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.state.GameStateNull;
 
 /**
  * The board of a game. The design is specified by the current {@link org.jabogaf.api.board.layout.Layout}.
@@ -25,5 +27,10 @@ public class BoardBasic extends GameContextBeanBasic implements Board {
     @Override
     public Layout getLayout() {
         return layout;
+    }
+
+    @Override
+    public GameState getState() {
+        return new GameStateNull();
     }
 }

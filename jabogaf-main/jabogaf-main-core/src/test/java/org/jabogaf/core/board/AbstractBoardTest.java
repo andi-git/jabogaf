@@ -5,8 +5,10 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.board.field.*;
 import org.jabogaf.core.board.layout.LayoutBasic;
+import org.jabogaf.core.state.GameStateNull;
 import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.jabogaf.test.cdi.BeforeInGameContext;
 
@@ -44,12 +46,27 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
         fieldConnections.add(fieldConnection12);
         fieldConnection23 = new FieldConnectionBasic("fieldConnection23", field3, field2);
         fieldConnections.add(fieldConnection23);
-        object1 = new FieldConnectionObjectBasic("object1") { };
-        object2 = new FieldConnectionObjectBasic("object2") { };
+        object1 = new FieldConnectionObjectBasic("object1") {
+            @Override
+            public GameState getState() {
+                return new GameStateNull();
+            }
+        };
+        object2 = new FieldConnectionObjectBasic("object2") {
+            @Override
+            public GameState getState() {
+                return new GameStateNull();
+            }
+        };
         fieldConnection12.addObjectOnConnection(object1, object2);
         fieldConnectionObjects.add(object1);
         fieldConnectionObjects.add(object2);
         layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>()) {
+            @Override
+            public GameState getState() {
+                return new GameStateNull();
+            }
+
             @Override
             public Stream getFieldsAsStream() {
                 return null;

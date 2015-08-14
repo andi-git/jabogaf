@@ -30,7 +30,7 @@ import java.util.Set;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Typed
-public class GameSubjectBasic extends GameContextBeanBasic implements GameSubject {
+public class GameSubjectBasic extends GameContextBeanBasic<GameSubject> implements GameSubject {
 
     @Inject
     private State state;
@@ -288,8 +288,13 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
         return moveBehavior.getShortestPath(this, target, this);
     }
 
+    @Override
+    public GameState<GameSubject> getState() {
+        return state;
+    }
+
     @Dependent
-    public static class State extends GameState {
+    public static class State extends GameState<GameSubject> {
 
         private Field position;
 
@@ -299,6 +304,11 @@ public class GameSubjectBasic extends GameContextBeanBasic implements GameSubjec
 
         public void setPosition(Field position) {
             this.position = position;
+        }
+
+        @Override
+        public Class<GameSubject> classOfContainingBean() {
+            return GameSubject.class;
         }
     }
 }

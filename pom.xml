@@ -28,6 +28,8 @@
         <!-- runtime -->
         <version.javaee-api>7.0</version.javaee-api>
         <version.slf4j-api>1.6.1</version.slf4j-api>
+        <version.commons-beanutils>1.9.2</version.commons-beanutils>
+        <version.gson>2.3.1</version.gson>
         <!-- test -->
         <version.junit>4.11</version.junit>
         <version.arquillian-bom>1.1.5.Final</version.arquillian-bom>
@@ -97,16 +99,16 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <!--<rule>-->
-                                    <!--<element>BUNDLE</element>-->
-                                    <!--<limits>-->
-                                        <!--<limit>-->
-                                            <!--<counter>LINE</counter>-->
-                                            <!--<value>COVEREDRATIO</value>-->
-                                            <!--<minimum>0.91</minimum>-->
-                                        <!--</limit>-->
-                                    <!--</limits>-->
-                                <!--</rule>-->
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.72</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
                             </rules>
                         </configuration>
                     </execution>
@@ -134,6 +136,16 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${version.slf4j-api}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${version.commons-beanutils}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${version.gson}</version>
             </dependency>
             <!-- test -->
             <dependency>

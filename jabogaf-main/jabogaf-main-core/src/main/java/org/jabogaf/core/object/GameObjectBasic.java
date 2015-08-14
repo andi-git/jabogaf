@@ -76,5 +76,10 @@ public abstract class GameObjectBasic<POSITION> extends GameContextBeanBasic imp
         public void setPosition(POSITION position) {
             this.position = position;
         }
+
+        @Override
+        public Class classOfContainingBean() {
+            return GameObjectBasic.class;
+        }
     }
 }

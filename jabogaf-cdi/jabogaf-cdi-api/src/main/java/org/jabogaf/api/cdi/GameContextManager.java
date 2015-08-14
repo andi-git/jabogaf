@@ -91,6 +91,8 @@ public interface GameContextManager {
 
     /**
      * Fire an {@link javax.enterprise.event.Event} that the game state changed.
+     *
+     * @param gameContextBean - the current/new {@link GameContextBean}
      */
-    void fireGameStateChangedEvent();
+    <T extends GameContextBean> T fireGameStateChangedEvent(T gameContextBean);
 }

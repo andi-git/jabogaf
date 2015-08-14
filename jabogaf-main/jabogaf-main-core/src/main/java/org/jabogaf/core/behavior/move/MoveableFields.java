@@ -5,11 +5,11 @@ import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
-import org.jabogaf.api.cdi.GameContextBean;
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.resource.ResourceHolder;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.resource.ResourcesBasic;
@@ -206,9 +206,14 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             return getMovePath().getTarget().getId();
         }
 
-        @SuppressWarnings("NullableProblems")
         @Override
-        public int compareTo(GameContextBean o) {
+        public GameState getState() {
+            return getTarget().getState();
+        }
+
+        @Override
+        public int compareTo(@SuppressWarnings("NullableProblems") Object o) {
+            //noinspection unchecked
             return getMovePath().getTarget().compareTo(o);
         }
     }
@@ -308,9 +313,14 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             return getTarget().getId();
         }
 
-        @SuppressWarnings("NullableProblems")
         @Override
-        public int compareTo(GameContextBean o) {
+        public GameState getState() {
+            return getTarget().getState();
+        }
+
+        @Override
+        public int compareTo(@SuppressWarnings("NullableProblems") Object o) {
+            //noinspection unchecked
             return getTarget().compareTo(o);
         }
     }

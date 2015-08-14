@@ -8,7 +8,9 @@ import org.jabogaf.api.board.layout.FunctionGetAllGameObjectsOf;
 import org.jabogaf.api.board.layout.FunctionGetConnection;
 import org.jabogaf.api.board.layout.FunctionIsConnected;
 import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.state.GameStateNull;
 
 import javax.inject.Inject;
 import java.util.Set;
@@ -116,5 +118,10 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     @Override
     public Set<FieldConnection> getFieldConnections(Field field) {
         return fieldConnections.stream().filter(fc -> fc.contains(field)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public GameState getState() {
+        return new GameStateNull();
     }
 }

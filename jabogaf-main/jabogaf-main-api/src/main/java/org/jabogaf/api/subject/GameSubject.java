@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * A subject (i.e. hero, monster,...) in the game.
  */
-public interface GameSubject extends GameContextBean, Moveable, Lookable, ResourceHolder, ArtifactHolder {
+public interface GameSubject extends GameContextBean<GameSubject>, Moveable, Lookable, ResourceHolder, ArtifactHolder {
 
     /**
      * @see {@link Moveable#move(Field, ResourceHolder)}

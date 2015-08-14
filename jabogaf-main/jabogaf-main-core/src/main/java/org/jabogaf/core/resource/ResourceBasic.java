@@ -4,6 +4,7 @@ import org.jabogaf.api.resource.NotEnoughResourceException;
 import org.jabogaf.api.resource.NotSameResourceException;
 import org.jabogaf.api.resource.Payment;
 import org.jabogaf.api.resource.Resource;
+import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.cdi.GameContextBeanBasic;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
@@ -112,7 +113,7 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     public T newInstance(int amount) {
         T newInstance = null;
         try {
-            Constructor<T> constructor = (Constructor<T>) getClass().getDeclaredConstructor(int.class);
+            @SuppressWarnings("unchecked") Constructor<T> constructor = (Constructor<T>) getClass().getDeclaredConstructor(int.class);
             newInstance = constructor.newInstance(amount);
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             log.error(e.getMessage(), e);
@@ -154,8 +155,13 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
         return isResourceType(resource) && state.getAmount() <= resource.getAmount();
     }
 
+    @Override
+    public GameState getState() {
+        return state;
+    }
+
     @Dependent
-    public static class State {
+    public static class State extends GameState<ResourceBasic> {
 
         private int amount;
 
@@ -165,6 +171,11 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
 
         public void setAmount(int amount) {
             this.amount = amount;
+        }
+
+        @Override
+        public Class<ResourceBasic> classOfContainingBean() {
+            return ResourceBasic.class;
         }
     }
 }

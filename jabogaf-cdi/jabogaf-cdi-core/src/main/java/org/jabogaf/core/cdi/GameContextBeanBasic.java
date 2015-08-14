@@ -12,7 +12,7 @@ import java.util.UUID;
  * This class only provides the method getId() as abstract method and it's not an obligation to use this class as
  * superclass.
  */
-public abstract class GameContextBeanBasic implements GameContextBean {
+public abstract class GameContextBeanBasic<T extends GameContextBean> implements GameContextBean<T> {
 
     private final String id;
 
@@ -40,7 +40,7 @@ public abstract class GameContextBeanBasic implements GameContextBean {
         this.id = id;
         gameContextManager = new GameContextManagerBasic();
         gameContextManager.add(this, id);
-        gameContextManager.fireGameStateChangedEvent();
+        gameContextManager.fireGameStateChangedEvent(this);
     }
 
     @Override

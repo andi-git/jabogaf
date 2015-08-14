@@ -5,6 +5,7 @@ import org.jabogaf.api.cdi.GameContextManager;
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.cdi.RunInGameContext;
 import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.core.event.GameStateChangedBean;
 import org.jabogaf.util.log.LogProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.time.Instant;
 import java.util.Set;
 
 /**
@@ -39,7 +41,7 @@ public class GameContextManagerBasic implements GameContextManager {
         if (GameContext.current().getGameContextBeans().stream().filter(b -> b.getId().equals(id)).count() > 0) {
             throw new IllegalStateException("id '" + id + "' already in use");
         }
-        return resolve(GameContext.addGameContextBean(bean));
+        return fireGameStateChangedEvent(resolve(GameContext.addGameContextBean(bean)));
     }
 
     @Override
@@ -126,8 +128,9 @@ public class GameContextManagerBasic implements GameContextManager {
         return GameContext.current().getGameContextBean(id);
     }
 
-    public void fireGameStateChangedEvent() {
-        GameContext.current().getFromDynamicContext(HelperToFireGameStateChangedEvent.class).fire();
+    @Override
+    public <T extends GameContextBean> T fireGameStateChangedEvent(T gameContextBean) {
+        return GameContext.current().getFromDynamicContext(HelperToFireGameStateChangedEvent.class).fire(gameContextBean);
     }
 
     @GameScoped
@@ -136,8 +139,9 @@ public class GameContextManagerBasic implements GameContextManager {
         @Inject
         private Event<GameStateChanged> gameStateChangedEvent;
 
-        public void fire() {
-            gameStateChangedEvent.fire(new GameStateChanged(null));
+        public <T extends GameContextBean> T fire(T gameContextBean) {
+            gameStateChangedEvent.fire(new GameStateChangedBean(Instant.now(), gameContextBean));
+            return gameContextBean;
         }
     }
 }

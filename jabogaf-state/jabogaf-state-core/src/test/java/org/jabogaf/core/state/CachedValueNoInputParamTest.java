@@ -2,6 +2,7 @@ package org.jabogaf.core.state;
 
 import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.core.event.GameStateChangedValue;
 import org.jabogaf.test.cdi.ArquillianGameContext;
 import org.jabogaf.test.cdi.ArquillianGameContextTest;
 import org.jabogaf.util.log.SLF4J;
@@ -30,7 +31,7 @@ public class CachedValueNoInputParamTest extends ArquillianGameContextTest {
     public void testGet() throws Exception {
         assertEquals(0, cachedValueNoInputParam1.get().intValue());
         assertEquals(0, cachedValueNoInputParam1.get().intValue());
-        gameStateChangedEvent.fire(new GameStateChanged(Instant.now(), null, new ArrayList<>()));
+        gameStateChangedEvent.fire(new GameStateChangedValue(Instant.now(), null, new ArrayList<>()));
         assertEquals(1, cachedValueNoInputParam1.get().intValue());
     }
 

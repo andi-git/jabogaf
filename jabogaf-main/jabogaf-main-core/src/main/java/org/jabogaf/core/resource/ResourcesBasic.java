@@ -144,6 +144,11 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
         return resource != null ? getExistingResource(resource.getClass()) : null;
     }
 
+    @Override
+    public GameState getState() {
+        return state;
+    }
+
     @Dependent
     public static class State extends GameState {
 
@@ -165,5 +170,9 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
             resources.remove(resource);
         }
 
+        @Override
+        public Class classOfContainingBean() {
+            return ResourcesBasic.class;
+        }
     }
 }
