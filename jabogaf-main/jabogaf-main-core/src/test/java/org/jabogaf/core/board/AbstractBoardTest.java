@@ -9,8 +9,8 @@ import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.board.field.*;
 import org.jabogaf.core.board.layout.LayoutBasic;
 import org.jabogaf.core.state.GameStateNull;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 
 import java.util.HashSet;
 import java.util.Set;

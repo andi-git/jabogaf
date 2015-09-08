@@ -7,8 +7,8 @@ import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
 import org.jabogaf.api.board.layout.log.LayoutLoggerParameter;
 import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.state.GameStateNull;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

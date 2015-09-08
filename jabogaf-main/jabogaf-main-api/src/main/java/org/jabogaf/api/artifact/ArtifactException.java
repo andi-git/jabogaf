@@ -1,6 +1,6 @@
 package org.jabogaf.api.artifact;
 
-public class ArtifactException extends Exception {
+public class ArtifactException extends RuntimeException {
 
     public ArtifactException() {
         super();

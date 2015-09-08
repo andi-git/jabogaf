@@ -3,7 +3,7 @@ package org.jabogaf.core.board.layout;
 import org.jabogaf.api.board.layout.FunctionGetConnection;
 import org.jabogaf.core.board.AbstractBoardTest;
 import org.jabogaf.core.board.field.FieldConnectionNull;
-import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

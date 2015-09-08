@@ -2,7 +2,7 @@ package org.jabogaf.core.board;
 
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.core.subject.GameSubjectNull;
-import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

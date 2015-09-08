@@ -2,9 +2,9 @@ package org.jabogaf.common;
 
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.cdi.GameContextBean;
-import org.jabogaf.api.cdi.GameContextManager;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.common.behavior.move.GameSubjectForMovement;
 import org.jabogaf.common.board.layout.grid.GridLayout;
@@ -12,8 +12,8 @@ import org.jabogaf.common.board.layout.grid.GridLayoutCreationExample;
 import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.subject.GameSubjectNull;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 
 import javax.inject.Inject;
 

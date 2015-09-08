@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * A move is not possible.
  */
-public class MoveNotPossibleException extends Exception {
+public class MoveNotPossibleException extends RuntimeException {
 
     private final Set<MoveBlock> moveBlocks = new HashSet<>();
 

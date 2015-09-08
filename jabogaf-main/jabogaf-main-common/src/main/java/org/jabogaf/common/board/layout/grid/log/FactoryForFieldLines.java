@@ -1,7 +1,7 @@
 package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.util.log.SLF4J;
 import org.jabogaf.util.string.StringUtil;
 import org.slf4j.Logger;
@@ -113,20 +113,20 @@ public class FactoryForFieldLines {
         }
 
         /**
-         * Get the underlying {@link org.jabogaf.api.board.field.Field}.
+         * Get the underlying {@link Field}.
          *
-         * @return the underlying {@link org.jabogaf.api.board.field.Field}
+         * @return the underlying {@link Field}
          */
         public Field getField() {
             return field;
         }
 
         /**
-         * Get a sorted {@link java.util.List} of all {@link org.jabogaf.api.cdi.GameContextBean}s available on
-         * the underlying {@link org.jabogaf.api.board.field.Field}.
+         * Get a sorted {@link List} of all {@link GameContextBean}s available on
+         * the underlying {@link Field}.
          *
-         * @return a sorted {@link java.util.List} of all {@link org.jabogaf.api.cdi.GameContextBean}s
-         * available on the underlying {@link org.jabogaf.api.board.field.Field}
+         * @return a sorted {@link java.util.List} of all {@link GameContextBean}s
+         * available on the underlying {@link Field}
          */
         public List<GameContextBean> getGameContextBeans() {
             return gameContextBeans;

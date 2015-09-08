@@ -3,7 +3,7 @@ package org.jabogaf.api.behavior.look;
 /**
  * This exception will bw thrown if a look is not possible.
  */
-public class LookNotPossibleException extends Exception {
+public class LookNotPossibleException extends RuntimeException {
 
     public LookNotPossibleException() {
     }

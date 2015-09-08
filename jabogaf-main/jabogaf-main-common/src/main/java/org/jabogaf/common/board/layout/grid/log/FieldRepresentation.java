@@ -1,8 +1,8 @@
 package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.cdi.GameContextBean;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.util.string.StringUtil;
 
 import javax.inject.Inject;

@@ -1,16 +1,14 @@
 package org.jabogaf.core.state;
 
-import org.jabogaf.api.cdi.GameScoped;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.api.gamecontext.GameScoped;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.jabogaf.util.log.SLF4J;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
-
-import java.util.concurrent.Callable;
 
 import static org.junit.Assert.*;
 

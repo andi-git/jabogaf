@@ -1,6 +1,6 @@
 package org.jabogaf.common.action.move;
 
-import org.jabogaf.api.cdi.GameScoped;
+import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.common.event.move.AfterMoveActionEvent;
 
 import javax.enterprise.event.Observes;

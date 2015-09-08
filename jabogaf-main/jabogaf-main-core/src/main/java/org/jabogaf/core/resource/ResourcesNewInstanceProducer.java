@@ -1,6 +1,6 @@
 package org.jabogaf.core.resource;
 
-import org.jabogaf.api.cdi.GameContextManager;
+import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.resource.Resources;
 
 import javax.enterprise.context.ApplicationScoped;

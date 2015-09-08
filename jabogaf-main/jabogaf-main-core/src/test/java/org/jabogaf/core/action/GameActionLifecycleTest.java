@@ -2,9 +2,9 @@ package org.jabogaf.core.action;
 
 import org.jabogaf.api.action.ActionNotPossibleException;
 import org.jabogaf.api.action.GameActionLifecycle;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,19 +43,13 @@ public class GameActionLifecycleTest extends ArquillianGameContextTest {
         final boolean[] inPerform = {false};
 
         gameActionLifecycle.perform(GameActionPreferencesBasic.newInstance()
-                        .addBeforeActionEventCreation(() -> {
-                            return myBeforeActionEvent;
-                        })
-                        .addPrerequisite(() -> {
-                            inPrerequsites[0] = true;
-                        })
+                        .addBeforeActionEventCreation(() -> myBeforeActionEvent)
+                        .addPrerequisite(() -> inPrerequsites[0] = true)
                         .addPerform(() -> {
                             inPerform[0] = true;
                             myGameActionParameter.setInput("ok");
                         })
-                        .addAfterActionEventCreation(() -> {
-                            return myAfterActionEvent;
-                        })
+                        .addAfterActionEventCreation(() -> myAfterActionEvent)
         );
 
         Assert.assertTrue(inPrerequsites[0]);

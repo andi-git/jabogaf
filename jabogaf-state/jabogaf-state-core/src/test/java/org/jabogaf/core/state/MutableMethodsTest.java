@@ -1,8 +1,8 @@
 package org.jabogaf.core.state;
 
 import org.jabogaf.api.state.ChangesGameState;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

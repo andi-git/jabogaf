@@ -1,7 +1,7 @@
 package org.jabogaf.core.controller;
 
-import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.subject.GameSubjectNull;
 

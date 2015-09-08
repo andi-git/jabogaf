@@ -9,7 +9,7 @@ import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.state.GameStateNull;
 

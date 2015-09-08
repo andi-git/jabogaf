@@ -1,12 +1,12 @@
 package org.jabogaf.common.board.layout.grid.log;
 
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.util.string.StringUtil;
 
 import javax.enterprise.context.ApplicationScoped;
 
 /**
- * A line with the id of a concrete {@link org.jabogaf.api.cdi.GameContextBean}.
+ * A line with the id of a concrete {@link GameContextBean}.
  */
 @ApplicationScoped
 public class FieldLineGameContextBean extends FieldLine<FieldLineGameContextBean.Representation> {

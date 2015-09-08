@@ -5,11 +5,10 @@ import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldConnectionObject;
-import org.jabogaf.api.cdi.GameContextManager;
+import org.jabogaf.api.gamecontext.GameContextManager;
+import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.subject.GameSubject;
-import org.jabogaf.core.cdi.GameContext;
-import org.jabogaf.api.cdi.GameScoped;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -25,7 +24,7 @@ public class BoardManagerBasic implements BoardManager {
 
     @Override
     public Board getBoard() {
-        return GameContext.current().getGameContextBean(Board.class);
+        return gameContextManager.getGameContextBean(Board.class);
     }
 
     @Override

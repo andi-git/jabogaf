@@ -1,6 +1,6 @@
 package org.jabogaf.api.resource;
 
-public class NotEnoughResourceException extends Exception {
+public class NotEnoughResourceException extends RuntimeException {
 
     private final Class<? extends Resource> resource;
 

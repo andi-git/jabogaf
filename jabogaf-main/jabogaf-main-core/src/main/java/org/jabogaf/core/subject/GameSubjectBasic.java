@@ -16,7 +16,7 @@ import org.jabogaf.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;

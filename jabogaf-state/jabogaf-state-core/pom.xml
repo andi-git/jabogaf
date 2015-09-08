@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jabogaf-state</artifactId>
         <groupId>org.jabogaf</groupId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,11 +17,11 @@
             <artifactId>jabogaf-state-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-cdi-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jabogaf</groupId>-->
+            <!--<artifactId>jabogaf-gamecontext-api</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.jabogaf</groupId>
             <artifactId>jabogaf-events-core</artifactId>
@@ -36,13 +36,13 @@
         <!-- test -->
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-cdi-core</artifactId>
+            <artifactId>jabogaf-gamecontext-cdi-core</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-cdi-testutil</artifactId>
+            <artifactId>jabogaf-gamecontext-cdi-testutil</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

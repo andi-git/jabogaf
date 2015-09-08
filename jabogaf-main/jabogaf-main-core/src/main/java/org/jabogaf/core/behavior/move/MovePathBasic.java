@@ -4,7 +4,7 @@ import org.jabogaf.api.behavior.move.MovePath;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.state.GameStateNull;
 

@@ -1,6 +1,6 @@
 package org.jabogaf.api.board.field;
 
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 
 import java.util.Set;
 

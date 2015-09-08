@@ -9,7 +9,7 @@ import org.jabogaf.api.board.layout.FunctionGetConnection;
 import org.jabogaf.api.board.layout.FunctionIsConnected;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.state.GameStateNull;
 
 import javax.inject.Inject;

@@ -1,8 +1,8 @@
 package org.jabogaf.core.state;
 
-import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.api.event.GameStateChangedEvent;
 import org.jabogaf.api.state.SetterFiresGameStateChanged;
-import org.jabogaf.core.event.GameStateChangedValue;
+import org.jabogaf.core.event.GameStateChangedEventValue;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 
@@ -24,7 +24,7 @@ import java.util.Arrays;
 public class SetterFiresGameStateChangedInterceptor {
 
     @Inject
-    private Event<GameStateChanged> gameStateChangedEvent;
+    private Event<GameStateChangedEvent> gameStateChangedEvent;
 
     @Inject
     @SLF4J
@@ -40,7 +40,7 @@ public class SetterFiresGameStateChangedInterceptor {
         // if it is a setter, fire the event
         if (mutableMethods.isMutableMethod(method)) {
             log.debug("  is a setter method with value {}", context.getParameters());
-            gameStateChangedEvent.fire(new GameStateChangedValue(Instant.now(), method, Arrays.asList(context.getParameters())));
+            gameStateChangedEvent.fire(new GameStateChangedEventValue(Instant.now(), method, Arrays.asList(context.getParameters())));
         } else {
             log.debug("  is not a setter method");
         }

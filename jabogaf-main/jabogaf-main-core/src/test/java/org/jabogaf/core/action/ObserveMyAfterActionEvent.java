@@ -1,6 +1,6 @@
 package org.jabogaf.core.action;
 
-import org.jabogaf.api.cdi.GameScoped;
+import org.jabogaf.api.gamecontext.GameScoped;
 
 import javax.enterprise.event.Observes;
 

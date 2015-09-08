@@ -3,7 +3,7 @@ package org.jabogaf.api.subject;
 import org.jabogaf.api.behavior.look.Lookable;
 import org.jabogaf.api.behavior.move.*;
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.resource.NotEnoughResourceException;
 import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.api.subject.artifact.ArtifactHolder;

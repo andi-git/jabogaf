@@ -2,7 +2,7 @@ package org.jabogaf.core.resource;
 
 import org.jabogaf.api.resource.*;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;

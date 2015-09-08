@@ -1,8 +1,7 @@
 package org.jabogaf.core.behavior.look;
 
 import org.jabogaf.api.behavior.look.CanLookReport;
-import org.jabogaf.api.behavior.look.LookBlock;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 
 import java.util.Collections;
 import java.util.HashSet;

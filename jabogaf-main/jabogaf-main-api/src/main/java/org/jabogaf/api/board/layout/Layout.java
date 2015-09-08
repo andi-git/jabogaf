@@ -4,7 +4,7 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.field.FieldGroup;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 
 import java.util.Set;
 import java.util.stream.Stream;

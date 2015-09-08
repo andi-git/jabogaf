@@ -1,7 +1,7 @@
 package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.behavior.move.MovePath;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.util.string.StringUtil;
 

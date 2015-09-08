@@ -3,7 +3,7 @@ package org.jabogaf.api.action;
 /**
  * This exception is used within a {@link GameAction} if the action is not possible.
  */
-public class ActionNotPossibleException extends Exception {
+public class ActionNotPossibleException extends RuntimeException {
 
     public ActionNotPossibleException() {
     }

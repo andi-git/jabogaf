@@ -2,13 +2,11 @@ package org.jabogaf.core.behavior.look;
 
 import org.jabogaf.api.behavior.look.CanLookReport;
 import org.jabogaf.api.behavior.look.LookBehavior;
-import org.jabogaf.api.behavior.look.LookBlock;
 import org.jabogaf.api.behavior.look.Lookable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 
 import javax.inject.Inject;
 import java.util.Set;

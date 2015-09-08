@@ -5,7 +5,7 @@ import org.jabogaf.api.resource.NotSameResourceException;
 import org.jabogaf.api.resource.Payment;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 

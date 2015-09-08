@@ -1,6 +1,6 @@
 package org.jabogaf.api.resource;
 
-public class NotSameResourceException extends Exception {
+public class NotSameResourceException extends RuntimeException {
 
     private final Resource resourceExpected;
 

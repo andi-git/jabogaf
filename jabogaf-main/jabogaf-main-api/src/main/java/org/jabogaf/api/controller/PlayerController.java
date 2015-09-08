@@ -1,12 +1,11 @@
 package org.jabogaf.api.controller;
 
-import org.jabogaf.api.cdi.GameScoped;
 import org.jabogaf.api.subject.GameSubject;
 
 /**
  * Manages the player, e.g. the current {@link GameSubject}.
  * <p>
- * This component must be {@link GameScoped}
+ * This component must be {@code GameScoped}
  */
 public interface PlayerController {
 

@@ -1,6 +1,6 @@
 package org.jabogaf.core.subject.artifact;
 
-import org.jabogaf.api.cdi.GameContextManager;
+import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.subject.artifact.ArtifactHolder;
 
 import javax.enterprise.context.ApplicationScoped;

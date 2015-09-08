@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jabogaf</artifactId>
         <groupId>org.jabogaf</groupId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,6 +17,7 @@
         <module>jabogaf-events-api</module>
         <module>jabogaf-events-core</module>
         <module>jabogaf-events-common</module>
+        <module>jabogaf-events-gamecontext-producer</module>
     </modules>
 
 </project>

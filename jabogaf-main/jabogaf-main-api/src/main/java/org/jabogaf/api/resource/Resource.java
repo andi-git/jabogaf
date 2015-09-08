@@ -1,6 +1,6 @@
 package org.jabogaf.api.resource;
 
-import org.jabogaf.api.cdi.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBean;
 
 /**
  * A resource that can be hold by a {@link ResourceHolder} and used by a {@link Payment}.

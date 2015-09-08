@@ -9,8 +9,8 @@ import org.jabogaf.common.artifact.weapon.OneHandedAxe;
 import org.jabogaf.common.artifact.weapon.OneHandedSword;
 import org.jabogaf.common.artifact.weapon.TwoHandedAxe;
 import org.jabogaf.common.artifact.weapon.TwoHandedSword;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class ArtifactHandTest extends ArquillianGameContextTest {

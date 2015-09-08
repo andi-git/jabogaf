@@ -3,7 +3,7 @@ package org.jabogaf.core.artifact;
 import org.jabogaf.api.artifact.Artifact;
 import org.jabogaf.api.artifact.HandCount;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.state.GameStateNull;
 
 /**

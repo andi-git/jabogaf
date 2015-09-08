@@ -4,7 +4,7 @@ import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.board.layout.log.LayoutLogger;
-import org.jabogaf.api.cdi.GameContextManager;
+import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.common.board.layout.grid.GridLayout;
 import org.jabogaf.util.array.ArrayUtil;
 import org.jabogaf.util.string.StringUtil;

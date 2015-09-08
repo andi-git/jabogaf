@@ -5,6 +5,7 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
+import java.io.File;
 import java.io.IOException;
 
 @ArquillianSuiteDeployment
@@ -14,6 +15,7 @@ public class Deployments {
     public static WebArchive deploy() throws IOException {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war").//
                 addAsWebInfResource("META-INF/beans.xml", "beans.xml").
+                addAsWebInfResource(new File("src/test/resources/META-INF/services/", "org.jabogaf.util.loader.MyInterfaceWithImplementation"), "services/org.jabogaf.util.loader.MyInterfaceWithImplementation").
                 addPackages(true, "org.jabogaf.util").
                 addPackages(true, "org.jabogaf.core");
 //        System.out.println(webArchive.toString(true));

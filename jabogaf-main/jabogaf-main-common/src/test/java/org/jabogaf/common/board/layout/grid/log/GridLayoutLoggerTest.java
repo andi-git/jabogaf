@@ -4,8 +4,8 @@ import org.jabogaf.common.TestWithExampleGridLayoutBoard;
 import org.jabogaf.common.board.layout.grid.GridLayout;
 import org.jabogaf.common.object.field.Door;
 import org.jabogaf.core.resource.MovePoint;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

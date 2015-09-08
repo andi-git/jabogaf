@@ -1,11 +1,11 @@
 package org.jabogaf.core.state;
 
-import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.api.event.GameStateChangedEvent;
 
 import java.util.function.Supplier;
 
 /**
- * An abstract class for a value that is cached until the game-state changed (via {@link GameStateChanged}. To
+ * An abstract class for a value that is cached until the game-state changed (via {@link GameStateChangedEvent}. To
  * fill the cache no input parameter is needed.
  */
 public abstract class CachedValueNoInputParam<VALUE> extends CachedValue<VALUE> {

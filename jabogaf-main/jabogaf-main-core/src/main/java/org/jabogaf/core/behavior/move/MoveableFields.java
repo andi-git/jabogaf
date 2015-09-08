@@ -5,7 +5,7 @@ import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
-import org.jabogaf.api.cdi.GameScoped;
+import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.resource.ResourceHolder;

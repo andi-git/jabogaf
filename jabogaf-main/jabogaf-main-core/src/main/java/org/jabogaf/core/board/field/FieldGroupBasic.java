@@ -3,7 +3,7 @@ package org.jabogaf.core.board.field;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.state.GameStateNull;
 
 import java.util.HashSet;

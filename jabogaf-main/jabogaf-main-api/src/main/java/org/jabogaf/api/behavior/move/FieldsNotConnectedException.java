@@ -5,7 +5,7 @@ import org.jabogaf.api.board.field.Field;
 /**
  * {@link Field}s are not connected.
  */
-public class FieldsNotConnectedException extends Exception {
+public class FieldsNotConnectedException extends RuntimeException {
 
     private final Field position;
 

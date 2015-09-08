@@ -2,10 +2,10 @@ package org.jabogaf.core.state;
 
 import org.jabogaf.api.state.ChangesGameState;
 import org.jabogaf.api.state.SetterFiresGameStateChanged;
-import org.jabogaf.core.event.GameStateChangedValue;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.core.event.GameStateChangedEventValue;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,7 +60,7 @@ public class SetterFiresGameStateChangedInterceptorTest extends ArquillianGameCo
         assertEquals("bar", methodHolder.getMethod().getName());
     }
 
-    public void observe(@Observes GameStateChangedValue gameStateChanged) {
+    public void observe(@Observes GameStateChangedEventValue gameStateChanged) {
         methodHolder.setMethod(gameStateChanged.getMethod());
     }
 

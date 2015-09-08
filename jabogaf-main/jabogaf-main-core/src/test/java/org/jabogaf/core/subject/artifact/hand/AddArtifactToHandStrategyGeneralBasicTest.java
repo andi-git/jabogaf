@@ -3,9 +3,9 @@ package org.jabogaf.core.subject.artifact.hand;
 import org.jabogaf.api.subject.artifact.hand.ArtifactHandlingException;
 import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.artifact.ArtifactNull;
-import org.jabogaf.test.cdi.ArquillianGameContext;
-import org.jabogaf.test.cdi.ArquillianGameContextTest;
-import org.jabogaf.test.cdi.BeforeInGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
+import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -3,7 +3,7 @@ package org.jabogaf.core.board;
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.cdi.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.state.GameStateNull;
 
 /**

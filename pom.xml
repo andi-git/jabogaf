@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jabogaf</groupId>
     <artifactId>jabogaf</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <modules>
         <module>jabogaf-main</module>
-        <module>jabogaf-cdi</module>
         <module>jabogaf-events</module>
         <module>jabogaf-state</module>
         <module>jabogaf-util</module>
+        <module>jabogaf-gamecontext</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -254,22 +254,27 @@
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
                     <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+                    <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.weld</groupId>
                     <artifactId>weld-core</artifactId>
+                    <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.weld.se</groupId>
                     <artifactId>weld-se-core</artifactId>
+                    <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                    <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.eu.ingwar.tools</groupId>
                     <artifactId>arquillian-suite-extension</artifactId>
+                    <scope>test</scope>
                     <exclusions>
                         <exclusion>
                             <artifactId>javassist</artifactId>
@@ -280,6 +285,7 @@
                 <dependency>
                     <groupId>org.javassist</groupId>
                     <artifactId>javassist</artifactId>
+                    <scope>test</scope>
                 </dependency>
             </dependencies>
         </profile>

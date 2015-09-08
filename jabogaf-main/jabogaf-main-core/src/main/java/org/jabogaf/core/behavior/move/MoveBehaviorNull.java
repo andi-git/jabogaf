@@ -2,7 +2,7 @@ package org.jabogaf.core.behavior.move;
 
 import org.jabogaf.api.behavior.move.MoveBehaviorType;
 import org.jabogaf.api.behavior.move.MoveBlock;
-import org.jabogaf.api.cdi.GameScoped;
+import org.jabogaf.api.gamecontext.GameScoped;
 
 import java.util.Collections;
 import java.util.HashSet;

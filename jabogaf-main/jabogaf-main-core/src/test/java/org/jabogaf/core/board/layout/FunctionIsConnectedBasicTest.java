@@ -2,7 +2,7 @@ package org.jabogaf.core.board.layout;
 
 import org.jabogaf.api.board.layout.FunctionIsConnected;
 import org.jabogaf.core.board.AbstractBoardTest;
-import org.jabogaf.test.cdi.ArquillianGameContext;
+import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,6 +1,6 @@
 package org.jabogaf.core.state;
 
-import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.api.event.GameStateChangedEvent;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.concurrent.Callable;
 
 /**
- * This is the abstract class for a value that is cached until the game-state changed (via {@link GameStateChanged}).
+ * This is the abstract class for a value that is cached until the game-state changed (via {@link GameStateChangedEvent}).
  * The creation of the value must be specified in the concrete implementation of the class.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
@@ -56,16 +56,16 @@ public abstract class CachedValue<VALUE> {
     }
 
     /**
-     * Get the timestamp when the last {@link GameStateChanged} was observed.
+     * Get the timestamp when the last {@link GameStateChangedEvent} was observed.
      *
-     * @return the timestamp when the last {@link GameStateChanged} was observed
+     * @return the timestamp when the last {@link GameStateChangedEvent} was observed
      */
     public Instant getLastEventChange() {
         return lastEventChange;
     }
 
-    private void observeGameStateChange(@Observes GameStateChanged gameStateChanged) {
-        log().debug("observe {}", GameStateChanged.class.getSimpleName());
+    private void observeGameStateChange(@Observes GameStateChangedEvent gameStateChangedEvent) {
+        log().debug("observe {}", GameStateChangedEvent.class.getSimpleName());
         invalidateCache();
         lastEventChange = Instant.now();
     }

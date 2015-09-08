@@ -1,6 +1,6 @@
 package org.jabogaf.core.state;
 
-import org.jabogaf.api.event.GameStateChanged;
+import org.jabogaf.api.event.GameStateChangedEvent;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * An abstract class for a value that is cached until the game-state changed (via {@link GameStateChanged} where the
+ * An abstract class for a value that is cached until the game-state changed (via {@link GameStateChangedEvent} where the
  * cached value is a {@link Map}. To create the cache a parameter is needed.
  */
 public abstract class CachedValueMap<VALUE, PARAM> extends CachedValue<VALUE> {

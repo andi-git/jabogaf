@@ -8,7 +8,7 @@ import org.jabogaf.api.subject.GameSubject;
 /**
  * This exception will be thrown, if a {@link Artifact} can not be handled by a {@link GameSubject}.
  */
-public class ArtifactHandlingException extends Exception {
+public class ArtifactHandlingException extends RuntimeException {
 
     private final Artifact artifact;
 
