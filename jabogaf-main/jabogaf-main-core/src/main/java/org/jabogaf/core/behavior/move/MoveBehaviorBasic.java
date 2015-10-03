@@ -30,11 +30,12 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
         if (moveable == null || target == null || resourceHolder == null) {
             return new CanMoveReportBasic.CanMoveReportBuilder().buildNull();
         }
-        return new CanMoveReportBasic.CanMoveReportBuilder().
-                setCost(movePointCollector.collect(moveable, target)).
-                setMaxPayment(resourceHolder.get(MovePoint.class)).
-                setMoveBlocks(checkMoveBlocks(moveable, target, getMoveBlocks())).
-                build();
+        return new CanMoveReportBasic.CanMoveReportBuilder()
+                .setCost(movePointCollector.collect(moveable, target))
+                .setMaxPayment(resourceHolder.get(MovePoint.class))
+                .setMoveIsBlockedBy(checkMoveBlocks(moveable, target))
+                .setMoveIsUnableToEndBy(checkMoveUnableToEnd(moveable, target))
+                .build();
     }
 
     @Override
@@ -68,8 +69,8 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
             return target;
         } else if (!canMoveReport.canPay()) {
             throw new NotEnoughResourceException(movePointCollector.collect(moveable, target).asPayment(), resourceHolder.amountOf(MovePoint.class));
-        } else if (canMoveReport.isBlocked()) {
-            throw new MoveNotPossibleException(getMoveBlocks().stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet()));
+        } else if (canMoveReport.isBlocked() || !canMoveReport.isAbleToEnd()) {
+            throw new MoveNotPossibleException(canMoveReport);
         } else {
             throw new MoveNotPossibleException("move is not possible - unknown reason");
         }
@@ -107,12 +108,17 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
         return resourceHolder != null && resourceHolder.canPay(movePointCollector.collect(moveable, target).asPayment());
     }
 
-    protected Set<MoveBlock> checkMoveBlocks(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
-        return moveBlocks.stream().filter(moveBlock -> moveBlock.blocks(moveable, target)).collect(Collectors.toSet());
+    @Override
+    public Set<MoveBlock> checkMoveBlocks(Moveable moveable, Field target) {
+        return getMoveBlocks().stream()
+                .filter(moveBlock -> moveBlock.blocks(moveable, target))
+                .collect(Collectors.toSet());
     }
 
-    protected boolean checkMoveBlock(Moveable moveable, Field target, Set<MoveBlock> moveBlocks) {
-        return !(moveable == null || target == null) && (moveBlocks == null || moveBlocks.isEmpty() || !moveBlocks.stream().anyMatch(moveBlock -> moveBlock.blocks(moveable, target)));
+    @Override
+    public Set<MoveUnableToEnd> checkMoveUnableToEnd(Moveable moveable, Field target) {
+        return getMoveUnableToEnd().stream()
+                .filter(mute -> mute.unableToEnd(moveable, target))
+                .collect(Collectors.toSet());
     }
-
 }

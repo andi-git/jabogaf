@@ -2,6 +2,7 @@ package org.jabogaf.core.behavior.move;
 
 import org.jabogaf.api.behavior.move.CanMoveReport;
 import org.jabogaf.api.behavior.move.MoveBlock;
+import org.jabogaf.api.behavior.move.MoveUnableToEnd;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.core.resource.MovePoint;
 
@@ -15,17 +16,20 @@ public class CanMoveReportBasic implements CanMoveReport {
 
     private final Resource maxPayment;
 
-    private final Set<MoveBlock> moveBlocks = new HashSet<>();
+    private final Set<MoveBlock> moveIsBlockedBy = new HashSet<>();
 
-    public CanMoveReportBasic(Resource moveCost, Resource maxPayment, Set<MoveBlock> moveBlocks) {
+    private final Set<MoveUnableToEnd> moveIsUnableToEndBy = new HashSet<>();
+
+    public CanMoveReportBasic(Resource moveCost, Resource maxPayment, Set<MoveBlock> moveIsBlockedBy, Set<MoveUnableToEnd> moveIsUnableToEndBy) {
         this.moveCost = moveCost == null ? new MovePoint(0) : moveCost;
         this.maxPayment = maxPayment == null ? new MovePoint(0) : maxPayment;
-        this.moveBlocks.addAll(moveBlocks);
+        this.moveIsBlockedBy.addAll(moveIsBlockedBy);
+        this.moveIsUnableToEndBy.addAll(moveIsUnableToEndBy);
     }
 
     @Override
     public boolean isPossible() {
-        return canPay() && !isBlocked();
+        return canPay() && !isBlocked() && isAbleToEnd();
     }
 
     @Override
@@ -45,12 +49,22 @@ public class CanMoveReportBasic implements CanMoveReport {
 
     @Override
     public boolean isBlocked() {
-        return !moveBlocks.isEmpty();
+        return !moveIsBlockedBy.isEmpty();
     }
 
     @Override
     public Set<MoveBlock> moveBlocks() {
-        return Collections.unmodifiableSet(moveBlocks);
+        return Collections.unmodifiableSet(moveIsBlockedBy);
+    }
+
+    @Override
+    public boolean isAbleToEnd() {
+        return moveUnableToEnd().isEmpty();
+    }
+
+    @Override
+    public Set<MoveUnableToEnd> moveUnableToEnd() {
+        return Collections.unmodifiableSet(moveIsUnableToEndBy);
     }
 
     public static class CanMoveReportBuilder {
@@ -59,7 +73,9 @@ public class CanMoveReportBasic implements CanMoveReport {
 
         private Resource maxPayment;
 
-        private Set<MoveBlock> moveBlocks = new HashSet<>();
+        private Set<MoveBlock> moveIsBlockedBy = new HashSet<>();
+
+        private Set<MoveUnableToEnd> moveIsUnableToEndBy = new HashSet<>();
 
         public CanMoveReportBuilder setCost(Resource cost) {
             this.cost = cost;
@@ -71,24 +87,30 @@ public class CanMoveReportBasic implements CanMoveReport {
             return this;
         }
 
-        public CanMoveReportBuilder setMoveBlocks(Set<MoveBlock> moveBlocks) {
-            this.moveBlocks.clear();
-            this.moveBlocks.addAll(moveBlocks);
+        public CanMoveReportBuilder setMoveIsBlockedBy(Set<MoveBlock> moveIsBlockedBy) {
+            this.moveIsBlockedBy.clear();
+            this.moveIsBlockedBy.addAll(moveIsBlockedBy);
+            return this;
+        }
+
+        public CanMoveReportBuilder setMoveIsUnableToEndBy(Set<MoveUnableToEnd> moveIsUnableToEndBy) {
+            this.moveIsUnableToEndBy.clear();
+            this.moveIsUnableToEndBy.addAll(moveIsUnableToEndBy);
             return this;
         }
 
         public CanMoveReport build() {
-            return new CanMoveReportBasic(cost, maxPayment, moveBlocks);
+            return new CanMoveReportBasic(cost, maxPayment, moveIsBlockedBy, moveIsUnableToEndBy);
         }
 
         public CanMoveReport buildDefault() {
-            return new CanMoveReportBasic(new MovePoint(0), new MovePoint(0), new HashSet<>());
+            return new CanMoveReportBasic(new MovePoint(0), new MovePoint(0), new HashSet<>(), new HashSet<>());
         }
 
         public CanMoveReport buildNull() {
             Set<MoveBlock> moveBlocks = new HashSet<>();
             moveBlocks.add((moveable, target) -> false);
-            return new CanMoveReportBasic(new MovePoint(Integer.MAX_VALUE), new MovePoint(0), moveBlocks);
+            return new CanMoveReportBasic(new MovePoint(Integer.MAX_VALUE), new MovePoint(0), moveBlocks, moveIsUnableToEndBy);
         }
     }
 }

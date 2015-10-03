@@ -11,6 +11,8 @@ public class MoveNotPossibleException extends RuntimeException {
 
     private final Set<MoveBlock> moveBlocks = new HashSet<>();
 
+    private final Set<MoveUnableToEnd> moveUnableToEnds = new HashSet<>();
+
     public MoveNotPossibleException(String message) {
         super(message);
     }
@@ -19,27 +21,34 @@ public class MoveNotPossibleException extends RuntimeException {
         super("move is not possible");
     }
 
-    public MoveNotPossibleException(Set<MoveBlock> moveBlocks) {
-        super("move is blocked by: " + new MoveBlockCollection(moveBlocks).toString());
-        this.moveBlocks.addAll(moveBlocks);
+    public MoveNotPossibleException(CanMoveReport canMoveReport) {
+        super("move is blocked by: " +
+                new SetToString<>(canMoveReport.moveBlocks()).toString() + "; " +
+                new SetToString<>(canMoveReport.moveUnableToEnd()).toString());
+        this.moveBlocks.addAll(canMoveReport.moveBlocks());
+        this.moveUnableToEnds.addAll(canMoveReport.moveUnableToEnd());
     }
 
     public Set<MoveBlock> getMoveBlocks() {
         return Collections.unmodifiableSet(moveBlocks);
     }
 
-    private static class MoveBlockCollection {
+    public Set<MoveUnableToEnd> getMoveUnableToEnd() {
+        return Collections.unmodifiableSet(moveUnableToEnds);
+    }
 
-        private final Set<MoveBlock> moveBlocks = new HashSet<>();
+    private static class SetToString<T> {
 
-        private MoveBlockCollection(Set<MoveBlock> moveBlocks) {
-            this.moveBlocks.addAll(moveBlocks);
+        private final Set<T> set = new HashSet<>();
+
+        private SetToString(Set<T> set) {
+            this.set.addAll(set);
         }
 
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            moveBlocks.stream().forEach(moveBlock -> sb.append(moveBlock + ","));
+            set.stream().forEach(moveBlock -> sb.append(moveBlock).append(","));
             return sb.toString();
         }
     }

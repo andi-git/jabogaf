@@ -60,7 +60,10 @@ public class BoardManagerBasic implements BoardManager {
 
     @Override
     public Set<GameObject> getAllGameObjects(Field field) {
-        return Collections.unmodifiableSet(getAllGameObjects().stream().filter(go -> go.getPosition().equals(field)).collect(Collectors.toSet()));
+        return Collections.unmodifiableSet(
+                getAllGameObjects().stream()
+                        .filter(go -> go.getPosition() != null && go.getPosition().equals(field))
+                        .collect(Collectors.toSet()));
     }
 
     @Override

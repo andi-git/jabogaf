@@ -19,5 +19,9 @@ public interface CanMoveReport {
 
     boolean isBlocked();
 
-    Set<org.jabogaf.api.behavior.move.MoveBlock> moveBlocks();
+    Set<MoveBlock> moveBlocks();
+
+    boolean isAbleToEnd();
+
+    Set<MoveUnableToEnd> moveUnableToEnd();
 }

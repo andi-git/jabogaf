@@ -77,7 +77,7 @@ public interface MoveBehavior {
      * @param resourceHolder the available {@link Resource}s to perform the move
      * @return a set of all {@link Field}s that the {@link Moveable} can be moved to from the current position
      */
-    List<org.jabogaf.api.behavior.move.MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder);
+    List<MovePath> getMovableFields(Moveable moveable, ResourceHolder resourceHolder);
 
     /**
      * Get the shortest path, e. g. the {@link MovePath} with less {@link Resource}s, from the current position of
@@ -104,4 +104,29 @@ public interface MoveBehavior {
      * @return a {@link Set} of all {@link MoveBlock}s that are activated
      */
     Set<MoveBlock> getMoveBlocks();
+
+    /**
+     * Get a {@link Set} of {@link MoveBlock} that block the move of a {@link Moveable} to the target {@link Field}
+     *
+     * @param moveable the {@link Moveable} that want's to move
+     * @param target   the target {@link Field} to move to
+     * @return a {@link Set} of {@link MoveBlock} that block the move of a {@link Moveable} to the target {@link Field}
+     */
+    Set<MoveBlock> checkMoveBlocks(Moveable moveable, Field target);
+
+    /**
+     * Get a {@link Set} of all {@link MoveUnableToEnd}s that are activated.
+     *
+     * @return a {@link Set} of all {@link MoveUnableToEnd}s that are activated
+     */
+    Set<MoveUnableToEnd> getMoveUnableToEnd();
+
+    /**
+     * Get a {@link Set} of {@link MoveUnableToEnd} that makes it unable for the {@link Moveable} to end up on this {@link Field}.
+     *
+     * @param moveable the {@link Moveable} that want's to move
+     * @param target   the target {@link Field} to move to
+     * @return a {@link Set} of {@link MoveUnableToEnd} that makes it unable for the {@link Moveable} to end up on this {@link Field}
+     */
+    Set<MoveUnableToEnd> checkMoveUnableToEnd(Moveable moveable, Field target);
 }

@@ -1,5 +1,6 @@
 package org.jabogaf.core.behavior.move;
 
+import org.jabogaf.api.behavior.move.CanMoveReport;
 import org.jabogaf.api.behavior.move.MovePath;
 import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.field.Field;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Create and cache all moveable {@link Field}s of a {@link Moveable} and a {@link ResourceHolder}, i.e. a {@link
@@ -47,16 +49,20 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         return log;
     }
 
-    private List<MovePath> convertToSortedList(Set<ResolvedField> resolvedFields) {
-        return resolvedFields.stream().map(ResolvedField::getMovePath).sorted((mp1, mp2) -> mp1.cost().getAmount() - mp2.cost().getAmount()).collect(Collectors.toList());
+    private List<MovePath> convertToSortedList(Stream<ResolvedField> resolvedFields) {
+        return resolvedFields
+                .map(ResolvedField::getMovePath)
+                .sorted((mp1, mp2) -> mp1.cost().getAmount() - mp2.cost().getAmount())
+                .collect(Collectors.toList());
     }
 
     private void checkFieldsToResolve(ResolvedField resolvedField, Moveable moveable) {
         log.debug("  check fields to resolve connected to {}", resolvedField);
         for (Field possibleFieldToResolve : resolvedField.getConnectedFields()) {
             log.debug("    possible field is {}", possibleFieldToResolve);
-            if (!resolvedFieldsContains(possibleFieldToResolve) && !isMoveBlocked(moveable, resolvedField, possibleFieldToResolve)) {
-                UnresolvedField unresolvedField = new UnresolvedField(possibleFieldToResolve, resolvedField.getMovePath(), movePointCollector);
+            CanMoveReport canMoveReportToPossibleField = canMoveReport(moveable, resolvedField, possibleFieldToResolve);
+            if (!resolvedFieldsContains(possibleFieldToResolve) && !canMoveReportToPossibleField.isBlocked()) {
+                UnresolvedField unresolvedField = new UnresolvedField(possibleFieldToResolve, resolvedField.getMovePath(), movePointCollector, canMoveReportToPossibleField.isAbleToEnd());
                 log.debug("    possible unresolved field is {}", unresolvedField);
                 if (!unresolvedFieldsContains(unresolvedField)) {
                     log.debug("    new unresolved field {}", unresolvedField);
@@ -73,8 +79,8 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
     }
 
-    private boolean isMoveBlocked(Moveable moveable, Field position, Field target) {
-        return moveable.cloneMoveable(position).canMove(target, new ResourcesBasic()).isBlocked();
+    private CanMoveReport canMoveReport(Moveable moveable, Field position, Field target) {
+        return moveable.cloneMoveable(position).canMove(target, new ResourcesBasic());
     }
 
     private boolean resolvedFieldsContains(Field field) {
@@ -86,7 +92,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     }
 
     private Set<UnresolvedField> unresolvedFieldsReachableWith(MovePoint movePoint) {
-        return unresolvedFields.stream().filter(f -> f.movementCost().lesserEquals(movePoint)).collect(Collectors.toSet());
+        return unresolvedFields.stream()
+                .filter(f -> f.movementCost().lesserEquals(movePoint))
+                .collect(Collectors.toSet());
     }
 
     private MovePoint mp(int movePoint) {
@@ -100,7 +108,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             resolvedFields.clear();
             unresolvedFields.clear();
             log.debug("add start position " + parameter.getMoveable().getPosition());
-            ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)));
+            ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)), false);
             resolvedFields.add(firstResolvedField);
             checkFieldsToResolve(firstResolvedField, parameter.getMoveable());
             for (int movePoint = 1; movePoint <= parameter.getResourceHolder().amountOf(MovePoint.class); movePoint++) {
@@ -109,7 +117,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                 while (!unresolvedFieldsReachableWith(mp).isEmpty()) {
                     log.debug("resolved fields   " + resolvedFields);
                     log.debug("unresolved fields " + unresolvedFields);
-                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFields.stream().filter(f -> f.movementCost().lesserEquals(mp)).collect(Collectors.toSet());
+                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFields.stream()
+                            .filter(f -> f.movementCost().lesserEquals(mp))
+                            .collect(Collectors.toSet());
                     log.debug("  there are some unresolved-fields that has to be resolved {}", unresolvedFieldsToResolve);
                     for (UnresolvedField unresolvedFieldToResolve : unresolvedFieldsToResolve) {
                         unresolvedFields.remove(unresolvedFieldToResolve);
@@ -121,20 +131,29 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                 }
             }
             resolvedFields.remove(firstResolvedField);
-            return convertToSortedList(resolvedFields);
+
+            return convertToSortedList(filterMovePathsWhereLastFieldIsNotPossible());
         };
+    }
+
+    private Stream<ResolvedField> filterMovePathsWhereLastFieldIsNotPossible() {
+        return resolvedFields.stream().filter(ResolvedField::isAbleToEnd);
     }
 
     private static class ResolvedField implements Field {
 
         private final MovePath movePath;
 
-        public ResolvedField(MovePath movePath) {
+        private final boolean ableToEnd;
+
+        public ResolvedField(MovePath movePath, boolean ableToEnd) {
             this.movePath = movePath;
+            this.ableToEnd = ableToEnd;
         }
 
         public ResolvedField(UnresolvedField unresolvedField) {
             this.movePath = new MovePathBasic(unresolvedField.getMovePathBefore(), unresolvedField.getTarget());
+            this.ableToEnd = unresolvedField.isAbleToEnd();
         }
 
         public Field getTarget() {
@@ -143,6 +162,10 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
         public MovePath getMovePath() {
             return movePath;
+        }
+
+        public boolean isAbleToEnd() {
+            return ableToEnd;
         }
 
         @Override
@@ -226,10 +249,13 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
         private final MovePath movePathBefore;
 
-        public UnresolvedField(Field target, MovePath movePathBefore, MovePointCollector movePointCollector) {
+        private final boolean ableToEnd;
+
+        public UnresolvedField(Field target, MovePath movePathBefore, MovePointCollector movePointCollector, boolean ableToEnd) {
             this.target = target;
             this.movePathBefore = movePathBefore;
             this.movePointCollector = movePointCollector;
+            this.ableToEnd = ableToEnd;
         }
 
         public Field getTarget() {
@@ -242,6 +268,10 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
         public MovePath getMovePathBefore() {
             return movePathBefore;
+        }
+
+        public boolean isAbleToEnd() {
+            return ableToEnd;
         }
 
         public Resource costBefore() {

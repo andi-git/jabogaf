@@ -38,7 +38,7 @@ public class GridLayoutLoggerTest extends TestWithExampleGridLayoutBoard {
                 "|Field:0,0         | |Field:1,0         |W|Field:2,0         | |Field:3,0         | |Field:4,0         | |Field:5,0         |\n" +
                 "|*FGroup:room0     | |*FGroup:room0     |a|*FGroup:floor4    | |*FGroup:floor4    | |*FGroup:floor5    | |*FGroup:floor5    |\n" +
                 "|                  | |                  |l|*FGroup:floor5    | |*FGroup:floor5    | |>player3          | |>mp-player2:5     |\n" +
-                "|                  | |                  |l|>mp-player2:2     | |>mp-player2:3     | |>mp-player2:4     | |                  |\n" +
+                "|                  | |                  |l|>mp-player2:2     | |>mp-player2:3     | |                  | |                  |\n" +
                 "|                  | |                  |:|                  | |                  | |                  | |                  |\n" +
                 "|                  | |                  |1|                  | |                  | |                  | |                  |\n" +
                 "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
@@ -112,7 +112,7 @@ public class GridLayoutLoggerTest extends TestWithExampleGridLayoutBoard {
                 "|*FGroup:floor3    | |*FGroup:floor3    | |*FGroup:floor3    | |*FGroup:floor3    |a|*FGroup:room1     | |*FGroup:room1     |\n" +
                 "|>mp-player3:6     | |>mp-player3:5     | |*FGroup:floor4    | |*FGroup:floor4    |l|                  | |                  |\n" +
                 "|                  | |                  | |>player2          | |>mp-player3:3     |l|                  | |                  |\n" +
-                "|                  | |                  | |>mp-player3:4     | |                  |:|                  | |                  |\n" +
+                "|                  | |                  | |                  | |                  |:|                  | |                  |\n" +
                 "|                  | |                  | |                  | |                  |3|                  | |                  |\n" +
                 "|                  | |                  | |                  | |                  | |                  | |                  |\n" +
                 "|                  | |                  | |                  | |                  | |                  | |                  |\n" +

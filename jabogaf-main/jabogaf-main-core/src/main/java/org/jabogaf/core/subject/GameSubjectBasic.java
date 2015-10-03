@@ -45,10 +45,12 @@ public class GameSubjectBasic extends GameContextBeanBasic<GameSubject> implemen
 
     private LookBehavior lookBehavior;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     @MoveBehaviorType(MoveBehaviorNull.class)
     private MoveBehavior moveBehaviorNull;
 
+    @SuppressWarnings("CdiInjectionPointsInspection")
     @Inject
     @LookBehaviorType(LookBehaviorNull.class)
     private LookBehavior lookBehaviorNull;
@@ -206,6 +208,11 @@ public class GameSubjectBasic extends GameContextBeanBasic<GameSubject> implemen
     @Override
     public Moveable cloneMoveable(Field field) {
         return new GameSubjectBasic(getId() + randomId(), field, getMoveBehavior(), getLookBehavior());
+    }
+
+    @Override
+    public boolean isMoveableTarget(Field field) {
+        return moveBehavior.checkMoveUnableToEnd(this, field).isEmpty();
     }
 
     @Override

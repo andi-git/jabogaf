@@ -26,12 +26,12 @@ public interface Moveable {
      *
      * @return the {@link MoveBehavior}
      */
-    org.jabogaf.api.behavior.move.MoveBehavior getMoveBehavior();
+    MoveBehavior getMoveBehavior();
 
     /**
      * Move the {@link Moveable} from the current {@code position} to a {@link Field} defined by the parameter {@code
      * target}.
-     * <p>
+     * <p/>
      * The result is influenced by the available {@link MoveBehavior}.
      *
      * @param target         the {@link Field} to move the {@link Moveable} to
@@ -47,7 +47,7 @@ public interface Moveable {
     /**
      * Move the {@link Moveable} from the current {@code position} to a {@link Field} defined by the parameter {@code
      * target}.
-     * <p>
+     * <p/>
      * The result is influenced by the available {@link MoveBehavior}.
      *
      * @param movePath       the {@link MovePath} to move the {@link Moveable} along
@@ -63,7 +63,7 @@ public interface Moveable {
     /**
      * Check if the {@link Moveable} can move from the current {@code position} to another {@link Field} defined by the
      * assigned {@code target}.
-     * <p>
+     * <p/>
      * The result is influenced by the available {@link MoveBehavior}.
      *
      * @param target         the {@link Field} to move to
@@ -76,7 +76,7 @@ public interface Moveable {
     /**
      * Check if the {@link Moveable} can move from the current {@code position} to another {@link Field} defined by the
      * assigned {@code target}.
-     * <p>
+     * <p/>
      * The result is influenced by the available {@link MoveBehavior}.
      *
      * @param movePath       the {@link MovePath} to move the {@link Moveable} along
@@ -110,4 +110,12 @@ public interface Moveable {
     Moveable cloneMoveable();
 
     Moveable cloneMoveable(Field field);
+
+    /**
+     * Check if a move is able to end on a {@link Field}
+     *
+     * @param field the {@link Field} to move to
+     * @return {@code true} if it is able to end a move on the assigned {@link Field}
+     */
+    boolean isMoveableTarget(Field field);
 }

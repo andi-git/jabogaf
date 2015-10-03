@@ -13,7 +13,7 @@ public interface MoveBlock {
      *
      * @param moveable the {@link Moveable} to move
      * @param target   the {@link Field} to move to
-     * @return {@code true} if the move is BLOCKED (i.e. the move is not possitble)
+     * @return {@code true} if the move is BLOCKED (i.e. the move is not possible)
      */
     boolean blocks(Moveable moveable, Field target);
 }
