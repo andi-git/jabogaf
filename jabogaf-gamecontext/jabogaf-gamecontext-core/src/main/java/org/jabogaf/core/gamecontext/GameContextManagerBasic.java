@@ -39,11 +39,11 @@ public class GameContextManagerBasic implements GameContextManager {
 
     @Override
     public <T extends GameContextBean> T add(T bean) {
-        return add(bean, bean.getId());
+        return add(bean, bean.getId(), FireEvent.Default);
     }
 
     @Override
-    public <T extends GameContextBean> T add(T bean, String id) {
+    public <T extends GameContextBean> T add(T bean, String id, FireEvent fireEvent) {
         if (id == null || "".equals(id)) {
             throw new IllegalArgumentException("id must have a value!");
         }
@@ -51,7 +51,8 @@ public class GameContextManagerBasic implements GameContextManager {
             throw new IllegalStateException("id '" + id + "' already in use");
         }
         T beanWithInjectionsResolved = resolve(getCurrentGameContextInstance().addGameContextBean(bean));
-        if (beanWithInjectionsResolved instanceof GameContextBeanWithState) {
+        if (fireEvent == FireEvent.Default && beanWithInjectionsResolved instanceof GameContextBeanWithState) {
+            System.out.println("--> fire GameStateChangedEvent: " + id + ", " + bean.getClass().getSimpleName());
             fireGameStateChangedEvent((GameContextBeanWithState) beanWithInjectionsResolved);
         }
         return beanWithInjectionsResolved;

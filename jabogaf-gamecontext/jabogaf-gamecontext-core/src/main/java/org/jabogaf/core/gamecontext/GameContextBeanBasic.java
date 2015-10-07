@@ -1,6 +1,7 @@
 package org.jabogaf.core.gamecontext;
 
 import org.jabogaf.api.event.GameStateChangedEvent;
+import org.jabogaf.api.gamecontext.FireEvent;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.gamecontext.GameContextManager;
 
@@ -37,10 +38,17 @@ public abstract class GameContextBeanBasic<T extends GameContextBean> implements
      * @param id the id of the {@link GameContextBeanBasic}.
      */
     protected GameContextBeanBasic(String id) {
+        this(id, FireEvent.None);
+    }
+
+    public GameContextBeanBasic(FireEvent fireEvent) {
+        this(UUID.randomUUID().toString(), fireEvent);
+    }
+
+    public GameContextBeanBasic(String id, FireEvent fireEvent) {
         this.id = id;
         gameContextManager = CDI.current().select(GameContextManager.class).get();
-//        System.out.println("--> add new gameContextBean - fire GameStateChangedEvent");
-        gameContextManager.add(this, id);
+        gameContextManager.add(this, id, fireEvent);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.jabogaf.core.resource;
 
+import org.jabogaf.api.gamecontext.FireEvent;
 import org.jabogaf.api.resource.NotEnoughResourceException;
 import org.jabogaf.api.resource.NotSameResourceException;
 import org.jabogaf.api.resource.Payment;
@@ -30,6 +31,14 @@ public abstract class ResourceBasic<T extends ResourceBasic> extends GameContext
 
     protected ResourceBasic(int amount) {
         super();
+        if (amount < 0) {
+            throw new IllegalStateException("amount is " + amount + " but must be > 0");
+        }
+        state.setAmount(amount);
+    }
+
+    public ResourceBasic(int amount, FireEvent fireEvent) {
+        super(fireEvent);
         if (amount < 0) {
             throw new IllegalStateException("amount is " + amount + " but must be > 0");
         }

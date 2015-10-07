@@ -5,6 +5,7 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.gamecontext.FireEvent;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.gamecontext.GameContextManager;
@@ -26,6 +27,8 @@ import org.junit.runner.RunWith;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -75,7 +78,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         new BoardBasic("board", layout);
 
         gameSubject = new GameSubjectBasic("gameSubject", getField(positionX, positionY));
-        gameSubject.earn(new MovePoint(movementPoints).asPayment());
+        gameSubject.earn(new MovePoint(movementPoints, FireEvent.None).asPayment());
         playerController.setCurrentPlayer(gameSubject);
 
     }
@@ -209,7 +212,9 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
     @Test
     public void testShortestPath() {
         createLayout(9, 9, 0, 0, 7);
+        Instant start = Instant.now();
         moveableFields.get(new MoveableFields.Parameter(gameSubject));
+        System.out.println(Duration.between(start, Instant.now()));
         assertEquals(1, gameSubject.getShortestPath(getField(1, 0)).cost().getAmount());
         assertEquals(2, gameSubject.getShortestPath(getField(1, 1)).cost().getAmount());
         assertEquals(3, gameSubject.getShortestPath(getField(2, 1)).cost().getAmount());

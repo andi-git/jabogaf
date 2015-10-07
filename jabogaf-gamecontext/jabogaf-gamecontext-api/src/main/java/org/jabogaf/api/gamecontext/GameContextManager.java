@@ -1,5 +1,7 @@
 package org.jabogaf.api.gamecontext;
 
+import org.jabogaf.api.event.GameStateChangedEvent;
+
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -15,12 +17,12 @@ import java.util.UUID;
 public interface GameContextManager {
 
     /**
-     * Calls {@link #add(GameContextBean, String)}.
+     * Calls {@link #add(GameContextBean, String, FireEvent)}.
      *
      * @param bean the bean to add
      * @param <T>  the type of the bean
      * @return the bean
-     * @see #add(GameContextBean, String)
+     * @see #add(GameContextBean, String, FireEvent)
      */
     <T extends GameContextBean> T add(T bean);
 
@@ -31,13 +33,14 @@ public interface GameContextManager {
      * If the bean has a method named getId(), the resulting String will be used to store the bean in the context.
      * Otherwise the system-hash will be used as id.
      *
-     * @param bean the bean to add
-     * @param id   the id of the bean
-     * @param <T>  the type of the bean
+     * @param <T>       the type of the bean
+     * @param bean      the bean to add
+     * @param id        the id of the bean
+     * @param fireEvent the strategy if an {@link GameStateChangedEvent} should be fired
      * @return the bean
      * @see #resolve(Object)
      */
-    <T extends GameContextBean> T add(T bean, String id);
+    <T extends GameContextBean> T add(T bean, String id, FireEvent fireEvent);
 
     /**
      * All CDI-components (e.g. {@link Inject} will be resolved with the beans from the current game-context.

@@ -6,22 +6,25 @@ import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
+import org.jabogaf.api.gamecontext.FireEvent;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
+import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.resource.ResourcesBasic;
 import org.jabogaf.core.state.CachedValueMap;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,6 +42,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     @Inject
     @SLF4J
     private Logger log;
+
+    @Inject
+    private MovePointHolder movePointHolder;
 
     private Set<ResolvedField> resolvedFields = new HashSet<>();
 
@@ -98,13 +104,13 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     }
 
     private MovePoint mp(int movePoint) {
-        return new MovePoint(movePoint);
+        return movePointHolder.get(movePoint);
     }
 
     @Override
     protected Function<Parameter, List<MovePath>> create() {
         return parameter -> {
-//            System.out.println("-->");
+            System.out.println("-->");
             log.debug("clear maps");
             resolvedFields.clear();
             unresolvedFields.clear();
@@ -385,6 +391,79 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             int result = moveable.hashCode();
             result = 31 * result + resourceHolder.hashCode();
             return result;
+        }
+    }
+
+    private static class MoveableWrapper {
+
+        private final Moveable moveable;
+
+        private final Moveable clonedMoveable;
+
+        private final SetterOfPosition setterForPositionOfCloneable;
+
+        public MoveableWrapper(Moveable moveable) {
+            this.moveable = moveable;
+            clonedMoveable = moveable.cloneMoveable();
+            try {
+                Method method = clonedMoveable.getClass().getDeclaredMethod("getSetterOfPosition");
+                method.setAccessible(true);
+                setterForPositionOfCloneable = (SetterOfPosition) method.invoke(clonedMoveable);
+            } catch (Exception e) {
+                throw new RuntimeException("unable to create " + getClass().getName(), e);
+            }
+        }
+
+        public Moveable getMoveable() {
+            return moveable;
+        }
+
+        public Moveable getClonedMoveable() {
+            return clonedMoveable;
+        }
+
+        public SetterOfPosition getSetterForPositionOfCloneable() {
+            return setterForPositionOfCloneable;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MoveableWrapper that = (MoveableWrapper) o;
+
+            return moveable.equals(that.moveable) && clonedMoveable.equals(that.clonedMoveable) && setterForPositionOfCloneable.equals(that.setterForPositionOfCloneable);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = moveable.hashCode();
+            result = 31 * result + clonedMoveable.hashCode();
+            result = 31 * result + setterForPositionOfCloneable.hashCode();
+            return result;
+        }
+    }
+
+    @ApplicationScoped
+    public static class MovePointHolder {
+
+        private final Map<Integer, MovePoint> movePointMap = new HashMap<>();
+
+        @PostConstruct
+        private void init() {
+            for (int i = 0; i < 1000; i++) {
+                movePointMap.put(i, new MovePoint(i, FireEvent.None));
+            }
+        }
+
+        public MovePoint get(int i) {
+            if (movePointMap.containsKey(i)) {
+                return movePointMap.get(i);
+            } else {
+                return new MovePoint(i, FireEvent.None);
+            }
         }
     }
 }
