@@ -31,7 +31,6 @@ public abstract class CachedValueMap<VALUE, PARAM> extends CachedValue<VALUE> {
 
     @Override
     public void invalidateCache() {
-//        System.out.println("--> invalidate cache, " + toString());
         super.invalidateCache();
         map.clear();
     }

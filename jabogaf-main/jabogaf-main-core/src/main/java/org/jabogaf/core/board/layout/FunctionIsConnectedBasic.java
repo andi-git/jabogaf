@@ -12,9 +12,6 @@ public class FunctionIsConnectedBasic implements FunctionIsConnected {
 
     @Override
     public boolean isConnected(Set<FieldConnection> fieldConnections, Field source, Field target) {
-        if (fieldConnections == null) {
-            return false;
-        }
-        return fieldConnections.stream().anyMatch(fc -> fc.connects(source, target));
+        return fieldConnections != null && fieldConnections.stream().anyMatch(fc -> fc.connects(source, target));
     }
 }

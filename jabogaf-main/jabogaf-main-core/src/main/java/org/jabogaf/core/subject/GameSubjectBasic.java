@@ -85,6 +85,10 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
         return this.state::setPosition;
     }
 
+    protected SetterOfPosition getInternalSetterOfPosition() {
+        return this.state::internalSetterOfPosition;
+    }
+
     @Override
     public Artifact getMainHandArtifact() {
         return artifactHolder.getMainHandArtifact();
@@ -317,6 +321,10 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
         }
 
         public void setPosition(Field position) {
+            this.position = position;
+        }
+
+        public void internalSetterOfPosition(Field position) {
             this.position = position;
         }
 

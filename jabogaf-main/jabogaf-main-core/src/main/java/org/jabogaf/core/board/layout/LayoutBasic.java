@@ -11,15 +11,17 @@ import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * All the {@link org.jabogaf.api.board.field.Field}s of a board are arranged by a concrete layout. So the
- * layout defines the available {@link org.jabogaf.api.board.field.Field}s, how the {@link
- * org.jabogaf.api.board.field.Field}s are connected via {@link org.jabogaf.api.board.field.FieldConnection}s
- * and grouped via {@link org.jabogaf.api.board.field.FieldGroup}.
+ * All the {@link org.jabogaf.api.board.field.Field}s of a board are arranged by a concrete layout. So the layout
+ * defines the available {@link org.jabogaf.api.board.field.Field}s, how the {@link org.jabogaf.api.board.field.Field}s
+ * are connected via {@link org.jabogaf.api.board.field.FieldConnection}s and grouped via {@link
+ * org.jabogaf.api.board.field.FieldGroup}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class LayoutBasic extends GameContextBeanBasic implements Layout {
@@ -29,6 +31,8 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     private final Set<FieldConnection> fieldConnections;
 
     private final Set<FieldGroup> fieldGroups;
+
+    private final Map<SourceTargetKey, Boolean> isConnectedCache = new HashMap<>();
 
     @Inject
     private FunctionIsConnected functionIsConnected;
@@ -81,7 +85,11 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
 
     @Override
     public boolean isConnected(Field source, Field target) {
-        return functionIsConnected.isConnected(fieldConnections, source, target);
+        SourceTargetKey sourceTargetKey = new SourceTargetKey(source, target);
+        if (!isConnectedCache.containsKey(sourceTargetKey)) {
+            isConnectedCache.put(sourceTargetKey, functionIsConnected.isConnected(fieldConnections, source, target));
+        }
+        return isConnectedCache.get(sourceTargetKey);
     }
 
     @Override
@@ -116,5 +124,40 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     @Override
     public Set<FieldConnection> getFieldConnections(Field field) {
         return fieldConnections.stream().filter(fc -> fc.contains(field)).collect(Collectors.toSet());
+    }
+
+    private static class SourceTargetKey {
+
+        private final Field source;
+
+        private final Field target;
+
+        public SourceTargetKey(Field source, Field target) {
+            this.source = source;
+            this.target = target;
+        }
+
+        public Field getSource() {
+            return source;
+        }
+
+        public Field getTarget() {
+            return target;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            SourceTargetKey that = (SourceTargetKey) o;
+            return source.equals(that.source) && target.equals(that.target);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = source.hashCode();
+            result = 31 * result + target.hashCode();
+            return result;
+        }
     }
 }

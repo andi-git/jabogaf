@@ -7,6 +7,8 @@ import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
 
 import javax.inject.Inject;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,9 +53,7 @@ public class MovePathBasic extends GameContextBeanBasic implements MovePath {
 
     public MovePathBasic(Field position, Field... fields) {
         this.position = position;
-        for (Field field : fields) {
-            this.fields.add(field);
-        }
+        Collections.addAll(this.fields, fields);
         collectMovePoints();
     }
 
