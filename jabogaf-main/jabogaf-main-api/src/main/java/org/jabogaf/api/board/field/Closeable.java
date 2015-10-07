@@ -2,16 +2,15 @@ package org.jabogaf.api.board.field;
 
 public interface Closeable {
 
-    public boolean isLocked();
+    boolean isLocked();
 
-    public boolean isUnlocked();
+    boolean isUnlocked();
 
-    public boolean isClosed();
+    boolean isClosed();
 
-    public boolean isOpened();
+    boolean isOpened();
 
-    public void open();
+    void open();
 
-    public void close();
-
+    void close();
 }

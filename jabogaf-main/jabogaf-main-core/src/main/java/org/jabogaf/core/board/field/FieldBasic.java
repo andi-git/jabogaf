@@ -12,6 +12,7 @@ import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
 
 import javax.inject.Inject;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,8 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
 
     @Override
     public List<GameSubject> getGameSubjects() {
-        return boardManager.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
+        return boardManager.getAllGameSubjects().stream().filter(gs -> equals(gs.getPosition())).sorted().collect(Collectors.toList());
+//        return boardManager.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
     }
 
     @Override

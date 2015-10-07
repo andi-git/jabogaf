@@ -43,7 +43,7 @@ public class GameStateChangedEventCollectorInGameContextTest {
 
     @Test
     public void testGameStateChangedEventGroupHandler() throws Throwable {
-        gameContextManager.runInGameContext(null, beanManager, gameContextId -> {
+        gameContextManager.runInGameContext(beanManager, gameContextId -> {
             assertTrue(gameStateChangedEventCollector.getGameStateChangedEventGroups().isEmpty());
             assertTrue(gameStateChangedEventGroupHandler.getCurrentGameStateChangedEventGroup().getGameStateChangedEvents().isEmpty());
 
@@ -71,9 +71,9 @@ public class GameStateChangedEventCollectorInGameContextTest {
                     gameStateChangedEventCollector.getGameStateChangedEventGroupsOrderedByTime().get(0).getGameStateChangedEvents().size());
             assertEquals(1,
                     gameStateChangedEventCollector.getGameStateChangedEventGroupsOrderedByTime().get(1).getGameStateChangedEvents().size());
-            return null;
+            return gameContextId;
         });
-        gameContextManager.runInGameContext(null, beanManager, gameContextId -> {
+        gameContextManager.runInGameContext(beanManager, gameContextId -> {
             assertTrue(gameStateChangedEventCollector.getGameStateChangedEventGroups().isEmpty());
             assertTrue(gameStateChangedEventGroupHandler.getCurrentGameStateChangedEventGroup().getGameStateChangedEvents().isEmpty());
 
@@ -93,7 +93,7 @@ public class GameStateChangedEventCollectorInGameContextTest {
                     gameStateChangedEventCollector.getGameStateChangedEventGroupsOrderedByTime().get(0).getGameStateChangedEvents().size());
             assertEquals(1,
                     gameStateChangedEventCollector.getGameStateChangedEventGroupsOrderedByTime().get(1).getGameStateChangedEvents().size());
-            return null;
+            return gameContextId;
         });
     }
 

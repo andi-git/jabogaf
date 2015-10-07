@@ -1,16 +1,10 @@
 package org.jabogaf.api.state;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.jabogaf.util.copy.CloneBean;
 import org.jabogaf.util.copy.CopyProperties;
-import org.jabogaf.util.log.SLF4J;
 import org.jabogaf.util.serialize.JSON;
 import org.jabogaf.util.serialize.Serializer;
-import org.slf4j.Logger;
 
 import javax.inject.Inject;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 /**
  * The basic class for the state of the game. When getting all instances of this type at runtime, the complete

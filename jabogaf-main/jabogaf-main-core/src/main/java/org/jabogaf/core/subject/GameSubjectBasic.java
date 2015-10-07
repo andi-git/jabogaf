@@ -63,7 +63,7 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     public GameSubjectBasic(String id, Field position, MoveBehavior moveBehavior, LookBehavior lookBehavior) {
         super(id);
         if (position == null) {
-            throw new IllegalStateException("'position' must not be null");
+            throw new IllegalStateException("'position must not be null");
         }
         this.state.setPosition(position);
         this.moveBehavior = moveBehavior != null ? moveBehavior : moveBehaviorNull;
@@ -160,10 +160,6 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     @Override
     public Field getPosition() {
         return this.state.getPosition();
-    }
-
-    protected void setPosition(Field position) {
-        this.state.setPosition(position);
     }
 
     @Override
