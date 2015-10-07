@@ -21,7 +21,7 @@ public interface ResourceHolder {
 
     int amountOf(Class<? extends Resource> resource);
 
-    Set<Resource> getResources();
+    Set<Resource> getResourceManager();
 
     List<Resource> getSortedResources();
 

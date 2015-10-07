@@ -8,6 +8,7 @@ import org.jabogaf.api.behavior.move.*;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.*;
 import org.jabogaf.api.state.GameState;
+import org.jabogaf.api.state.SetterFiresGameStateChanged;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.api.subject.artifact.ArtifactHolder;
@@ -16,15 +17,12 @@ import org.jabogaf.api.subject.artifact.hand.ArtifactHandlingStrategy;
 import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
-import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A subject (i.e. hero, monster,...) in the game.
@@ -40,7 +38,7 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     private ArtifactHolder artifactHolder;
 
     @Inject
-    private Resources resources;
+    private ResourceManager resourceManager;
 
     private MoveBehavior moveBehavior;
 
@@ -61,11 +59,16 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     }
 
     public GameSubjectBasic(String id, Field position, MoveBehavior moveBehavior, LookBehavior lookBehavior) {
+        this(id, position, new HashSet<>(), moveBehavior, lookBehavior);
+    }
+
+    public GameSubjectBasic(String id, Field position, Set<Resource> resources, MoveBehavior moveBehavior, LookBehavior lookBehavior) {
         super(id);
         if (position == null) {
             throw new IllegalStateException("'position must not be null");
         }
         this.state.setPosition(position);
+        this.state.addResources(resources);
         this.moveBehavior = moveBehavior != null ? moveBehavior : moveBehaviorNull;
         this.lookBehavior = lookBehavior != null ? lookBehavior : lookBehaviorNull;
     }
@@ -204,7 +207,7 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
 
     @Override
     public Moveable cloneMoveable(Field field) {
-        return new GameSubjectBasic(getId() + randomId(), field, getMoveBehavior(), getLookBehavior());
+        return cloneGameSubject(field);
     }
 
     @Override
@@ -214,52 +217,52 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
 
     @Override
     public Resource get(Class<? extends Resource> type) {
-        return resources.get(type);
+        return resourceManager.get(type, state);
     }
 
     @Override
     public void setResource(Resource resource) {
-        resources.setResource(resource);
+        resourceManager.setResource(resource, state);
     }
 
     @Override
     public boolean canPay(Payment payment) {
-        return resources.canPay(payment);
+        return resourceManager.canPay(payment, state);
     }
 
     @Override
     public void pay(Payment payment) throws NotEnoughResourceException {
-        resources.pay(payment);
+        resourceManager.pay(payment, state);
     }
 
     @Override
     public void earn(Payment payment) {
-        resources.earn(payment);
+        resourceManager.earn(payment, state);
     }
 
     @Override
     public int amountOf(Class<? extends Resource> resource) {
-        return resources.amountOf(resource);
+        return resourceManager.amountOf(resource, state);
     }
 
     @Override
-    public Set<Resource> getResources() {
-        return resources.getResources();
+    public Set<Resource> getResourceManager() {
+        return resourceManager.getResourceManager(state);
     }
 
     @Override
     public List<Resource> getSortedResources() {
-        return resources.getSortedResources();
+        return resourceManager.getSortedResources(state);
     }
 
     @Override
     public List<Resource> getSortedResources(Comparator<? super Resource> comparator) {
-        return resources.getSortedResources(comparator);
+        return resourceManager.getSortedResources(comparator, state);
     }
 
     @Override
     public ResourceHolder cloneResourceHolder() {
-        return resources.cloneResourceHolder();
+        return cloneGameSubject(getPosition());
     }
 
     @Override
@@ -297,10 +300,17 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
         return state;
     }
 
+    private GameSubjectBasic cloneGameSubject(Field position) {
+        return new GameSubjectBasic(getId() + randomId(), position, state.cloneResources(), getMoveBehavior(), getLookBehavior());
+    }
+
     @Dependent
-    public static class State extends GameState<GameSubject> {
+    @SetterFiresGameStateChanged
+    public static class State extends GameState<GameSubject> implements GameStateResources {
 
         private Field position;
+
+        private final Set<Resource> resources = new HashSet<>();
 
         public Field getPosition() {
             return position;
@@ -313,6 +323,39 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
         @Override
         public Class<GameSubject> classOfContainingBean() {
             return GameSubject.class;
+        }
+
+        @Override
+        public Set<Resource> getResources() {
+            return resources;
+        }
+
+        @Override
+        public void addResource(Resource resource) {
+            resources.add(resource);
+        }
+
+        @Override
+        public void addResources(Set<Resource> resources) {
+            this.resources.addAll(resources);
+        }
+
+        @Override
+        public void clearResource() {
+            resources.clear();
+        }
+
+        @Override
+        public void removeResource(Resource resource) {
+            resources.remove(resource);
+        }
+
+        public Set<Resource> cloneResources() {
+            HashSet<Resource> clonedResources = new HashSet<>();
+            for (Resource resource : resources) {
+                clonedResources.add(resource.clone());
+            }
+            return Collections.unmodifiableSet(clonedResources);
         }
     }
 }

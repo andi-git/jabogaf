@@ -4,15 +4,15 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.jabogaf.util.copy.CloneBean;
 import org.jabogaf.util.copy.CopyProperties;
+import org.jboss.weld.bean.proxy.MethodHandler;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @JSON
-public class SerializerJSON implements Serializer{
+public class SerializerJSON implements Serializer {
 
     private Gson gson;
 
@@ -28,7 +28,9 @@ public class SerializerJSON implements Serializer{
 
                     @Override
                     public boolean shouldSkipClass(Class<?> aClass) {
-                        return aClass == CopyProperties.class || aClass == Serializer.class;
+                        return aClass == CopyProperties.class ||
+                                aClass == Serializer.class ||
+                                aClass == MethodHandler.class;
                     }
                 })
                 .create();
