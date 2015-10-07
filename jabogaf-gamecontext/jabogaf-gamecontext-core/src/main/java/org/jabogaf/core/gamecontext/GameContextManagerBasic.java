@@ -52,7 +52,6 @@ public class GameContextManagerBasic implements GameContextManager {
         }
         T beanWithInjectionsResolved = resolve(getCurrentGameContextInstance().addGameContextBean(bean));
         if (fireEvent == FireEvent.Default && beanWithInjectionsResolved instanceof GameContextBeanWithState) {
-            System.out.println("--> fire GameStateChangedEvent: " + id + ", " + bean.getClass().getSimpleName());
             fireGameStateChangedEvent((GameContextBeanWithState) beanWithInjectionsResolved);
         }
         return beanWithInjectionsResolved;

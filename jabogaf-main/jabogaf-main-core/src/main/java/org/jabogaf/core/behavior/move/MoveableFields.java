@@ -60,11 +60,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                 .collect(Collectors.toList());
     }
 
-    private void checkFieldsToResolve(ResolvedField resolvedField, Moveable moveable, ResourceHolder resourceHolder) {
+    private void checkFieldsToResolve(ResolvedField resolvedField, MoveableWrapper moveableWrapper, ResourceHolder resourceHolder) {
         log.debug("  check fields to resolve connected to {}", resolvedField);
         for (Field possibleFieldToResolve : resolvedField.getConnectedFields()) {
             log.debug("    possible field is {}", possibleFieldToResolve);
-            CanMoveReport canMoveReportToPossibleField = canMoveReport(moveable, resolvedField, possibleFieldToResolve, resourceHolder);
+            CanMoveReport canMoveReportToPossibleField = canMoveReport(moveableWrapper, resolvedField, possibleFieldToResolve, resourceHolder);
             if (!resolvedFieldsContains(possibleFieldToResolve) && !canMoveReportToPossibleField.isBlocked()) {
                 UnresolvedField unresolvedField = new UnresolvedField(possibleFieldToResolve, resolvedField.getMovePath(), movePointCollector, canMoveReportToPossibleField.isAbleToEnd());
                 log.debug("    possible unresolved field is {}", unresolvedField);
@@ -83,8 +83,8 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
     }
 
-    private CanMoveReport canMoveReport(Moveable moveable, Field position, Field target, ResourceHolder resourceHolder) {
-        return moveable.cloneMoveable(position).canMove(target, resourceHolder);
+    private CanMoveReport canMoveReport(MoveableWrapper moveableWrapper, Field position, Field target, ResourceHolder resourceHolder) {
+        return moveableWrapper.getClonedMoveable(position).canMove(target, resourceHolder);
     }
 
     private boolean resolvedFieldsContains(Field field) {
@@ -108,14 +108,14 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     @Override
     protected Function<Parameter, List<MovePath>> create() {
         return parameter -> {
-            System.out.println("-->");
+            MoveableWrapper moveableWrapper = new MoveableWrapper(parameter.getMoveable());
             log.debug("clear maps");
             resolvedFields.clear();
             unresolvedFields.clear();
             log.debug("add start position " + parameter.getMoveable().getPosition());
             ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)), false);
             resolvedFields.add(firstResolvedField);
-            checkFieldsToResolve(firstResolvedField, parameter.getMoveable(), parameter.getResourceHolder());
+            checkFieldsToResolve(firstResolvedField, moveableWrapper, parameter.getResourceHolder());
             for (int movePoint = 1; movePoint <= parameter.getResourceHolder().amountOf(MovePoint.class); movePoint++) {
                 MovePoint mp = mp(movePoint);
                 log.debug("check for movePoint {}", movePoint);
@@ -131,7 +131,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                         ResolvedField resolvedField = new ResolvedField(unresolvedFieldToResolve);
                         log.debug("  add field to resolve {}", resolvedField);
                         resolvedFields.add(resolvedField);
-                        checkFieldsToResolve(resolvedField, parameter.getMoveable(), parameter.getResourceHolder());
+                        checkFieldsToResolve(resolvedField, moveableWrapper, parameter.getResourceHolder());
                     }
                 }
             }
@@ -417,6 +417,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         public Moveable getClonedMoveable() {
+            return clonedMoveable;
+        }
+
+        public Moveable getClonedMoveable(Field position) {
+            setterForPositionOfCloneable.setPosition(position);
             return clonedMoveable;
         }
 

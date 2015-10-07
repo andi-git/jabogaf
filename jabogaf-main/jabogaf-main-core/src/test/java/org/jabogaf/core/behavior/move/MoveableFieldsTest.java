@@ -216,13 +216,9 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         moveableFields.get(new MoveableFields.Parameter(gameSubject));
         System.out.println(Duration.between(start, Instant.now()));
         assertEquals(1, gameSubject.getShortestPath(getField(1, 0)).cost().getAmount());
-        System.out.println("###");
         assertEquals(2, gameSubject.getShortestPath(getField(1, 1)).cost().getAmount());
-        System.out.println("###");
         assertEquals(3, gameSubject.getShortestPath(getField(2, 1)).cost().getAmount());
-        System.out.println("###");
         assertEquals(4, gameSubject.getShortestPath(getField(2, 2)).cost().getAmount());
-        System.out.println("###");
     }
 
     private void assertContainsNumberOfCost(List<MovePath> movePaths, int number, int cost) {
