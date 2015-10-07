@@ -15,11 +15,4 @@ public interface GameContextBean<T extends GameContextBean> extends Comparable<G
      * @return the id of the {@link GameContextBean} in the game-context
      */
     String getId();
-
-    /**
-     * Get the {@link GameState} of the current {@link GameContextBean}.
-     *
-     * @return the {@link GameState} of the current {@link GameContextBean}
-     */
-    GameState<T> getState();
 }

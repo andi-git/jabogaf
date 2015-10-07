@@ -2,6 +2,7 @@ package org.jabogaf.core.event;
 
 import org.jabogaf.api.event.GameStateChangedEvent;
 import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.state.GameState;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ public class GameStateChangedEventBean extends GameStateChangedEvent {
 
     private final String gameStateSerialized;
 
-    public GameStateChangedEventBean(Instant time, GameContextBean gameContextBean) {
+    public GameStateChangedEventBean(Instant time, GameContextBeanWithState gameContextBean) {
         this(time, gameContextBean.getClass(), gameContextBean.getState());
     }
 

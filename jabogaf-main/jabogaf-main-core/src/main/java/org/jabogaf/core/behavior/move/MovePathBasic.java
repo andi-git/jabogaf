@@ -3,10 +3,8 @@ package org.jabogaf.core.behavior.move;
 import org.jabogaf.api.behavior.move.MovePath;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.Resource;
-import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
-import org.jabogaf.core.state.GameStateNull;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -141,10 +139,5 @@ public class MovePathBasic extends GameContextBeanBasic implements MovePath {
         sb.append(",");
         sb.append(cost.getAmount());
         return sb.toString();
-    }
-
-    @Override
-    public GameState getState() {
-        return new GameStateNull();
     }
 }

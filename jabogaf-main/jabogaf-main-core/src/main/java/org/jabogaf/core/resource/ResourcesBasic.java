@@ -2,7 +2,7 @@ package org.jabogaf.core.resource;
 
 import org.jabogaf.api.resource.*;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.gamecontext.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Typed
-public class ResourcesBasic extends GameContextBeanBasic implements Resources {
+public class ResourcesBasic extends GameContextBeanWithStateBasic<ResourcesBasic> implements Resources {
 
     @Inject
     private State state;
@@ -145,12 +145,12 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
     }
 
     @Override
-    public GameState getState() {
+    public GameState<ResourcesBasic> getState() {
         return state;
     }
 
     @Dependent
-    public static class State extends GameState {
+    public static class State extends GameState<ResourcesBasic> {
 
         private final Set<Resource> resources = new HashSet<>();
 
@@ -171,7 +171,7 @@ public class ResourcesBasic extends GameContextBeanBasic implements Resources {
         }
 
         @Override
-        public Class classOfContainingBean() {
+        public Class<ResourcesBasic> classOfContainingBean() {
             return ResourcesBasic.class;
         }
     }

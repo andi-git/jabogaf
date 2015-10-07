@@ -7,7 +7,7 @@ import org.jabogaf.api.gamecontext.GameContextBean;
  * <p>
  * This class is immutable.
  */
-public interface Resource<T extends Resource> extends GameContextBean {
+public interface Resource<T extends Resource> extends GameContextBean<T> {
 
     Resource add(int add);
 

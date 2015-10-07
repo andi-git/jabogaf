@@ -5,8 +5,6 @@ import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
 import org.jabogaf.api.board.layout.log.LayoutLoggerParameter;
-import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.state.GameStateNull;
 import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.junit.Test;
@@ -29,14 +27,8 @@ public class LayoutLoggerBasicTest extends ArquillianGameContextTest {
     @Test
     public void testToString() throws Exception {
         Layout nullLayout = new LayoutBasic("nullLayout" + System.nanoTime() + new Random().nextInt(), new HashSet<>(), new HashSet<>(), new HashSet<>()) {
-
             @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
-            @Override
-            public Stream getFieldsAsStream() {
+            public Stream<Field> getFieldsAsStream() {
                 return null;
             }
 

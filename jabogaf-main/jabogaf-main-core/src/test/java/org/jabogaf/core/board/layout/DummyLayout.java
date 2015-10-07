@@ -2,9 +2,6 @@ package org.jabogaf.core.board.layout;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.layout.Layout;
-import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.state.GameStateNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,17 +14,12 @@ public class DummyLayout extends LayoutBasic {
     }
 
     @Override
-    public Stream getFieldsAsStream() {
+    public Stream<Field> getFieldsAsStream() {
         return null;
     }
 
     @Override
     public Set<FieldConnection> getLookConnections(Field position, Field target) {
         return null;
-    }
-
-    @Override
-    public GameState getState() {
-        return new GameStateNull();
     }
 }

@@ -4,6 +4,7 @@ import org.jabogaf.api.event.GameStateChangedEvent;
 import org.jabogaf.api.event.GameStateChangedEventCollector;
 import org.jabogaf.api.event.GameStateChangedEventGroupHandler;
 import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.state.GameState;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
@@ -64,7 +65,7 @@ public class GameStateChangedEventGroupHandlerBasicTest {
     }
 
     @Dependent
-    public static class Bean implements GameContextBean {
+    public static class Bean implements GameContextBeanWithState<Bean> {
 
         @Inject
         private State state;
@@ -75,13 +76,13 @@ public class GameStateChangedEventGroupHandlerBasicTest {
         }
 
         @Override
-        public GameState getState() {
+        public GameState<Bean> getState() {
             return state;
         }
 
         @SuppressWarnings("NullableProblems")
         @Override
-        public int compareTo(Object o) {
+        public int compareTo(GameContextBean o) {
             return 0;
         }
 

@@ -39,8 +39,8 @@ public abstract class GameContextBeanBasic<T extends GameContextBean> implements
     protected GameContextBeanBasic(String id) {
         this.id = id;
         gameContextManager = CDI.current().select(GameContextManager.class).get();
+//        System.out.println("--> add new gameContextBean - fire GameStateChangedEvent");
         gameContextManager.add(this, id);
-        gameContextManager.fireGameStateChangedEvent(this);
     }
 
     @Override

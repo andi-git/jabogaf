@@ -95,7 +95,7 @@ public interface GameContextManager {
      *
      * @param gameContextBean - the current/new {@link GameContextBean}
      */
-    <T extends GameContextBean> T fireGameStateChangedEvent(T gameContextBean);
+    <T extends GameContextBeanWithState> void fireGameStateChangedEvent(T gameContextBean);
 
     /**
      * The assigned code will run within a new {@link GameContext}. The context will be started automatically and will

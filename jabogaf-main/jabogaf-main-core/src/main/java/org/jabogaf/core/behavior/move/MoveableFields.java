@@ -104,6 +104,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     @Override
     protected Function<Parameter, List<MovePath>> create() {
         return parameter -> {
+//            System.out.println("-->");
             log.debug("clear maps");
             resolvedFields.clear();
             unresolvedFields.clear();
@@ -230,11 +231,6 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
-        public GameState getState() {
-            return getTarget().getState();
-        }
-
-        @Override
         public int compareTo(@SuppressWarnings("NullableProblems") Object o) {
             //noinspection unchecked
             return getMovePath().getTarget().compareTo(o);
@@ -341,11 +337,6 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         @Override
         public String getId() {
             return getTarget().getId();
-        }
-
-        @Override
-        public GameState getState() {
-            return getTarget().getState();
         }
 
         @Override

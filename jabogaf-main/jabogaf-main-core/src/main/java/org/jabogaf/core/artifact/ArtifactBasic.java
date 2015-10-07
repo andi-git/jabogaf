@@ -2,9 +2,7 @@ package org.jabogaf.core.artifact;
 
 import org.jabogaf.api.artifact.Artifact;
 import org.jabogaf.api.artifact.HandCount;
-import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
-import org.jabogaf.core.state.GameStateNull;
 
 /**
  * An {@link org.jabogaf.core.artifact.ArtifactBasic} cast an object in the board game which can be used by a {@link
@@ -37,10 +35,5 @@ public abstract class ArtifactBasic extends GameContextBeanBasic implements Arti
     @Override
     public HandCount getHandCount() {
         return handCount;
-    }
-
-    @Override
-    public GameState getState() {
-        return new GameStateNull();
     }
 }

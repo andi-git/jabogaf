@@ -1,6 +1,5 @@
 package org.jabogaf.core.state;
 
-import com.google.gson.GsonBuilder;
 import org.jabogaf.api.state.GameState;
 import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;

@@ -2,6 +2,7 @@ package org.jabogaf.core.gamecontext.bean;
 
 import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Typed()
-public class MyOtherGameContextBean extends GameContextBeanBasic {
+public class MyOtherGameContextBean extends GameContextBeanWithStateBasic<MyOtherGameContextBean> {
 
     @Inject
     private State state;
@@ -40,16 +41,16 @@ public class MyOtherGameContextBean extends GameContextBeanBasic {
     }
 
     @Override
-    public GameState getState() {
+    public GameState<MyOtherGameContextBean> getState() {
         return state;
     }
 
     @Dependent
-    public static class State extends GameState<MyGameContextBean> {
+    public static class State extends GameState<MyOtherGameContextBean> {
 
         @Override
-        public Class<MyGameContextBean> classOfContainingBean() {
-            return MyGameContextBean.class;
+        public Class<MyOtherGameContextBean> classOfContainingBean() {
+            return MyOtherGameContextBean.class;
         }
     }
 

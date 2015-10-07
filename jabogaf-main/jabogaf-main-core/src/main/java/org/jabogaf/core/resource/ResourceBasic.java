@@ -5,7 +5,7 @@ import org.jabogaf.api.resource.NotSameResourceException;
 import org.jabogaf.api.resource.Payment;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
-import org.jabogaf.core.gamecontext.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 
@@ -15,7 +15,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class ResourceBasic<T extends Resource> extends GameContextBeanBasic implements Resource<T> {
+public abstract class ResourceBasic<T extends ResourceBasic> extends GameContextBeanWithStateBasic<T> implements Resource<T> {
 
     @Inject
     @SLF4J
@@ -156,8 +156,8 @@ public abstract class ResourceBasic<T extends Resource> extends GameContextBeanB
     }
 
     @Override
-    public GameState getState() {
-        return state;
+    public GameState<T> getState() {
+        return (GameState<T>) state;
     }
 
     @Dependent

@@ -50,7 +50,11 @@ public class GameContextManagerBasic implements GameContextManager {
         if (getCurrentGameContextInstance().getGameContextBeans().stream().filter(b -> b.getId().equals(id)).count() > 0) {
             throw new IllegalStateException("id '" + id + "' already in use");
         }
-        return fireGameStateChangedEvent(resolve(getCurrentGameContextInstance().addGameContextBean(bean)));
+        T beanWithInjectionsResolved = resolve(getCurrentGameContextInstance().addGameContextBean(bean));
+        if (beanWithInjectionsResolved instanceof GameContextBeanWithState) {
+            fireGameStateChangedEvent((GameContextBeanWithState) beanWithInjectionsResolved);
+        }
+        return beanWithInjectionsResolved;
     }
 
     @Override
@@ -130,8 +134,8 @@ public class GameContextManagerBasic implements GameContextManager {
     }
 
     @Override
-    public <T extends GameContextBean> T fireGameStateChangedEvent(T gameContextBean) {
-        return getCurrentGameContextInstance().getFromDynamicContext(HelperToFireGameStateChangedEvent.class).fire(gameContextBean);
+    public <T extends GameContextBeanWithState> void fireGameStateChangedEvent(T gameContextBean) {
+        getCurrentGameContextInstance().getFromDynamicContext(HelperToFireGameStateChangedEvent.class).fire(gameContextBean);
     }
 
     private GameContextInstance getCurrentGameContextInstance() {
@@ -144,9 +148,8 @@ public class GameContextManagerBasic implements GameContextManager {
         @Inject
         private Event<GameStateChangedEvent> gameStateChangedEvent;
 
-        public <T extends GameContextBean> T fire(T gameContextBean) {
+        public <T extends GameContextBeanWithState> void fire(T gameContextBean) {
             gameStateChangedEvent.fire(new GameStateChangedEventBean(Instant.now(), gameContextBean));
-            return gameContextBean;
         }
     }
 }

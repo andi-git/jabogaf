@@ -5,6 +5,8 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
@@ -15,7 +17,6 @@ import org.jabogaf.core.board.field.FieldConnectionBasic;
 import org.jabogaf.core.board.field.FieldConnectionObjectBasic;
 import org.jabogaf.core.board.layout.LayoutBasic;
 import org.jabogaf.core.resource.MovePoint;
-import org.jabogaf.core.state.GameStateNull;
 import org.jabogaf.core.subject.GameSubjectBasic;
 import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
@@ -23,6 +24,7 @@ import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,6 +52,9 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
 
     private GameSubject gameSubject;
 
+    @Inject
+    private Bean bean;
+
     @BeforeInGameContext
     public void before() {
     }
@@ -57,11 +62,6 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
     protected void createLayout(int sizeX, int sizeY, int positionX, int positionY, int movementPoints) {
         createLayout(sizeX, sizeY);
         Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>()) {
-            @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
             @Override
             public Stream<Field> getFieldsAsStream() {
                 return null;
@@ -147,11 +147,6 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         gameSubject.setResource(new MovePoint(2));
         getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
             @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
-            @Override
             public Resource movementCost() {
                 return new MovePoint(3);
             }
@@ -178,21 +173,11 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
 
         getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
             @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
-            @Override
             public Resource movementCost() {
                 return new MovePoint(9);
             }
         });
         getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco2") {
-            @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
             @Override
             public Resource movementCost() {
                 return new MovePoint(20);
@@ -200,26 +185,17 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         });
         getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new FieldConnectionObjectBasic("fco3") {
             @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
-            @Override
             public Resource movementCost() {
                 return new MovePoint(20);
             }
         });
         getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco4") {
             @Override
-            public GameState getState() {
-                return new GameStateNull();
-            }
-
-            @Override
             public Resource movementCost() {
                 return new MovePoint(20);
             }
         });
+        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(8, movePaths.size());
@@ -248,5 +224,38 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         System.out.println("------------------------------------------------------");
         movePaths.stream().forEach(System.out::println);
         System.out.println("------------------------------------------------------");
+    }
+
+    // to invaliate the cache
+    @Dependent
+    public static class Bean implements GameContextBeanWithState<Bean> {
+
+        @Inject
+        private State state;
+
+        @Override
+        public String getId() {
+            return "";
+        }
+
+        @Override
+        public GameState<Bean> getState() {
+            return state;
+        }
+
+        @SuppressWarnings("NullableProblems")
+        @Override
+        public int compareTo(GameContextBean o) {
+            return 0;
+        }
+
+        @Dependent
+        public static class State extends GameState<Bean> {
+
+            @Override
+            public Class<Bean> classOfContainingBean() {
+                return Bean.class;
+            }
+        }
     }
 }

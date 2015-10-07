@@ -17,6 +17,7 @@ import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
+import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
@@ -30,7 +31,7 @@ import java.util.Set;
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Typed
-public class GameSubjectBasic extends GameContextBeanBasic<GameSubject> implements GameSubject {
+public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject> implements GameSubject {
 
     @Inject
     private State state;
