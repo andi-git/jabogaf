@@ -9,10 +9,10 @@ import org.jabogaf.api.board.layout.FunctionGetConnection;
 import org.jabogaf.api.board.layout.FunctionIsConnected;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
+import org.jabogaf.core.util.CacheFor1Field;
+import org.jabogaf.core.util.CacheFor2Fields;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,7 +32,13 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
 
     private final Set<FieldGroup> fieldGroups;
 
-    private final Map<SourceTargetKey, Boolean> isConnectedCache = new HashMap<>();
+    private final CacheFor2Fields<Boolean> isConnectedCache = new CacheFor2Fields<>();
+
+    private final CacheFor2Fields<FieldConnection> getConnectionCache = new CacheFor2Fields<>();
+
+    private final CacheFor1Field<Set<FieldGroup>> getFieldsGroupsForCache = new CacheFor1Field<>();
+
+    private final CacheFor1Field<Set<FieldConnection>> getFieldsConnectionsCache = new CacheFor1Field<>();
 
     @Inject
     private FunctionIsConnected functionIsConnected;
@@ -85,16 +91,12 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
 
     @Override
     public boolean isConnected(Field source, Field target) {
-        SourceTargetKey sourceTargetKey = new SourceTargetKey(source, target);
-        if (!isConnectedCache.containsKey(sourceTargetKey)) {
-            isConnectedCache.put(sourceTargetKey, functionIsConnected.isConnected(fieldConnections, source, target));
-        }
-        return isConnectedCache.get(sourceTargetKey);
+        return isConnectedCache.get(source, target, () -> functionIsConnected.isConnected(fieldConnections, source, target));
     }
 
     @Override
     public FieldConnection getConnection(Field source, Field target) {
-        return functionGetConnection.getConnection(fieldConnections, source, target);
+        return getConnectionCache.get(source, target, () -> functionGetConnection.getConnection(fieldConnections, source, target));
     }
 
     @Override
@@ -102,12 +104,13 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
 
     @Override
     public Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+        // no cache here because FieldConnectionObjects can change at runtime
         return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
     }
 
     @Override
     public Set<FieldGroup> getFieldsGroupsFor(Field field) {
-        return fieldGroups.stream().filter(fg -> fg.contains(field)).collect(Collectors.toSet());
+        return getFieldsGroupsForCache.get(field, () -> fieldGroups.stream().filter(fg -> fg.contains(field)).collect(Collectors.toSet()));
     }
 
     @Override
@@ -123,41 +126,6 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
 
     @Override
     public Set<FieldConnection> getFieldConnections(Field field) {
-        return fieldConnections.stream().filter(fc -> fc.contains(field)).collect(Collectors.toSet());
-    }
-
-    private static class SourceTargetKey {
-
-        private final Field source;
-
-        private final Field target;
-
-        public SourceTargetKey(Field source, Field target) {
-            this.source = source;
-            this.target = target;
-        }
-
-        public Field getSource() {
-            return source;
-        }
-
-        public Field getTarget() {
-            return target;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            SourceTargetKey that = (SourceTargetKey) o;
-            return source.equals(that.source) && target.equals(that.target);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = source.hashCode();
-            result = 31 * result + target.hashCode();
-            return result;
-        }
+        return getFieldsConnectionsCache.get(field, () -> fieldConnections.stream().filter(fc -> fc.contains(field)).collect(Collectors.toSet()));
     }
 }

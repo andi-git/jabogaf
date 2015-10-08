@@ -56,10 +56,14 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
     private GameSubject gameSubject;
 
     @Inject
+    private MoveableFields.MovePointHolder movePointHolder;
+
+    @Inject
     private Bean bean;
 
     @BeforeInGameContext
     public void before() {
+        movePointHolder.get(0); // init before tests because of performance-measures
     }
 
     protected void createLayout(int sizeX, int sizeY, int positionX, int positionY, int movementPoints) {
@@ -142,6 +146,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 3);
 
         gameSubject.setResource(new MovePoint(1));
+        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());
@@ -154,6 +159,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
                 return new MovePoint(3);
             }
         });
+        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());

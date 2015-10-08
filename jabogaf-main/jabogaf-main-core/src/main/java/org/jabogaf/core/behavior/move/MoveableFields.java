@@ -15,6 +15,7 @@ import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.state.CachedValueMap;
+import org.jabogaf.core.util.KeyFor2FieldsCreator;
 import org.jabogaf.util.log.LogWrapper;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
@@ -23,9 +24,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.lang.reflect.Method;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,6 +46,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     @Inject
     private MovePointHolder movePointHolder;
 
+    @Inject
+    private KeyFor2FieldsCreator keyFor2FieldsCreator;
+
     private Set<ResolvedField> resolvedFields = new HashSet<>();
 
     private Set<UnresolvedField> unresolvedFields = new HashSet<>();
@@ -58,14 +59,6 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     protected Logger log() {
         return log.log();
     }
-
-    private Duration durationCanMoveReport = Duration.of(0, ChronoUnit.SECONDS);
-
-    private Duration durationCreateUnresolvedField = Duration.of(0, ChronoUnit.SECONDS);
-
-    private Duration durationCreateResolvedField = Duration.of(0, ChronoUnit.SECONDS);
-
-    private Duration durationCheckFieldsToResolve = Duration.of(0, ChronoUnit.SECONDS);
 
     private List<MovePath> convertToSortedList(Stream<ResolvedField> resolvedFields) {
         return resolvedFields
@@ -78,13 +71,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         log.debug("  check fields to resolve connected to {}", resolvedField);
         for (Field possibleFieldToResolve : resolvedField.getConnectedFields()) {
             log.debug("    possible field is {}", possibleFieldToResolve);
-            Instant startCanMoveReport = Instant.now();
             CanMoveReport canMoveReportToPossibleField = canMoveReport(moveableWrapper, resolvedField, possibleFieldToResolve, resourceHolder);
-            durationCanMoveReport = durationCanMoveReport.plus(Duration.between(startCanMoveReport, Instant.now()));
             if (!resolvedFieldsContains(possibleFieldToResolve) && !canMoveReportToPossibleField.isBlocked()) {
-                Instant startCreateUnresolvedField = Instant.now();
                 UnresolvedField unresolvedField = new UnresolvedField(canMoveReportToPossibleField, resolvedField.getMovePath());
-                durationCreateUnresolvedField = durationCreateUnresolvedField.plus(Duration.between(startCreateUnresolvedField, Instant.now()));
                 log.debug("    possible unresolved field is {}", unresolvedField);
                 if (!unresolvedFieldsContains(unresolvedField)) {
                     log.debug("    new unresolved field {}", unresolvedField);
@@ -102,19 +91,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     }
 
     private CanMoveReport canMoveReport(MoveableWrapper moveableWrapper, Field position, Field target, ResourceHolder resourceHolder) {
-        String key = generateKey(position, target);
+        String key = keyFor2FieldsCreator.generateKey(position, target);
         if (!canMoveReportCache.containsKey(key)) {
             canMoveReportCache.put(key, moveableWrapper.getClonedMoveable(position).canMove(target, resourceHolder));
         }
         return canMoveReportCache.get(key);
-    }
-
-    private String generateKey(Field source, Field target) {
-        if (source.getId().compareTo(target.getId()) >= 0) {
-            return source.getId() + target.getId();
-        } else {
-            return target.getId() + source.getId();
-        }
     }
 
     private boolean resolvedFieldsContains(Field field) {
@@ -137,11 +118,6 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
     @Override
     protected Function<Parameter, List<MovePath>> create() {
-        System.out.println("################################################################");
-        System.out.println("durationCanMoveReport        : " + durationCanMoveReport);
-        System.out.println("durationCreateUnresolvedField: " + durationCreateUnresolvedField);
-        System.out.println("durationCreateResolvedField  : " + durationCreateResolvedField);
-        System.out.println("durationCheckFieldsToResolve : " + durationCheckFieldsToResolve);
         return parameter -> {
             MoveableWrapper moveableWrapper = new MoveableWrapper(parameter.getMoveable());
             log.debug("clear maps");
@@ -149,13 +125,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             unresolvedFields.clear();
             canMoveReportCache.clear();
             log.debug("add start position " + parameter.getMoveable().getPosition());
-            Instant startCreateResolvedField = Instant.now();
             ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)), false);
-            durationCreateResolvedField = durationCreateResolvedField.plus(Duration.between(startCreateResolvedField, Instant.now()));
             resolvedFields.add(firstResolvedField);
-            Instant startCheckFieldsToResolve = Instant.now();
             checkFieldsToResolve(firstResolvedField, moveableWrapper, parameter.getResourceHolder());
-            durationCheckFieldsToResolve = durationCheckFieldsToResolve.plus(Duration.between(startCheckFieldsToResolve, Instant.now()));
             for (int movePoint = 1; movePoint <= parameter.getResourceHolder().amountOf(MovePoint.class); movePoint++) {
                 MovePoint mp = mp(movePoint);
                 log.debug("check for movePoint {}", movePoint);
@@ -166,24 +138,14 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                     log.debug("  there are some unresolved-fields that has to be resolved {}", () -> unresolvedFieldsToResolve);
                     for (UnresolvedField unresolvedFieldToResolve : unresolvedFieldsToResolve) {
                         unresolvedFields.remove(unresolvedFieldToResolve);
-                        startCreateResolvedField = Instant.now();
                         ResolvedField resolvedField = new ResolvedField(unresolvedFieldToResolve);
-                        durationCreateResolvedField = durationCreateResolvedField.plus(Duration.between(startCreateResolvedField, Instant.now()));
                         log.debug("  add field to resolve {}", resolvedField);
                         resolvedFields.add(resolvedField);
-                        startCheckFieldsToResolve = Instant.now();
                         checkFieldsToResolve(resolvedField, moveableWrapper, parameter.getResourceHolder());
-                        durationCheckFieldsToResolve = durationCheckFieldsToResolve.plus(Duration.between(startCheckFieldsToResolve, Instant.now()));
                     }
                 }
             }
             resolvedFields.remove(firstResolvedField);
-
-            System.out.println("################################################################");
-            System.out.println("durationCanMoveReport        : " + durationCanMoveReport);
-            System.out.println("durationCreateUnresolvedField: " + durationCreateUnresolvedField);
-            System.out.println("durationCreateResolvedField  : " + durationCreateResolvedField);
-            System.out.println("durationCheckFieldsToResolve : " + durationCheckFieldsToResolve);
             return convertToSortedList(filterMovePathsWhereLastFieldIsNotPossible());
         };
     }
