@@ -15,6 +15,7 @@ import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.state.CachedValueMap;
+import org.jabogaf.util.log.LogWrapper;
 import org.jabogaf.util.log.SLF4J;
 import org.slf4j.Logger;
 
@@ -42,7 +43,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
     @Inject
     @SLF4J
-    private Logger log;
+    private LogWrapper log;
 
     @Inject
     private MovePointHolder movePointHolder;
@@ -53,7 +54,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
     @Override
     protected Logger log() {
-        return log;
+        return log.log();
     }
 
     private Duration durationCanMoveReport = Duration.of(0, ChronoUnit.SECONDS);
@@ -76,6 +77,8 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         for (Field possibleFieldToResolve : resolvedField.getConnectedFields()) {
             log.debug("    possible field is {}", possibleFieldToResolve);
             Instant startCanMoveReport = Instant.now();
+            System.out.println("canMoveReport from " + resolvedField + " to " + possibleFieldToResolve);
+            // TODO cache CanMoveReports
             CanMoveReport canMoveReportToPossibleField = canMoveReport(moveableWrapper, resolvedField, possibleFieldToResolve, resourceHolder);
             durationCanMoveReport = durationCanMoveReport.plus(Duration.between(startCanMoveReport, Instant.now()));
             if (!resolvedFieldsContains(possibleFieldToResolve) && !canMoveReportToPossibleField.isBlocked()) {
@@ -146,10 +149,8 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
                 while (!unresolvedFieldsReachableWith(mp).isEmpty()) {
                     log.debug("resolved fields   " + resolvedFields);
                     log.debug("unresolved fields " + unresolvedFields);
-                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFields.stream()
-                            .filter(f -> f.movementCost().lesserEquals(mp))
-                            .collect(Collectors.toSet());
-                    log.debug("  there are some unresolved-fields that has to be resolved {}", unresolvedFieldsToResolve);
+                    Set<UnresolvedField> unresolvedFieldsToResolve = unresolvedFieldsReachableWith(mp);
+                    log.debug("  there are some unresolved-fields that has to be resolved {}", () -> unresolvedFieldsToResolve);
                     for (UnresolvedField unresolvedFieldToResolve : unresolvedFieldsToResolve) {
                         unresolvedFields.remove(unresolvedFieldToResolve);
                         startCreateResolvedField = Instant.now();
@@ -446,17 +447,9 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             return moveable;
         }
 
-        public Moveable getClonedMoveable() {
-            return clonedMoveable;
-        }
-
         public Moveable getClonedMoveable(Field position) {
             setterForPositionOfCloneable.setPosition(position);
             return clonedMoveable;
-        }
-
-        public SetterOfPosition getSetterForPositionOfCloneable() {
-            return setterForPositionOfCloneable;
         }
 
         @Override
