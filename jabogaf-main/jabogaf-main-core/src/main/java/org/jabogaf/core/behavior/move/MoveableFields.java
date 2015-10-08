@@ -52,6 +52,8 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
     private Set<UnresolvedField> unresolvedFields = new HashSet<>();
 
+    private Map<String, CanMoveReport> canMoveReportCache = new HashMap<>();
+
     @Override
     protected Logger log() {
         return log.log();
@@ -77,13 +79,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         for (Field possibleFieldToResolve : resolvedField.getConnectedFields()) {
             log.debug("    possible field is {}", possibleFieldToResolve);
             Instant startCanMoveReport = Instant.now();
-            System.out.println("canMoveReport from " + resolvedField + " to " + possibleFieldToResolve);
-            // TODO cache CanMoveReports
             CanMoveReport canMoveReportToPossibleField = canMoveReport(moveableWrapper, resolvedField, possibleFieldToResolve, resourceHolder);
             durationCanMoveReport = durationCanMoveReport.plus(Duration.between(startCanMoveReport, Instant.now()));
             if (!resolvedFieldsContains(possibleFieldToResolve) && !canMoveReportToPossibleField.isBlocked()) {
                 Instant startCreateUnresolvedField = Instant.now();
-                UnresolvedField unresolvedField = new UnresolvedField(possibleFieldToResolve, resolvedField.getMovePath(), movePointCollector, canMoveReportToPossibleField.isAbleToEnd());
+                UnresolvedField unresolvedField = new UnresolvedField(canMoveReportToPossibleField, resolvedField.getMovePath());
                 durationCreateUnresolvedField = durationCreateUnresolvedField.plus(Duration.between(startCreateUnresolvedField, Instant.now()));
                 log.debug("    possible unresolved field is {}", unresolvedField);
                 if (!unresolvedFieldsContains(unresolvedField)) {
@@ -102,7 +102,19 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
     }
 
     private CanMoveReport canMoveReport(MoveableWrapper moveableWrapper, Field position, Field target, ResourceHolder resourceHolder) {
-        return moveableWrapper.getClonedMoveable(position).canMove(target, resourceHolder);
+        String key = generateKey(position, target);
+        if (!canMoveReportCache.containsKey(key)) {
+            canMoveReportCache.put(key, moveableWrapper.getClonedMoveable(position).canMove(target, resourceHolder));
+        }
+        return canMoveReportCache.get(key);
+    }
+
+    private String generateKey(Field source, Field target) {
+        if (source.getId().compareTo(target.getId()) >= 0) {
+            return source.getId() + target.getId();
+        } else {
+            return target.getId() + source.getId();
+        }
     }
 
     private boolean resolvedFieldsContains(Field field) {
@@ -135,6 +147,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
             log.debug("clear maps");
             resolvedFields.clear();
             unresolvedFields.clear();
+            canMoveReportCache.clear();
             log.debug("add start position " + parameter.getMoveable().getPosition());
             Instant startCreateResolvedField = Instant.now();
             ResolvedField firstResolvedField = new ResolvedField(new MovePathBasic(parameter.getMoveable().getPosition(), parameter.getMoveable().getPosition(), mp(0)), false);
@@ -277,19 +290,19 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
     private static class UnresolvedField implements Field {
 
-        private final MovePointCollector movePointCollector;
-
         private final Field target;
 
         private final MovePath movePathBefore;
 
         private final boolean ableToEnd;
 
-        public UnresolvedField(Field target, MovePath movePathBefore, MovePointCollector movePointCollector, boolean ableToEnd) {
-            this.target = target;
+        private final Resource costFromLastFieldToTarget;
+
+        public UnresolvedField(CanMoveReport canMoveReport, MovePath movePathBefore) {
+            this.target = canMoveReport.getTarget();
             this.movePathBefore = movePathBefore;
-            this.movePointCollector = movePointCollector;
-            this.ableToEnd = ableToEnd;
+            this.ableToEnd = canMoveReport.isAbleToEnd();
+            this.costFromLastFieldToTarget = canMoveReport.moveCost();
         }
 
         public Field getTarget() {
@@ -313,7 +326,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         public Resource costFromLastFieldToTarget() {
-            return movePointCollector.collect(getLastFieldBeforeTarget(), target);
+            return costFromLastFieldToTarget;
         }
 
         @Override

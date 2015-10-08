@@ -1,5 +1,6 @@
 package org.jabogaf.api.behavior.move;
 
+import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.Resource;
 
 import java.util.Set;
@@ -24,4 +25,8 @@ public interface CanMoveReport {
     boolean isAbleToEnd();
 
     Set<MoveUnableToEnd> moveUnableToEnd();
+
+    Field getSource();
+
+    Field getTarget();
 }

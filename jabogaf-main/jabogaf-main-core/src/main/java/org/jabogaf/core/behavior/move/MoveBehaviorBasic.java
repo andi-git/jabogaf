@@ -35,6 +35,8 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
                 .setMaxPayment(resourceHolder.get(MovePoint.class))
                 .setMoveIsBlockedBy(checkMoveBlocks(moveable, target))
                 .setMoveIsUnableToEndBy(checkMoveUnableToEnd(moveable, target))
+                .setSource(moveable.getPosition())
+                .setTarget(target)
                 .build();
     }
 
