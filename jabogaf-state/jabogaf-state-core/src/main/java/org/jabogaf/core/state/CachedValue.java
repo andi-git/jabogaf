@@ -1,6 +1,7 @@
 package org.jabogaf.core.state;
 
 import org.jabogaf.api.event.GameStateChangedEvent;
+import org.jabogaf.api.event.GameStateInvalidEvent;
 import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
@@ -68,5 +69,9 @@ public abstract class CachedValue<VALUE> {
         log().debug("observe {}", GameStateChangedEvent.class.getSimpleName());
         invalidateCache();
         lastEventChange = Instant.now();
+    }
+
+    private void objectGameStateInvalid(@Observes GameStateInvalidEvent gameStateInvalidEvent) {
+        invalidateCache();
     }
 }

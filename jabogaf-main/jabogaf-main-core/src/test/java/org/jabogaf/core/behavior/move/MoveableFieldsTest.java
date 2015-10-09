@@ -5,12 +5,10 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.controller.PlayerController;
+import org.jabogaf.api.event.GameStateInvalidEvent;
 import org.jabogaf.api.gamecontext.FireEvent;
-import org.jabogaf.api.gamecontext.GameContextBean;
-import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.resource.Resource;
-import org.jabogaf.api.state.GameState;
 import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.board.field.FieldBasic;
@@ -25,7 +23,7 @@ import org.jabogaf.test.gamecontext.BeforeInGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import java.time.Duration;
 import java.time.Instant;
@@ -59,7 +57,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
     private MoveableFields.MovePointHolder movePointHolder;
 
     @Inject
-    private Bean bean;
+    private Event<GameStateInvalidEvent> gameStateInvalidEventEvent;
 
     @BeforeInGameContext
     public void before() {
@@ -146,20 +144,18 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 3);
 
         gameSubject.setResource(new MovePoint(1));
-        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());
         assertContainsNumberOfCost(movePaths, 2, 1);
 
         gameSubject.setResource(new MovePoint(2));
-        getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
+        gameStateChange(() -> getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
             @Override
             public Resource movementCost() {
                 return new MovePoint(3);
             }
-        });
-        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
+        }));
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(2, movePaths.size());
@@ -180,31 +176,32 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 0);
         assertContainsNumberOfCost(movePaths, 0, 3);
 
-        getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
-            @Override
-            public Resource movementCost() {
-                return new MovePoint(9);
-            }
+        gameStateChange(() -> {
+            getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
+                @Override
+                public Resource movementCost() {
+                    return new MovePoint(9);
+                }
+            });
+            getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco2") {
+                @Override
+                public Resource movementCost() {
+                    return new MovePoint(20);
+                }
+            });
+            getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new FieldConnectionObjectBasic("fco3") {
+                @Override
+                public Resource movementCost() {
+                    return new MovePoint(20);
+                }
+            });
+            getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco4") {
+                @Override
+                public Resource movementCost() {
+                    return new MovePoint(20);
+                }
+            });
         });
-        getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco2") {
-            @Override
-            public Resource movementCost() {
-                return new MovePoint(20);
-            }
-        });
-        getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new FieldConnectionObjectBasic("fco3") {
-            @Override
-            public Resource movementCost() {
-                return new MovePoint(20);
-            }
-        });
-        getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco4") {
-            @Override
-            public Resource movementCost() {
-                return new MovePoint(20);
-            }
-        });
-        gameContextManager.fireGameStateChangedEvent(bean); // to invalidate the cache
         movePaths = moveableFields.get(new MoveableFields.Parameter(gameSubject));
         printMovePath(movePaths);
         assertEquals(8, movePaths.size());
@@ -237,36 +234,8 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         System.out.println("------------------------------------------------------");
     }
 
-    // to invaliate the cache
-    @Dependent
-    public static class Bean implements GameContextBeanWithState<Bean> {
-
-        @Inject
-        private State state;
-
-        @Override
-        public String getId() {
-            return "";
-        }
-
-        @Override
-        public GameState<Bean> getState() {
-            return state;
-        }
-
-        @SuppressWarnings("NullableProblems")
-        @Override
-        public int compareTo(GameContextBean o) {
-            return 0;
-        }
-
-        @Dependent
-        public static class State extends GameState<Bean> {
-
-            @Override
-            public Class<Bean> classOfContainingBean() {
-                return Bean.class;
-            }
-        }
+    private <T> void gameStateChange(Runnable actionThatTriggersGameStateChange) {
+        actionThatTriggersGameStateChange.run();
+        gameStateInvalidEventEvent.fire(new GameStateInvalidEvent());
     }
 }
