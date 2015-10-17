@@ -2,13 +2,13 @@ package org.jabogaf.core.board.field;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
+import org.jabogaf.api.object.GameObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The null-implementation of {@link org.jabogaf.api.board.field.FieldConnection}.
+ * The null-implementation of {@link FieldConnection}.
  */
 public class FieldConnectionNull extends FieldConnectionBasic {
 
@@ -22,12 +22,12 @@ public class FieldConnectionNull extends FieldConnectionBasic {
     }
 
     @Override
-    public Set<FieldConnectionObject> getObjectsOnConnection() {
+    public Set<GameObject> getObjectsOnConnection() {
         return new HashSet<>();
     }
 
     @Override
-    public void addObjectOnConnection(FieldConnectionObject fieldConnectionObject) {
+    public void addObjectOnConnection(GameObject fieldConnectionObject) {
         // nothing
     }
 

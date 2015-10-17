@@ -2,12 +2,12 @@ package org.jabogaf.core.board.layout;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.board.layout.FunctionGetAllGameObjectsOf;
 import org.jabogaf.api.board.layout.FunctionGetConnection;
 import org.jabogaf.api.board.layout.FunctionIsConnected;
 import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.object.GameObject;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
@@ -103,7 +103,7 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     public abstract Set<FieldConnection> getLookConnections(Field position, Field target);
 
     @Override
-    public Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+    public Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
         // no cache here because FieldConnectionObjects can change at runtime
         return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
     }

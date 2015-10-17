@@ -2,8 +2,8 @@ package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.board.field.Closeable;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.field.Hidden;
+import org.jabogaf.api.object.GameObject;
 
 public abstract class FieldConnectionRepresentation implements GridLayoutLoggerElement {
 
@@ -13,7 +13,7 @@ public abstract class FieldConnectionRepresentation implements GridLayoutLoggerE
         this.fieldConnection = fieldConnection;
     }
 
-    protected FieldConnectionObject getFirstFieldConnectionObject() {
+    protected GameObject getFirstFieldConnectionObject() {
         if (fieldConnection == null || fieldConnection.getObjectsOnConnection().isEmpty()) {
             return null;
         }

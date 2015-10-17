@@ -2,7 +2,7 @@ package org.jabogaf.core.board.field;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
+import org.jabogaf.api.object.GameObject;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 
 import java.util.Collections;
@@ -10,9 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents a connection between two {@link org.jabogaf.api.board.field.Field}. On this connection there can
- * be multiple {@link org.jabogaf.api.board.field.FieldConnectionObject}s which are the behavior of the
- * connection.
+ * Represents a connection between two {@link Field}. On this connection there can be multiple {@link GameObject}s which
+ * are the behavior of the connection.
  */
 public class FieldConnectionBasic extends GameContextBeanBasic implements FieldConnection {
 
@@ -20,7 +19,7 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
 
     private final Field rightHand;
 
-    private final Set<FieldConnectionObject> fieldConnectionObjects = new HashSet<>();
+    private final Set<GameObject> fieldConnectionObjects = new HashSet<>();
 
     /**
      * Create a new {@link org.jabogaf.core.board.field.FieldConnectionBasic}
@@ -42,17 +41,17 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
     }
 
     @Override
-    public Set<FieldConnectionObject> getObjectsOnConnection() {
+    public Set<GameObject> getObjectsOnConnection() {
         return Collections.unmodifiableSet(fieldConnectionObjects);
     }
 
     @Override
-    public void addObjectOnConnection(FieldConnectionObject fieldConnectionObject) {
+    public void addObjectOnConnection(GameObject fieldConnectionObject) {
         fieldConnectionObjects.add(fieldConnectionObject);
     }
 
     @Override
-    public void addObjectOnConnection(FieldConnectionObject... fieldConnectionObject) {
+    public void addObjectOnConnection(GameObject... fieldConnectionObject) {
         Collections.addAll(fieldConnectionObjects, fieldConnectionObject);
     }
 

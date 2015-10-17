@@ -1,12 +1,13 @@
 package org.jabogaf.api.board.field;
 
 import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.object.GameObject;
 
 import java.util.Set;
 
 /**
  * Represents a connection between two {@link Field}. On this connection there can be multiple {@link
- * FieldConnectionObject}s which are the behavior of the connection.
+ * GameObject}s which are the behavior of the connection.
  */
 public interface FieldConnection extends GameContextBean {
 
@@ -19,11 +20,11 @@ public interface FieldConnection extends GameContextBean {
      */
     boolean connects(Field field1, Field field2);
 
-    Set<FieldConnectionObject> getObjectsOnConnection();
+    Set<GameObject> getObjectsOnConnection();
 
-    void addObjectOnConnection(FieldConnectionObject fieldConnectionObject);
+    void addObjectOnConnection(GameObject fieldConnectionObject);
 
-    void addObjectOnConnection(FieldConnectionObject... fieldConnectionObject);
+    void addObjectOnConnection(GameObject... fieldConnectionObject);
 
     void clearObjectsOnConnection();
 

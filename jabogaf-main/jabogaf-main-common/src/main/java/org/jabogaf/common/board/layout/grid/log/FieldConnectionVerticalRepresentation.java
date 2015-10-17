@@ -1,13 +1,13 @@
 package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
+import org.jabogaf.api.object.GameObject;
 import org.jabogaf.util.string.StringUtil;
 
 import javax.inject.Inject;
 
 /**
- * Vertical representation of a {@link org.jabogaf.api.board.field.FieldConnectionObject}.
+ * Vertical representation of a {@link GameObject}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class FieldConnectionVerticalRepresentation extends FieldConnectionRepresentation {
@@ -25,7 +25,7 @@ public class FieldConnectionVerticalRepresentation extends FieldConnectionRepres
         if (stringRepresentation == null) {
             StringBuilder sb = new StringBuilder();
             sb.append("-");
-            FieldConnectionObject fieldConnectionObject = getFirstFieldConnectionObject();
+            GameObject fieldConnectionObject = getFirstFieldConnectionObject();
             if (fieldConnectionObject != null) {
                 sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.Representation.HEIGHT - 4));
             } else {

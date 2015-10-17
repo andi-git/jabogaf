@@ -1,8 +1,8 @@
 package org.jabogaf.common.object.field;
 
-import org.jabogaf.core.board.field.FieldConnectionObjectBasic;
+import org.jabogaf.core.object.GameObjectBasic;
 
-public class Wall extends FieldConnectionObjectBasic {
+public class Wall extends GameObjectBasic {
 
     public Wall(String id) {
         super(id);

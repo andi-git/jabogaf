@@ -4,7 +4,6 @@ import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
@@ -33,8 +32,8 @@ public class BoardManagerBasic implements BoardManager {
     }
 
     @Override
-    public Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
-        Set<FieldConnectionObject> result = new HashSet<>();
+    public Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+        Set<GameObject> result = new HashSet<>();
         if (getBoard() != null) {
             if (getBoard().getLayout() != null) {
                 result.addAll(getBoard().getLayout().getAllFieldConnectionObjects(leftHand, rightHand));

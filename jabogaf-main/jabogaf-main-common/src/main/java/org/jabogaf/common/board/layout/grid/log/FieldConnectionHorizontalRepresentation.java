@@ -1,13 +1,13 @@
 package org.jabogaf.common.board.layout.grid.log;
 
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
+import org.jabogaf.api.object.GameObject;
 import org.jabogaf.util.string.StringUtil;
 
 import javax.inject.Inject;
 
 /**
- * Horizontal representation of a {@link org.jabogaf.api.board.field.FieldConnectionObject}.
+ * Horizontal representation of a {@link GameObject}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class FieldConnectionHorizontalRepresentation extends FieldConnectionRepresentation {
@@ -25,7 +25,7 @@ public class FieldConnectionHorizontalRepresentation extends FieldConnectionRepr
         if (stringRepresentation == null) {
             StringBuilder sb = new StringBuilder();
             sb.append("|");
-            FieldConnectionObject fieldConnectionObject = getFirstFieldConnectionObject();
+            GameObject fieldConnectionObject = getFirstFieldConnectionObject();
             if (fieldConnectionObject != null) {
                 sb.append(stringUtil.padLeftFixSize(fieldConnectionObject.getId(), FieldLine.Representation.WIDTH - 4));
             } else {

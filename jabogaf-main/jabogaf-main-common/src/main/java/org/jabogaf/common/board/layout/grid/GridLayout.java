@@ -8,13 +8,14 @@ import org.jabogaf.util.stream.StreamUtil;
 
 import javax.inject.Inject;
 import java.awt.geom.Line2D;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * A {@link org.jabogaf.api.board.layout.Layout} based on a grid. To create this layout, a concrete instance of
- * {@link GridLayoutCreationStrategy} is needed.
+ * A {@link org.jabogaf.api.board.layout.Layout} based on a grid. To create this layout, a concrete instance of {@link
+ * GridLayoutCreationStrategy} is needed.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class GridLayout extends LayoutBasic {
@@ -30,6 +31,43 @@ public class GridLayout extends LayoutBasic {
     public GridLayout(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
         super(id, gridLayoutCreationStrategy.getFields(), gridLayoutCreationStrategy.getFieldConnections(), gridLayoutCreationStrategy.getFieldGroups());
         fields = gridLayoutCreationStrategy.getFieldsArray();
+        Instant start = Instant.now();
+        calculateAllFieldLooks();
+        System.out.println("duration: " + Duration.between(start, Instant.now()));
+    }
+
+    private void calculateAllFieldLooks() {
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[0].length; j++) {
+                Field fieldFrom = fields[i][j];
+                System.out.println("calculate from " + fieldFrom);
+                for (int n = 0; n < fields.length; n++) {
+                    for (int m = 0; m < fields[0].length; m++) {
+                        Field fieldTarget = fields[n][m];
+                        if (!fieldFrom.equals(fieldTarget)) {
+                            List<Field> allFieldsInLook = getAllFieldsInLook(fieldFrom, fieldTarget);
+                            System.out.println("    to " + fieldTarget.getId() + ", " + allFieldsInLook);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private List<Field> getAllFieldsInLook(Field fieldFrom, Field fieldTo) {
+        Coordinate coordinateFrom = getCoordinate(fieldFrom);
+        Coordinate coordinateTo = getCoordinate(fieldTo);
+        Line2D.Double line = new Line2D.Double(getCoordinateForLine(coordinateFrom.getX()), getCoordinateForLine(coordinateFrom.getY()), getCoordinateForLine(coordinateTo.getX()), getCoordinateForLine(coordinateTo.getY()));
+        // get all fields in look
+        List<Field> fieldsInLook = new ArrayList<>();
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[i].length; j++) {
+                if (line.intersects(i, j, 1.0, 1.0)) {
+                    fieldsInLook.add(fields[i][j]);
+                }
+            }
+        }
+        return Collections.unmodifiableList(fieldsInLook);
     }
 
     /**

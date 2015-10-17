@@ -2,7 +2,6 @@ package org.jabogaf.api.board;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.subject.GameSubject;
 
@@ -28,13 +27,13 @@ public interface BoardManager {
     Set<Field> getFields();
 
     /**
-     * Get all {@link FieldConnectionObject}s of a current {@link FieldConnection} defined by the two {@link Field}s.
+     * Get all {@link GameObject}s of a current {@link FieldConnection} defined by the two {@link Field}s.
      *
-     * @param leftHand  the one {@link Field} to get all {@link FieldConnectionObject}s of
-     * @param rightHand the other {@link Field} to get all {@link FieldConnectionObject}s of
+     * @param leftHand  the one {@link Field} to get all {@link GameObject}s of
+     * @param rightHand the other {@link Field} to get all {@link GameObject}s of
      * @return a {@link Set} of {@link GameObject}s of the assigned {@link Field}
      */
-    Set<FieldConnectionObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
+    Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
 
     /**
      * Get all available {@link GameSubject}s, i.e. players, npcs,...

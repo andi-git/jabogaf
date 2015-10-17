@@ -3,12 +3,12 @@ package org.jabogaf.core.board;
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.field.FieldConnectionObject;
 import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.object.GameObject;
 import org.jabogaf.core.board.field.FieldBasic;
 import org.jabogaf.core.board.field.FieldConnectionBasic;
-import org.jabogaf.core.board.field.FieldConnectionObjectBasic;
 import org.jabogaf.core.board.layout.LayoutBasic;
+import org.jabogaf.core.object.GameObjectBasic;
 import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.jabogaf.test.gamecontext.BeforeInGameContext;
 
@@ -22,13 +22,13 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
 
     protected FieldConnection fieldConnection12, fieldConnection23;
 
-    protected FieldConnectionObject object1, object2;
+    protected GameObject object1, object2;
 
     protected Set<Field> fields = new HashSet<>();
 
     protected Set<FieldConnection> fieldConnections = new HashSet<>();
 
-    protected Set<FieldConnectionObject> fieldConnectionObjects = new HashSet<>();
+    protected Set<GameObject> fieldConnectionObjects = new HashSet<>();
 
     protected Board board;
 
@@ -46,9 +46,9 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
         fieldConnections.add(fieldConnection12);
         fieldConnection23 = new FieldConnectionBasic("fieldConnection23", field3, field2);
         fieldConnections.add(fieldConnection23);
-        object1 = new FieldConnectionObjectBasic("object1") {
+        object1 = new GameObjectBasic("object1") {
         };
-        object2 = new FieldConnectionObjectBasic("object2") {
+        object2 = new GameObjectBasic("object2") {
         };
         fieldConnection12.addObjectOnConnection(object1, object2);
         fieldConnectionObjects.add(object1);

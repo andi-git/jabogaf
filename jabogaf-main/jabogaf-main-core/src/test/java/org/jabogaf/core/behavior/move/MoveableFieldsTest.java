@@ -13,8 +13,8 @@ import org.jabogaf.api.subject.GameSubject;
 import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.board.field.FieldBasic;
 import org.jabogaf.core.board.field.FieldConnectionBasic;
-import org.jabogaf.core.board.field.FieldConnectionObjectBasic;
 import org.jabogaf.core.board.layout.LayoutBasic;
+import org.jabogaf.core.object.GameObjectBasic;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.subject.GameSubjectBasic;
 import org.jabogaf.test.gamecontext.ArquillianGameContext;
@@ -150,7 +150,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 2, 1);
 
         gameSubject.setResource(new MovePoint(2));
-        gameStateChange(() -> getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
+        gameStateChange(() -> getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new GameObjectBasic("fco1") {
             @Override
             public Resource movementCost() {
                 return new MovePoint(3);
@@ -177,25 +177,25 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 3);
 
         gameStateChange(() -> {
-            getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco1") {
+            getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new GameObjectBasic("fco1") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(9);
                 }
             });
-            getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco2") {
+            getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new GameObjectBasic("fco2") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
                 }
             });
-            getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new FieldConnectionObjectBasic("fco3") {
+            getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new GameObjectBasic("fco3") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
                 }
             });
-            getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new FieldConnectionObjectBasic("fco4") {
+            getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new GameObjectBasic("fco4") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
