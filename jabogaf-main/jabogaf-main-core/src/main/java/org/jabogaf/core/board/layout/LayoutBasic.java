@@ -103,7 +103,7 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     public abstract Set<FieldConnection> getLookConnections(Field position, Field target);
 
     @Override
-    public Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+    public Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand) {
         // no cache here because FieldConnectionObjects can change at runtime
         return layoutFunctionGetAllGameObjectsOf.getAllGameObjectsOf(fieldConnections, leftHand, rightHand);
     }

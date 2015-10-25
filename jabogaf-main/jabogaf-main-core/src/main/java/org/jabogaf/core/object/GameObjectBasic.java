@@ -1,16 +1,17 @@
 package org.jabogaf.core.object;
 
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
-import org.jabogaf.core.gamecontext.GameContextBeanBasic;
-import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.api.state.GameState;
+import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
+import org.jabogaf.core.resource.MovePoint;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class GameObjectBasic<POSITION> extends GameContextBeanBasic implements GameObject<POSITION> {
+public abstract class GameObjectBasic<POSITION extends ContainsGameObjects> extends GameContextBeanWithStateBasic<GameObject> implements GameObject<POSITION> {
 
     @Inject
     private State<POSITION> state;
@@ -52,6 +53,11 @@ public abstract class GameObjectBasic<POSITION> extends GameContextBeanBasic imp
     @Override
     public Resource movementCost() {
         return new MovePoint(0);
+    }
+
+    @Override
+    public GameState<GameObject> getState() {
+        return state;
     }
 
     @Dependent

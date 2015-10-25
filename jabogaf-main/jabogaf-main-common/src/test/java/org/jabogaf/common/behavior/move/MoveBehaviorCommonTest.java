@@ -43,7 +43,7 @@ public class MoveBehaviorCommonTest extends TestWithExampleGridLayoutBoard {
             assertEquals(1, e.getMoveBlocks().size());
             assertEquals(1, e.getMoveBlocks().stream().filter(mb -> mb instanceof MoveBlockDoor).count());
         }
-        Door door = (Door) getField(1, 1).getConnectionTo(getField(2, 1)).getObjectsOnConnection().stream().findFirst().get();
+        Door door = (Door) getField(1, 1).getConnectionTo(getField(2, 1)).getGameObjects().stream().findFirst().get();
         door.open();
         assertEquals(getField(2, 1), moveBehavior.move(getPlayer1(), getPlayer1().getSetterOfPosition(), getField(2, 1), getPlayer1()));
         assertEquals(getField(2, 1), getPlayer1().getPosition());

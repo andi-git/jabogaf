@@ -14,10 +14,10 @@ public abstract class FieldConnectionRepresentation implements GridLayoutLoggerE
     }
 
     protected GameObject getFirstFieldConnectionObject() {
-        if (fieldConnection == null || fieldConnection.getObjectsOnConnection().isEmpty()) {
+        if (fieldConnection == null || fieldConnection.getGameObjects().isEmpty()) {
             return null;
         }
-        return fieldConnection.getObjectsOnConnection().stream().findFirst().get();
+        return fieldConnection.getGameObjects().stream().findFirst().get();
     }
 
     protected char openCloseChar() {

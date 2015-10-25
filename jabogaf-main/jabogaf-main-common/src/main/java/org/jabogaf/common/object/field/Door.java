@@ -1,9 +1,10 @@
 package org.jabogaf.common.object.field;
 
 import org.jabogaf.api.board.field.Closeable;
+import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.core.object.GameObjectBasic;
 
-public class Door extends GameObjectBasic implements Closeable {
+public class Door extends GameObjectBasic<FieldConnection> implements Closeable {
 
     private boolean locked = true;
 

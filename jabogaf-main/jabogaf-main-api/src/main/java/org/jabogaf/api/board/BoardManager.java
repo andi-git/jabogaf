@@ -2,6 +2,7 @@ package org.jabogaf.api.board;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.subject.GameSubject;
 
@@ -33,7 +34,7 @@ public interface BoardManager {
      * @param rightHand the other {@link Field} to get all {@link GameObject}s of
      * @return a {@link Set} of {@link GameObject}s of the assigned {@link Field}
      */
-    Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
+    Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand);
 
     /**
      * Get all available {@link GameSubject}s, i.e. players, npcs,...
@@ -45,6 +46,7 @@ public interface BoardManager {
     /**
      * Get all available {@link GameSubject}s, i.e. players, npcs,... positioned a concrete {@link Field}
      *
+     * @param field the {@link Field} to check
      * @return all available {@link GameSubject}s positioned a concrete {@link Field}
      */
     Set<GameSubject> getAllGameSubjects(Field field);
@@ -59,6 +61,7 @@ public interface BoardManager {
     /**
      * Get all available {@link GameObject}s, i.e. table, tree,... positioned a concrete {@link Field}
      *
+     * @param field the {@link Field} to check
      * @return all available {@link GameObject}s positioned a concrete {@link Field}
      */
     Set<GameObject> getAllGameObjects(Field field);
@@ -69,4 +72,12 @@ public interface BoardManager {
      * @return all available {@link GameObject}s positioned a concrete {@link Field}
      */
     Set<GameObject> getAllGameObjects(FieldConnection fieldConnection);
+
+    /**
+     * Get all {@link LayoutActionImpact}s ({@link GameSubject}s, {@link GameObject}s) on a {@link Field}.
+     *
+     * @param field the {@link Field} to check
+     * @return all {@link LayoutActionImpact}s ({@link GameSubject}s, {@link GameObject}s) on a {@link Field}
+     */
+    Set<LayoutActionImpact> getAllActionImpacts(Field field);
 }

@@ -24,7 +24,7 @@ public abstract class LookBehaviorBasic implements LookBehavior {
     public CanLookReport canLook(Lookable lookable, Field target) {
         CanLookReport canLookReport = new CanLookReportBasic();
         for (FieldConnection fieldConnection : boardManager.getBoard().getLayout().getLookConnections(lookable.getPosition(), target)) {
-            fieldConnection.getObjectsOnConnection().stream().
+            fieldConnection.getGameObjects().stream().
                     filter(this::isBlocker).
                     forEach(canLookReport::addLookBlock);
             fieldConnection.getLeftHand().getGameSubjects();

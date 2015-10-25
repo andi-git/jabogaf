@@ -20,7 +20,7 @@ public class BoardManagerTest extends AbstractBoardTest {
     public void testBoardManager() {
         assertEquals("board", boardManager.getBoard().getId());
         assertEquals(3, boardManager.getFields().size());
-        assertEquals(2, boardManager.getAllFieldConnectionObjects(field1, field2).size());
+        assertEquals(2, boardManager.getAllGameObjectsOnFieldConnection(field1, field2).size());
     }
 
     @Test

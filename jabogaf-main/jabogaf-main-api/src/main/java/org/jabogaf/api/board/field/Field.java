@@ -14,7 +14,7 @@ import java.util.Set;
  * A field is a {@link GameObject} and is always visible.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public interface Field extends GameContextBean {
+public interface Field extends GameContextBean, ContainsGameObjects, ContainsGameSubjects {
 
     /**
      * Check if the {@link Field} is connected to another {@link Field}
@@ -34,22 +34,6 @@ public interface Field extends GameContextBean {
      * @return the representation of the connection as {@link FieldConnection}
      */
     FieldConnection getConnectionTo(Field target);
-
-    /**
-     * Get a {@link List} of all available {@link GameSubject}s on the current {@link Field}. The {@link GameSubject}s
-     * are ordered by natural order.
-     *
-     * @return a {@link List} of {@link GameSubject}s available on the current {@link Field} sorted by natural order.
-     */
-    List<GameSubject> getGameSubjects();
-
-    /**
-     * Get a {@link List} of all available {@link GameObject}s on the current {@link Field}. The {@link GameObject}s are
-     * ordered by natural order.
-     *
-     * @return a {@link List} of {@link GameObject}s available on the current {@link Field} sorted by natural order.
-     */
-    List<GameObject> getGameObjects();
 
     /**
      * Get a natural sorted {@link List} of all {@link FieldGroup}s where the current {@link Field} is located.

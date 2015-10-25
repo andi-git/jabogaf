@@ -4,8 +4,8 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.object.GameObject;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The null-implementation of {@link FieldConnection}.
@@ -22,8 +22,8 @@ public class FieldConnectionNull extends FieldConnectionBasic {
     }
 
     @Override
-    public Set<GameObject> getObjectsOnConnection() {
-        return new HashSet<>();
+    public List<GameObject> getGameObjects() {
+        return new ArrayList<>();
     }
 
     @Override

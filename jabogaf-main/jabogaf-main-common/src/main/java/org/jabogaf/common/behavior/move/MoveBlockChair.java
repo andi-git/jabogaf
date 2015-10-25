@@ -5,32 +5,28 @@ import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.common.object.field.Door;
+import org.jabogaf.common.object.field.Chair;
+import org.jabogaf.common.object.field.Wall;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class MoveBlockDoor implements MoveBlock {
+public class MoveBlockChair implements MoveBlock {
 
     @Inject
     private BoardManager boardManager;
 
     @Override
     public boolean blocks(Moveable moveable, Field target) {
-        boolean isBlocked = false;
         FieldConnection fieldConnection = boardManager.getBoard().getLayout().getConnection(moveable.getPosition(), target);
-        if (fieldConnection != null && !fieldConnection.getGameObjects().isEmpty()) {
-            isBlocked = fieldConnection.getGameObjects().stream().
-                    filter(o -> o instanceof Door).
-                    map(o -> (Door) o).
-                    anyMatch(Door::isClosed);
-        }
-        return isBlocked;
+        return fieldConnection != null &&
+                !fieldConnection.getGameObjects().isEmpty() &&
+                fieldConnection.getGameObjects().stream().anyMatch(o -> o instanceof Chair);
     }
 
     @Override
     public String toString() {
-        return Door.class.getSimpleName();
+        return Wall.class.getSimpleName();
     }
 }

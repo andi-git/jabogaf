@@ -9,7 +9,7 @@ import java.util.Set;
  * Represents a connection between two {@link Field}. On this connection there can be multiple {@link
  * GameObject}s which are the behavior of the connection.
  */
-public interface FieldConnection extends GameContextBean {
+public interface FieldConnection extends GameContextBean, ContainsGameObjects {
 
     /**
      * Check if the current {@link FieldConnection} connects the two assigned {@link Field}s
@@ -19,8 +19,6 @@ public interface FieldConnection extends GameContextBean {
      * @return {@code true} if the {@link FieldConnection} connects the 2 assigned {@link Field}s
      */
     boolean connects(Field field1, Field field2);
-
-    Set<GameObject> getObjectsOnConnection();
 
     void addObjectOnConnection(GameObject fieldConnectionObject);
 

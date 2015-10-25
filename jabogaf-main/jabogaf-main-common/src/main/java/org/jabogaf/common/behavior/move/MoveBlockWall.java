@@ -20,8 +20,8 @@ public class MoveBlockWall implements MoveBlock {
     public boolean blocks(Moveable moveable, Field target) {
         FieldConnection fieldConnection = boardManager.getBoard().getLayout().getConnection(moveable.getPosition(), target);
         return fieldConnection != null &&
-                !fieldConnection.getObjectsOnConnection().isEmpty() &&
-                fieldConnection.getObjectsOnConnection().stream().anyMatch(o -> o instanceof Wall);
+                !fieldConnection.getGameObjects().isEmpty() &&
+                fieldConnection.getGameObjects().stream().anyMatch(o -> o instanceof Wall);
     }
 
     @Override

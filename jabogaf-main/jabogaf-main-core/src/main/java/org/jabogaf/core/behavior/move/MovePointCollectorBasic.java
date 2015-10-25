@@ -45,7 +45,7 @@ public class MovePointCollectorBasic implements MovePointCollector {
         @Override
         protected Function<MovePointCollectorCache.Parameter, MovePoint> create() {
             return parameter -> {
-                int mpFieldConnectionObjects = boardManager.getAllFieldConnectionObjects(parameter.getPosition(), parameter.getTarget()).stream()
+                int mpFieldConnectionObjects = boardManager.getAllGameObjectsOnFieldConnection(parameter.getPosition(), parameter.getTarget()).stream()
                         .mapToInt(fco -> fco.movementCost().getAmount())
                         .sum();
                 int mpField = parameter.getTarget().movementCost().getAmount();

@@ -51,7 +51,7 @@ public interface Layout extends GameContextBean {
     /**
      * @see FunctionGetAllGameObjectsOf#getAllGameObjectsOf(Set, Field, Field)
      */
-    Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand);
+    Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand);
 
     /**
      * Get a {@link Set} of all {@link FieldGroup}s where the assigned {@link Field} is located.

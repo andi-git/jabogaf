@@ -21,7 +21,7 @@ public class FunctionGetAllGameObjectsOfBasic implements FunctionGetAllGameObjec
     public Set<GameObject> getAllGameObjectsOf(Set<FieldConnection> fieldConnections, Field leftHand, Field rightHand) {
         Set<GameObject> fieldConnectionObjects = new HashSet<>();
         if (fieldConnections != null) {
-            fieldConnectionObjects.addAll(functionGetConnection.getConnection(fieldConnections, leftHand, rightHand).getObjectsOnConnection());
+            fieldConnectionObjects.addAll(functionGetConnection.getConnection(fieldConnections, leftHand, rightHand).getGameObjects());
         }
         return fieldConnectionObjects;
     }

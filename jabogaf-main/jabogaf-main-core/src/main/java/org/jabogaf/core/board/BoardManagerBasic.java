@@ -4,6 +4,7 @@ import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
@@ -32,11 +33,11 @@ public class BoardManagerBasic implements BoardManager {
     }
 
     @Override
-    public Set<GameObject> getAllFieldConnectionObjects(Field leftHand, Field rightHand) {
+    public Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand) {
         Set<GameObject> result = new HashSet<>();
         if (getBoard() != null) {
             if (getBoard().getLayout() != null) {
-                result.addAll(getBoard().getLayout().getAllFieldConnectionObjects(leftHand, rightHand));
+                result.addAll(getBoard().getLayout().getAllGameObjectsOnFieldConnection(leftHand, rightHand));
             }
         }
         return result;
@@ -68,5 +69,13 @@ public class BoardManagerBasic implements BoardManager {
     @Override
     public Set<GameObject> getAllGameObjects(FieldConnection fieldConnection) {
         return Collections.unmodifiableSet(getAllGameObjects().stream().filter(go -> go.getPosition().equals(fieldConnection)).collect(Collectors.toSet()));
+    }
+
+    @Override
+    public Set<LayoutActionImpact> getAllActionImpacts(Field field) {
+        Set<LayoutActionImpact> layoutActionImpacts = new HashSet<>();
+        layoutActionImpacts.addAll(getAllGameObjects(field));
+        layoutActionImpacts.addAll(getAllGameSubjects(field));
+        return Collections.unmodifiableSet(layoutActionImpacts);
     }
 }

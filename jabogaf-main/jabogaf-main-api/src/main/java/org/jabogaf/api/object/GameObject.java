@@ -1,5 +1,6 @@
 package org.jabogaf.api.object;
 
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.resource.Resource;
@@ -7,7 +8,7 @@ import org.jabogaf.api.resource.Resource;
 /**
  * An object in the game, e.g. door, wall,...
  */
-public interface GameObject<POSITION> extends LayoutActionImpact {
+public interface GameObject<POSITION extends ContainsGameObjects> extends LayoutActionImpact<GameObject, POSITION> {
 
     /**
      * Check if the current {@link GameObject} is visible for the players.

@@ -5,9 +5,7 @@ import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a connection between two {@link Field}. On this connection there can be multiple {@link GameObject}s which
@@ -19,7 +17,7 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
 
     private final Field rightHand;
 
-    private final Set<GameObject> fieldConnectionObjects = new HashSet<>();
+    private final List<GameObject> fieldConnectionObjects = new ArrayList<>();
 
     /**
      * Create a new {@link org.jabogaf.core.board.field.FieldConnectionBasic}
@@ -41,8 +39,8 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
     }
 
     @Override
-    public Set<GameObject> getObjectsOnConnection() {
-        return Collections.unmodifiableSet(fieldConnectionObjects);
+    public List<GameObject> getGameObjects() {
+        return Collections.unmodifiableList(fieldConnectionObjects);
     }
 
     @Override

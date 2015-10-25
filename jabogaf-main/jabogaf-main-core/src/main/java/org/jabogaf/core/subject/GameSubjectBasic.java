@@ -18,6 +18,7 @@ import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
 import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
+import org.jabogaf.core.resource.MovePoint;
 
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Typed;
@@ -167,6 +168,11 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     @Override
     public Field getPosition() {
         return this.state.getPosition();
+    }
+
+    @Override
+    public Resource movementCost() {
+        return new MovePoint(0);
     }
 
     @Override

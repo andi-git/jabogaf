@@ -3,6 +3,7 @@ package org.jabogaf.api.subject;
 import org.jabogaf.api.behavior.look.Lookable;
 import org.jabogaf.api.behavior.move.*;
 import org.jabogaf.api.board.field.Field;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.gamecontext.GameContextBeanWithState;
 import org.jabogaf.api.resource.NotEnoughResourceException;
 import org.jabogaf.api.resource.ResourceHolder;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * A subject (i.e. hero, monster,...) in the game.
  */
-public interface GameSubject extends GameContextBeanWithState<GameSubject>, Moveable, Lookable, ResourceHolder, ArtifactHolder {
+public interface GameSubject extends LayoutActionImpact<GameSubject, Field>, Moveable, Lookable, ResourceHolder, ArtifactHolder {
 
     /**
      * @see {@link Moveable#move(Field, ResourceHolder)}
