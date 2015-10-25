@@ -7,26 +7,17 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.common.object.field.Chair;
 import org.jabogaf.common.object.field.Wall;
+import org.jabogaf.core.behavior.move.MoveIsBlockedByType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Optional;
 
 @ApplicationScoped
-public class MoveBlockChair implements MoveBlock {
-
-    @Inject
-    private BoardManager boardManager;
+public class MoveBlockChair extends MoveIsBlockedByType<Chair> {
 
     @Override
-    public boolean blocks(Moveable moveable, Field target) {
-        FieldConnection fieldConnection = boardManager.getBoard().getLayout().getConnection(moveable.getPosition(), target);
-        return fieldConnection != null &&
-                !fieldConnection.getGameObjects().isEmpty() &&
-                fieldConnection.getGameObjects().stream().anyMatch(o -> o instanceof Chair);
-    }
-
-    @Override
-    public String toString() {
-        return Wall.class.getSimpleName();
+    protected Class<Chair> type() {
+        return Chair.class;
     }
 }

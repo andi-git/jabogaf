@@ -1,37 +1,34 @@
-package org.jabogaf.common.behavior.move;
+package org.jabogaf.core.behavior.move;
 
 import org.jabogaf.api.behavior.move.MoveBlock;
 import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.common.object.field.Door;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Optional;
 
-@ApplicationScoped
-public class MoveBlockDoor implements MoveBlock {
+/**
+ * A move is completely blocked because of a type.
+ */
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
+public abstract class MoveIsBlockedByType<T extends LayoutActionImpact<?, ?>> implements MoveBlock {
 
     @Inject
     private BoardManager boardManager;
 
     @Override
     public boolean blocks(Moveable moveable, Field target) {
-        boolean isBlocked = false;
         Optional<FieldConnection> fieldConnection = boardManager.getBoard().getLayout().getConnection(moveable.getPosition(), target);
-        if (fieldConnection.isPresent()) {
-            isBlocked = fieldConnection.get().getGameObjects().stream().
-                    filter(o -> o instanceof Door).
-                    map(o -> (Door) o).
-                    anyMatch(Door::isClosed);
-        }
-        return isBlocked;
+        return fieldConnection.isPresent() && fieldConnection.get().getGameObjects().stream().anyMatch(o -> o.getClass() == type());
     }
 
     @Override
     public String toString() {
-        return Door.class.getSimpleName();
+        return type().getSimpleName();
     }
+
+    protected abstract Class<T> type();
 }

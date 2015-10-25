@@ -13,15 +13,14 @@ import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * All the {@link org.jabogaf.api.board.field.Field}s of a board are arranged by a concrete layout. So the layout
- * defines the available {@link org.jabogaf.api.board.field.Field}s, how the {@link org.jabogaf.api.board.field.Field}s
- * are connected via {@link org.jabogaf.api.board.field.FieldConnection}s and grouped via {@link
- * org.jabogaf.api.board.field.FieldGroup}.
+ * All the {@link Field}s of a board are arranged by a concrete layout. So the layout defines the available {@link
+ * Field}s, how the {@link Field}s are connected via {@link FieldConnection}s and grouped via {@link FieldGroup}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public abstract class LayoutBasic extends GameContextBeanBasic implements Layout {
@@ -50,14 +49,12 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     private FunctionGetAllGameObjectsOf layoutFunctionGetAllGameObjectsOf;
 
     /**
-     * Create a new {@link org.jabogaf.core.board.layout.LayoutBasic}.
+     * Create a new {@link LayoutBasic}.
      *
-     * @param id               the id of the {@link org.jabogaf.core.board.layout.LayoutBasic}
-     * @param fields           all {@link org.jabogaf.api.board.field.Field}s of the layout
-     * @param fieldConnections all connections of the {@link org.jabogaf.api.board.field.Field}s as {@link
-     *                         org.jabogaf.api.board.field.FieldConnection}s
-     * @param fieldGroups      all groups of the {@link org.jabogaf.api.board.field.Field}s as {@link
-     *                         org.jabogaf.api.board.field.FieldGroup}s
+     * @param id               the id of the {@link LayoutBasic}
+     * @param fields           all {@link Field}s of the layout
+     * @param fieldConnections all connections of the {@link Field}s as {@link FieldConnection}s
+     * @param fieldGroups      all groups of the {@link Field}s as {@link FieldGroup}s
      */
     protected LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups) {
         super(id);
@@ -95,8 +92,8 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     }
 
     @Override
-    public FieldConnection getConnection(Field source, Field target) {
-        return getConnectionCache.get(source, target, () -> functionGetConnection.getConnection(fieldConnections, source, target));
+    public Optional<FieldConnection> getConnection(Field source, Field target) {
+        return Optional.of(getConnectionCache.get(source, target, () -> functionGetConnection.getConnection(fieldConnections, source, target)));
     }
 
     @Override

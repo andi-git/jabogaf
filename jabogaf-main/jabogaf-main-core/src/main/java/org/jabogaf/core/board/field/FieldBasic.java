@@ -12,7 +12,6 @@ import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.resource.MovePoint;
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * A basic class for a field in the game, which represents a unit where a {@link org.jabogaf.api.subject.GameSubject}
  * can be positioned.
- * <p/>
+ * <p>
  * A field is a {@link org.jabogaf.api.object.GameObject} and is always visible.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
@@ -51,13 +50,12 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
 
     @Override
     public FieldConnection getConnectionTo(Field target) {
-        return boardManager.getBoard().getLayout().getConnection(this, target);
+        return boardManager.getBoard().getLayout().getConnection(this, target).orElseGet(FieldConnectionNull::new);
     }
 
     @Override
     public List<GameSubject> getGameSubjects() {
         return boardManager.getAllGameSubjects().stream().filter(gs -> equals(gs.getPosition())).sorted().collect(Collectors.toList());
-//        return boardManager.getAllGameSubjects(this).stream().sorted().collect(Collectors.toList());
     }
 
     @Override

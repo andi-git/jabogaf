@@ -6,6 +6,7 @@ import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.object.GameObject;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -36,7 +37,7 @@ public interface Layout extends GameContextBean {
     /**
      * @see FunctionGetConnection#getConnection(Set, Field, Field)
      */
-    FieldConnection getConnection(Field source, Field target);
+    Optional<FieldConnection> getConnection(Field source, Field target);
 
     /**
      * Get all {@link FieldConnection}s that intercepts the look from one {@link Field} to another.

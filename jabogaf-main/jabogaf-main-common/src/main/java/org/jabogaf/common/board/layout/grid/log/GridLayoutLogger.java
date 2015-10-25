@@ -103,7 +103,7 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout, GridLayoutLogg
             public GridLayoutLoggerElement create(GridLayout layout, int x, int y, GameContextManager gameContextManager) {
                 Field fieldLeftHand = layout.getField(((x - 1) / 2), (y / 2));
                 Field fieldRightHand = layout.getField(((x + 1) / 2), (y / 2));
-                return resolve(new FieldConnectionVerticalRepresentation(layout.getConnection(fieldLeftHand, fieldRightHand)), gameContextManager);
+                return resolve(new FieldConnectionVerticalRepresentation(layout.getConnection(fieldLeftHand, fieldRightHand).get()), gameContextManager);
             }
         },
         FieldConnectorHorizontal {
@@ -116,7 +116,7 @@ public class GridLayoutLogger implements LayoutLogger<GridLayout, GridLayoutLogg
             public GridLayoutLoggerElement create(GridLayout layout, int x, int y, GameContextManager gameContextManager) {
                 Field fieldLeftHand = layout.getField((x / 2), ((y - 1) / 2));
                 Field fieldRightHand = layout.getField((x / 2), ((y + 1) / 2));
-                return resolve(new FieldConnectionHorizontalRepresentation(layout.getConnection(fieldLeftHand, fieldRightHand)), gameContextManager);
+                return resolve(new FieldConnectionHorizontalRepresentation(layout.getConnection(fieldLeftHand, fieldRightHand).get()), gameContextManager);
             }
         },
         FieldConnectorSpace {
