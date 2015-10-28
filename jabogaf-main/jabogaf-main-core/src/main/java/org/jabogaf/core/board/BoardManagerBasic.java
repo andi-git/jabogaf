@@ -2,6 +2,7 @@ package org.jabogaf.core.board;
 
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.BoardManager;
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
@@ -35,10 +36,9 @@ public class BoardManagerBasic implements BoardManager {
     @Override
     public Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand) {
         Set<GameObject> result = new HashSet<>();
-        if (getBoard() != null) {
-            if (getBoard().getLayout() != null) {
-                result.addAll(getBoard().getLayout().getAllGameObjectsOnFieldConnection(leftHand, rightHand));
-            }
+        // TODO this is ugly: a check if the board is available should not be necessary (only important for move-test)
+        if (gameContextManager.isGameContextBeanAvailable(Board.class)) {
+            result.addAll(getBoard().getLayout().getAllGameObjectsOnFieldConnection(leftHand, rightHand));
         }
         return result;
     }
@@ -54,12 +54,17 @@ public class BoardManagerBasic implements BoardManager {
     }
 
     @Override
-    public Set<GameObject> getAllGameObjects() {
-        return Collections.unmodifiableSet(gameContextManager.getGameContextBeans(GameObject.class).stream().collect(Collectors.toSet()));
+    public Set<GameObject<? extends ContainsGameObjects>> getAllGameObjects() {
+        Set<GameObject<? extends ContainsGameObjects>> gameObjects = new HashSet<>();
+        Set<GameObject> gameContextBeans = gameContextManager.getGameContextBeans(GameObject.class);
+        for (GameObject gameObject : gameContextBeans) {
+            gameObjects.add(gameObject);
+        }
+        return Collections.unmodifiableSet(gameObjects);
     }
 
     @Override
-    public Set<GameObject> getAllGameObjects(Field field) {
+    public Set<GameObject<? extends ContainsGameObjects>> getAllGameObjects(Field field) {
         return Collections.unmodifiableSet(
                 getAllGameObjects().stream()
                         .filter(go -> go.getPosition() != null && go.getPosition().equals(field))

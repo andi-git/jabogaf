@@ -6,6 +6,7 @@ import org.jabogaf.api.behavior.look.Lookable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.gamecontext.GameContextBean;
 
 import javax.inject.Inject;
@@ -23,17 +24,15 @@ public abstract class LookBehaviorBasic implements LookBehavior {
     @Override
     public CanLookReport canLook(Lookable lookable, Field target) {
         CanLookReport canLookReport = new CanLookReportBasic();
-        for (FieldConnection fieldConnection : boardManager.getBoard().getLayout().getLookConnections(lookable.getPosition(), target)) {
-            fieldConnection.getGameObjects().stream().
-                    filter(this::isBlocker).
-                    forEach(canLookReport::addLookBlock);
-            fieldConnection.getLeftHand().getGameSubjects();
+        for (LayoutActionImpact<?, ?> layoutActionImpact : boardManager.getBoard().getLayout().getAllLayoutActionImpacts(lookable.getPosition(), target)) {
+            // FIXME implement this
+
+//            fieldConnection.getGameObjects().stream().
+//                    filter(this::isBlocker).
+//                    forEach(canLookReport::addLookBlock);
+//            fieldConnection.getLeftHand().getGameSubjects();
         }
         return canLookReport;
-    }
-
-    private boolean isBlocker(GameContextBean gameContextBean) {
-        return false;
     }
 
     @Override

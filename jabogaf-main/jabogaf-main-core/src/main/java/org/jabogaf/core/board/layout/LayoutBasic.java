@@ -3,16 +3,15 @@ package org.jabogaf.core.board.layout;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
-import org.jabogaf.api.board.layout.FunctionGetAllGameObjectsOf;
-import org.jabogaf.api.board.layout.FunctionGetConnection;
-import org.jabogaf.api.board.layout.FunctionIsConnected;
-import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.board.layout.*;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ import java.util.stream.Stream;
  * Field}s, how the {@link Field}s are connected via {@link FieldConnection}s and grouped via {@link FieldGroup}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class LayoutBasic extends GameContextBeanBasic implements Layout {
+public class LayoutBasic extends GameContextBeanBasic implements Layout {
 
     private final Set<Field> fields;
 
@@ -56,7 +55,7 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
      * @param fieldConnections all connections of the {@link Field}s as {@link FieldConnection}s
      * @param fieldGroups      all groups of the {@link Field}s as {@link FieldGroup}s
      */
-    protected LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups) {
+    public LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups) {
         super(id);
         if (fields == null || fieldConnections == null || fieldGroups == null) {
             throw new IllegalArgumentException("fields,  fieldConnections and fieldGroups must not be null!");
@@ -64,6 +63,10 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
         this.fields = fields;
         this.fieldConnections = fieldConnections;
         this.fieldGroups = fieldGroups;
+    }
+
+    @Override
+    public void initAfterBoard() {
     }
 
     @Override
@@ -97,7 +100,9 @@ public abstract class LayoutBasic extends GameContextBeanBasic implements Layout
     }
 
     @Override
-    public abstract Set<FieldConnection> getLookConnections(Field position, Field target);
+    public List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo) {
+        return Collections.emptyList();
+    }
 
     @Override
     public Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand) {

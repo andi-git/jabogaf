@@ -50,20 +50,11 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
         };
         object2 = new GameObjectBasic("object2") {
         };
-        fieldConnection12.addObjectOnConnection(object1, object2);
+        fieldConnection12.addObjectOnConnection(object1);
+        fieldConnection12.addObjectOnConnection(object2);
         fieldConnectionObjects.add(object1);
         fieldConnectionObjects.add(object2);
-        layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>()) {
-            @Override
-            public Stream getFieldsAsStream() {
-                return null;
-            }
-
-            @Override
-            public Set<FieldConnection> getLookConnections(Field position, Field target) {
-                return null;
-            }
-        };
+        layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>());
         board = new BoardBasic("board", layout);
     }
 }

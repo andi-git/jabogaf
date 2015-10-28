@@ -2,20 +2,20 @@ package org.jabogaf.common.board.layout.grid;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
+import org.jabogaf.api.board.layout.Layout;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
 import org.jabogaf.core.board.layout.LayoutBasic;
 import org.jabogaf.util.stream.StreamUtil;
 
 import javax.inject.Inject;
 import java.awt.geom.Line2D;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Stream;
 
 /**
- * A {@link org.jabogaf.api.board.layout.Layout} based on a grid. To create this layout, a concrete instance of {@link
- * GridLayoutCreationStrategy} is needed.
+ * A {@link Layout} based on a grid. To create this layout, a concrete instance of {@link GridLayoutCreationStrategy} is
+ * needed.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class GridLayout extends LayoutBasic {
@@ -28,30 +28,57 @@ public class GridLayout extends LayoutBasic {
 
     private final Field[][] fields;
 
+    private Map<String, List<Field>> lookPaths = new HashMap<>();
+
     public GridLayout(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
         super(id, gridLayoutCreationStrategy.getFields(), gridLayoutCreationStrategy.getFieldConnections(), gridLayoutCreationStrategy.getFieldGroups());
         fields = gridLayoutCreationStrategy.getFieldsArray();
-        Instant start = Instant.now();
+    }
+
+    @Override
+    public void initAfterBoard() {
         calculateAllFieldLooks();
-        System.out.println("duration: " + Duration.between(start, Instant.now()));
     }
 
     private void calculateAllFieldLooks() {
         for (int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[0].length; j++) {
                 Field fieldFrom = fields[i][j];
-                System.out.println("calculate from " + fieldFrom);
                 for (int n = 0; n < fields.length; n++) {
                     for (int m = 0; m < fields[0].length; m++) {
                         Field fieldTarget = fields[n][m];
                         if (!fieldFrom.equals(fieldTarget)) {
                             List<Field> allFieldsInLook = getAllFieldsInLook(fieldFrom, fieldTarget);
-                            System.out.println("    to " + fieldTarget.getId() + ", " + allFieldsInLook);
+                            lookPaths.put(createKeyFor2Fields(fieldFrom, fieldTarget), allFieldsInLook);
                         }
                     }
                 }
             }
         }
+    }
+
+    private String createKeyFor2Fields(Field fieldFrom, Field fieldTo) {
+        return fieldFrom.getId() + fieldTo.getId();
+    }
+
+    @Override
+    public List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo) {
+        Set<LayoutActionImpact<?, ?>> layoutActionImpacts = new LinkedHashSet<>(); // for unique and sorted collection
+        String key = createKeyFor2Fields(fieldFrom, fieldTo);
+        if (lookPaths.containsKey(key)) {
+            List<Field> fields = lookPaths.get(key);
+            for (int i = 0; i < fields.size() - 1; i++) {
+                Field field = fields.get(i);
+                layoutActionImpacts.addAll(field.getGameSubjects());
+                layoutActionImpacts.addAll(field.getGameObjects());
+                for (FieldConnection fieldConnection : field.getFieldConnections()) {
+                    if (fieldConnection.containsAll(fields)) {
+                        layoutActionImpacts.addAll(fieldConnection.getGameObjects());
+                    }
+                }
+            }
+        }
+        return Collections.unmodifiableList(new ArrayList<>(layoutActionImpacts));
     }
 
     private List<Field> getAllFieldsInLook(Field fieldFrom, Field fieldTo) {
@@ -71,11 +98,11 @@ public class GridLayout extends LayoutBasic {
     }
 
     /**
-     * Get the {@link org.jabogaf.api.board.field.Field} on position x / y.
+     * Get the {@link Field} on position x / y.
      *
      * @param x the position of x-coordinate
      * @param y the position of y-coordinate
-     * @return the {@link org.jabogaf.api.board.field.Field} on position x / y
+     * @return the {@link Field} on position x / y
      */
     public Field getField(int x, int y) {
         return fields[y][x];
@@ -114,33 +141,6 @@ public class GridLayout extends LayoutBasic {
         }
         return result;
     }
-
-    @Override
-    public Set<FieldConnection> getLookConnections(Field fieldFrom, Field fieldTo) {
-        Set<FieldConnection> result = new HashSet<>();
-        Coordinate coordinateFrom = getCoordinate(fieldFrom);
-        Coordinate coordinateTo = getCoordinate(fieldTo);
-        Line2D.Double line = new Line2D.Double(getCoordinateForLine(coordinateFrom.getX()), getCoordinateForLine(coordinateFrom.getY()), getCoordinateForLine(coordinateTo.getX()), getCoordinateForLine(coordinateTo.getY()));
-        // get all fields in look
-        Set<Field> fieldsInLook = new HashSet<>();
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[i].length; j++) {
-                if (line.intersects(i, j, 1.0, 1.0)) {
-                    fieldsInLook.add(fields[i][j]);
-                }
-            }
-        }
-        // get all connections of this fields
-        for (Field field : fieldsInLook) {
-            for (Field fieldConnectedTo : fieldsInLook) {
-                if (field.isConnected(fieldConnectedTo)) {
-                    result.add(field.getConnectionTo(fieldConnectedTo));
-                }
-            }
-        }
-        return result;
-    }
-
 
     private double getCoordinateForLine(int i) {
         // the coordinate for the line starts in the middle of the field

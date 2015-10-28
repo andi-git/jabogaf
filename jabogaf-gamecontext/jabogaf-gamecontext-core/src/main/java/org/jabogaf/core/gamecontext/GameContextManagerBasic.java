@@ -109,6 +109,11 @@ public class GameContextManagerBasic implements GameContextManager {
     }
 
     @Override
+    public <T extends GameContextBean> boolean isGameContextBeanAvailable(Class<T> type) {
+        return getCurrentGameContextInstance().isGameContextBeanAvailable(type);
+    }
+
+    @Override
     public <T> T getGameContextBean(Class<T> type, String id) {
         return getCurrentGameContextInstance().getGameContextBean(type, id);
     }

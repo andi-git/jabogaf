@@ -29,7 +29,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 
@@ -66,17 +65,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
 
     protected void createLayout(int sizeX, int sizeY, int positionX, int positionY, int movementPoints) {
         createLayout(sizeX, sizeY);
-        Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>()) {
-            @Override
-            public Stream<Field> getFieldsAsStream() {
-                return null;
-            }
-
-            @Override
-            public Set<FieldConnection> getLookConnections(Field position, Field target) {
-                return null;
-            }
-        };
+        Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>());
         new BoardBasic("board", layout);
 
         gameSubject = new GameSubjectBasic("gameSubject", getField(positionX, positionY));

@@ -15,5 +15,5 @@ public interface ContainsGameObjects {
      *
      * @return a {@link List} of {@link GameObject}s available on the current {@link Field} sorted by natural order.
      */
-    List<GameObject> getGameObjects();
+    List<GameObject<? extends ContainsGameObjects>> getGameObjects();
 }

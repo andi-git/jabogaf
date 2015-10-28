@@ -5,7 +5,9 @@ import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.object.GameObject;
+import org.jabogaf.api.subject.GameSubject;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -16,6 +18,13 @@ import java.util.stream.Stream;
  */
 public interface Layout extends GameContextBean {
 
+    void initAfterBoard();
+
+    /**
+     * Get all {@link Field}s of this {@link Layout}
+     *
+     * @return all {@link Field}s of this {@link Layout}
+     */
     Set<Field> getFields();
 
     /**
@@ -38,16 +47,6 @@ public interface Layout extends GameContextBean {
      * @see FunctionGetConnection#getConnection(Set, Field, Field)
      */
     Optional<FieldConnection> getConnection(Field source, Field target);
-
-    /**
-     * Get all {@link FieldConnection}s that intercepts the look from one {@link Field} to another.
-     *
-     * @param position the position ({@link Field}) to look from
-     * @param target   the {@link Field} to look to
-     * @return a {@link Set} of {@link FieldConnection}s that are between the look from a position {@link Field} to the
-     * target {@link Field}.
-     */
-    Set<FieldConnection> getLookConnections(Field position, Field target);
 
     /**
      * @see FunctionGetAllGameObjectsOf#getAllGameObjectsOf(Set, Field, Field)
@@ -77,4 +76,15 @@ public interface Layout extends GameContextBean {
      * @return all connected {@link Field} of an assigned {@link Field}
      */
     Set<Field> getConnectedFields(Field field);
+
+    /**
+     * Get all {@link LayoutActionImpact}s ({@link GameObject}s, {@link GameSubject}) that impacts the connection
+     * between two {@link Field}s.
+     *
+     * @param fieldFrom from one {@link Field}
+     * @param fieldTo   to another {@link Field}
+     * @return all {@link LayoutActionImpact}s ({@link GameObject}s, {@link GameSubject}) that impacts the connection
+     * between two {@link Field}s
+     */
+    List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo);
 }

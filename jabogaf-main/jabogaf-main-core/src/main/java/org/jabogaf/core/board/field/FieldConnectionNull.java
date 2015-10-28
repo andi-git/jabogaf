@@ -1,5 +1,6 @@
 package org.jabogaf.core.board.field;
 
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.object.GameObject;
@@ -22,7 +23,7 @@ public class FieldConnectionNull extends FieldConnectionBasic {
     }
 
     @Override
-    public List<GameObject> getGameObjects() {
+    public List<GameObject<? extends ContainsGameObjects>> getGameObjects() {
         return new ArrayList<>();
     }
 

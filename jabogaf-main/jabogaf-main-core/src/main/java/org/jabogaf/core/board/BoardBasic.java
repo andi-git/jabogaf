@@ -7,6 +7,7 @@ import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 /**
  * The board of a game. The design is specified by the current {@link org.jabogaf.api.board.layout.Layout}.
  */
+@SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class BoardBasic extends GameContextBeanBasic implements Board {
 
     private final Layout layout;
@@ -20,6 +21,7 @@ public class BoardBasic extends GameContextBeanBasic implements Board {
     public BoardBasic(String id, Layout layout) {
         super(id);
         this.layout = layout;
+        this.layout.initAfterBoard();
     }
 
     @Override

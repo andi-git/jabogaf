@@ -1,5 +1,6 @@
 package org.jabogaf.core.gamecontext;
 
+import org.jabogaf.api.gamecontext.GameContextException;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.core.gamecontext.bean.BeanWithoutGameScoped;
 import org.jabogaf.core.gamecontext.bean.MyGameContextBean;
@@ -75,5 +76,23 @@ public class GameContextManagerTest extends ArquillianGameContextTest {
         assertEquals("myid1", myGameContextBean.getId());
         MyOtherGameContextBean myOtherGameContextBean = gameContextManager.getGameContextBean(MyOtherGameContextBean.class, "myid2");
         assertNull(gameContextManager.getGameContextBean(MyOtherGameContextBean.class, "myid2"));
+    }
+
+    @Test(expected = GameContextException.class)
+    public void testGetOneSpecificGameContextBeanByTypeButNoneAvailable() {
+        gameContextManager.getGameContextBean(MyGameContextBean.class);
+    }
+
+    @Test(expected = GameContextException.class)
+    public void testGetOneSpecificGameContextBeanByTypeButMultipleAvailable() {
+        new MyGameContextBean("myid1");
+        new MyGameContextBean("myid2");
+        gameContextManager.getGameContextBean(MyGameContextBean.class);
+    }
+
+    @Test
+    public void testGetOneSpecificGameContextBeanByType() {
+        new MyGameContextBean("myid1");
+        assertEquals("myid1", gameContextManager.getGameContextBean(MyGameContextBean.class).getId());
     }
 }

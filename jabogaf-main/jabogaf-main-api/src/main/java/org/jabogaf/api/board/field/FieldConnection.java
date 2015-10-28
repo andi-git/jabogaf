@@ -3,13 +3,14 @@ package org.jabogaf.api.board.field;
 import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.object.GameObject;
 
+import java.util.Collection;
 import java.util.Set;
 
 /**
  * Represents a connection between two {@link Field}. On this connection there can be multiple {@link
  * GameObject}s which are the behavior of the connection.
  */
-public interface FieldConnection extends GameContextBean, ContainsGameObjects {
+public interface FieldConnection extends GameContextBean<FieldConnection>, ContainsGameObjects {
 
     /**
      * Check if the current {@link FieldConnection} connects the two assigned {@link Field}s
@@ -20,9 +21,7 @@ public interface FieldConnection extends GameContextBean, ContainsGameObjects {
      */
     boolean connects(Field field1, Field field2);
 
-    void addObjectOnConnection(GameObject fieldConnectionObject);
-
-    void addObjectOnConnection(GameObject... fieldConnectionObject);
+    void addObjectOnConnection(GameObject<? extends ContainsGameObjects> fieldConnectionObject);
 
     void clearObjectsOnConnection();
 
@@ -31,4 +30,8 @@ public interface FieldConnection extends GameContextBean, ContainsGameObjects {
     Field getLeftHand();
 
     boolean contains(Field field);
+
+    boolean containsAny(Collection<Field> fields);
+
+    boolean containsAll(Collection<Field> fields);
 }

@@ -26,6 +26,12 @@ public class MoveBehaviorCommon extends MoveBehaviorBasic {
     private MoveBlockWall moveBlockWall;
 
     @Inject
+    private MoveBlockGameObjectOnField moveBlockGameObjectOnField;
+
+    @Inject
+    private MoveBlockGameSubjectOnField moveBlockGameSubjectOnField;
+
+    @Inject
     private MoveUnableToEndGameSubjectOnField moveUnableToEndGameSubjectOnField;
 
     @Inject
@@ -35,6 +41,8 @@ public class MoveBehaviorCommon extends MoveBehaviorBasic {
     private void init() {
         moveBlocks.add(moveBlockDoor);
         moveBlocks.add(moveBlockWall);
+        moveBlocks.add(moveBlockGameObjectOnField);
+        moveBlocks.add(moveBlockGameSubjectOnField);
         moveUnableToEnds.add(moveUnableToEndGameSubjectOnField);
         moveUnableToEnds.add(moveUnableToEndGameObjectOnField);
     }

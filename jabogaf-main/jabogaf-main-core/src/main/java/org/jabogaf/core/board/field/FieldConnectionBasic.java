@@ -1,5 +1,6 @@
 package org.jabogaf.core.board.field;
 
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.object.GameObject;
@@ -11,13 +12,13 @@ import java.util.*;
  * Represents a connection between two {@link Field}. On this connection there can be multiple {@link GameObject}s which
  * are the behavior of the connection.
  */
-public class FieldConnectionBasic extends GameContextBeanBasic implements FieldConnection {
+public class FieldConnectionBasic extends GameContextBeanBasic<FieldConnection> implements FieldConnection {
 
     private final Field leftHand;
 
     private final Field rightHand;
 
-    private final List<GameObject> fieldConnectionObjects = new ArrayList<>();
+    private final List<GameObject<? extends ContainsGameObjects>> fieldConnectionObjects = new ArrayList<>();
 
     /**
      * Create a new {@link org.jabogaf.core.board.field.FieldConnectionBasic}
@@ -39,18 +40,13 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
     }
 
     @Override
-    public List<GameObject> getGameObjects() {
+    public List<GameObject<? extends ContainsGameObjects>> getGameObjects() {
         return Collections.unmodifiableList(fieldConnectionObjects);
     }
 
     @Override
-    public void addObjectOnConnection(GameObject fieldConnectionObject) {
+    public void addObjectOnConnection(GameObject<? extends ContainsGameObjects> fieldConnectionObject) {
         fieldConnectionObjects.add(fieldConnectionObject);
-    }
-
-    @Override
-    public void addObjectOnConnection(GameObject... fieldConnectionObject) {
-        Collections.addAll(fieldConnectionObjects, fieldConnectionObject);
     }
 
     @Override
@@ -71,5 +67,15 @@ public class FieldConnectionBasic extends GameContextBeanBasic implements FieldC
     @Override
     public boolean contains(Field field) {
         return leftHand.equals(field) || rightHand.equals(field);
+    }
+
+    @Override
+    public boolean containsAny(Collection<Field> fields) {
+        return fields.contains(leftHand) || fields.contains(rightHand);
+    }
+
+    @Override
+    public boolean containsAll(Collection<Field> fields) {
+        return fields.contains(leftHand) && fields.contains(rightHand);
     }
 }

@@ -32,4 +32,6 @@ public interface GameContextInstance {
     <T extends GameContextBean> T getGameContextBean(Class<T> type);
 
     <T> T getGameContextBean(Class<T> type, String id);
+
+    <T extends GameContextBean> boolean isGameContextBeanAvailable(Class<T> type);
 }

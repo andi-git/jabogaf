@@ -1,5 +1,6 @@
 package org.jabogaf.api.board;
 
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
@@ -56,7 +57,7 @@ public interface BoardManager {
      *
      * @return all available {@link GameObject}s
      */
-    Set<GameObject> getAllGameObjects();
+    Set<GameObject<? extends ContainsGameObjects>> getAllGameObjects();
 
     /**
      * Get all available {@link GameObject}s, i.e. table, tree,... positioned a concrete {@link Field}
@@ -64,7 +65,7 @@ public interface BoardManager {
      * @param field the {@link Field} to check
      * @return all available {@link GameObject}s positioned a concrete {@link Field}
      */
-    Set<GameObject> getAllGameObjects(Field field);
+    Set<GameObject<? extends ContainsGameObjects>> getAllGameObjects(Field field);
 
     /**
      * Get all available {@link GameObject}s, i.e. table, tree,... positioned a concrete {@link Field}

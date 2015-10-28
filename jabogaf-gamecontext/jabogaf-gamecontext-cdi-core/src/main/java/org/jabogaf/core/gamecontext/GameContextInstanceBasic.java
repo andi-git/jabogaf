@@ -90,6 +90,7 @@ public class GameContextInstanceBasic implements GameContextInstance {
      */
     @Override
     public <T extends GameContextBean> T addGameContextBean(T bean) {
+        log.debug("add to gameContextBeans: " + bean.getId() + "(" + bean.getClass() + ")");
         this.lastAccess = Instant.now();
         gameContextBeans.add(bean);
         return bean;
@@ -123,15 +124,21 @@ public class GameContextInstanceBasic implements GameContextInstance {
     }
 
     @Override
-    public <T extends GameContextBean> T getGameContextBean(Class<T> type) {
-        for (GameContextBean gameContextBean : CDI.current().select(GameContextInstanceProvider.class).get().getCurrentGameContextInstance().getGameContextBeans()) {
-            if (type.isAssignableFrom(gameContextBean.getClass())) {
-                // get only first match
-                return (T) gameContextBean;
-            }
-        }
-        return null;
+    public <T extends GameContextBean> boolean isGameContextBeanAvailable(Class<T> type) {
+        return !getGameContextBeans(type).isEmpty();
     }
+
+    @Override
+    public <T extends GameContextBean> T getGameContextBean(Class<T> type) {
+        Set<T> gameContextBeans = getGameContextBeans(type);
+        if (gameContextBeans.isEmpty()) {
+            throw new GameContextException("there is no bean of type " + type.getClass().getName() + " available in " + GameContext.class.getSimpleName());
+        } else if (gameContextBeans.size() > 1) {
+            throw new GameContextException("there are more than 1 beans of type " + type.getClass().getName() + " available in " + GameContext.class.getSimpleName() + ": " + gameContextBeans);
+        }
+        return gameContextBeans.iterator().next();
+    }
+
 
 
     private static class CacheForDeploymentBeans {

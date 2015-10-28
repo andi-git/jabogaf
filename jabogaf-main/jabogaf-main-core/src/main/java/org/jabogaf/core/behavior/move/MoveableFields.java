@@ -3,10 +3,12 @@ package org.jabogaf.core.behavior.move;
 import org.jabogaf.api.behavior.move.CanMoveReport;
 import org.jabogaf.api.behavior.move.MovePath;
 import org.jabogaf.api.behavior.move.Moveable;
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.gamecontext.FireEvent;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
@@ -214,12 +216,17 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
+        public Set<FieldConnection> getFieldConnections() {
+            return getTarget().getFieldConnections();
+        }
+
+        @Override
         public List<GameSubject> getGameSubjects() {
             return getMovePath().getTarget().getGameSubjects();
         }
 
         @Override
-        public List<GameObject> getGameObjects() {
+        public List<GameObject<? extends ContainsGameObjects>> getGameObjects() {
             return getMovePath().getTarget().getGameObjects();
         }
 
@@ -244,8 +251,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
-        public int compareTo(@SuppressWarnings("NullableProblems") Object o) {
-            //noinspection unchecked
+        public int compareTo(@SuppressWarnings("NullableProblems") GameContextBean o) {
             return getMovePath().getTarget().compareTo(o);
         }
     }
@@ -269,10 +275,6 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
 
         public Field getTarget() {
             return target;
-        }
-
-        public Field getLastFieldBeforeTarget() {
-            return movePathBefore.getTarget();
         }
 
         public MovePath getMovePathBefore() {
@@ -323,12 +325,17 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
+        public Set<FieldConnection> getFieldConnections() {
+            return getTarget().getFieldConnections();
+        }
+
+        @Override
         public List<GameSubject> getGameSubjects() {
             return getTarget().getGameSubjects();
         }
 
         @Override
-        public List<GameObject> getGameObjects() {
+        public List<GameObject<? extends ContainsGameObjects>> getGameObjects() {
             return getTarget().getGameObjects();
         }
 
@@ -353,8 +360,7 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
-        public int compareTo(@SuppressWarnings("NullableProblems") Object o) {
-            //noinspection unchecked
+        public int compareTo(@SuppressWarnings("NullableProblems") GameContextBean o) {
             return getTarget().compareTo(o);
         }
     }

@@ -15,6 +15,5 @@ public class GameContextInstanceProviderBasic implements GameContextInstanceProv
     @Override
     public GameContextInstance getCurrentGameContextInstance() {
         return gameContextCache.getCurrentGameContextInstance();
-//        return new GameContextCache().getCurrentGameContextInstance();
     }
 }

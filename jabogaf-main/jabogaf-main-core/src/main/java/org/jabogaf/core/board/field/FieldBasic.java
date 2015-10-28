@@ -1,6 +1,7 @@
 package org.jabogaf.core.board.field;
 
 import org.jabogaf.api.board.BoardManager;
+import org.jabogaf.api.board.field.ContainsGameObjects;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
  * A field is a {@link org.jabogaf.api.object.GameObject} and is always visible.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class FieldBasic extends GameContextBeanBasic implements Field {
+public class FieldBasic extends GameContextBeanBasic<Field> implements Field {
 
     @Inject
     private BoardManager boardManager;
@@ -54,12 +55,17 @@ public class FieldBasic extends GameContextBeanBasic implements Field {
     }
 
     @Override
+    public Set<FieldConnection> getFieldConnections() {
+        return boardManager.getBoard().getLayout().getFieldConnections(this);
+    }
+
+    @Override
     public List<GameSubject> getGameSubjects() {
         return boardManager.getAllGameSubjects().stream().filter(gs -> equals(gs.getPosition())).sorted().collect(Collectors.toList());
     }
 
     @Override
-    public List<GameObject> getGameObjects() {
+    public List<GameObject<? extends ContainsGameObjects>> getGameObjects() {
         return boardManager.getAllGameObjects(this).stream().sorted().collect(Collectors.toList());
     }
 

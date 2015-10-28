@@ -29,7 +29,7 @@ public interface GameContextManager {
     /**
      * Add a new instantiated bean to the game-context. All CDI-components (e.g. {@link Inject} will be resolved with
      * the beans from the current game-context via {@link #resolve(Object)}.
-     * <p>
+     * <p/>
      * If the bean has a method named getId(), the resulting String will be used to store the bean in the context.
      * Otherwise the system-hash will be used as id.
      *
@@ -112,7 +112,7 @@ public interface GameContextManager {
     /**
      * Start a new {@link GameContext} or reuse an existing one via the {@code gameContextId}. The code within the
      * {@code runnable} will be executed within the {@link GameContext}.
-     * <p>
+     * <p/>
      * This method will throw {@link Throwable}, because for JUnit-Tests.
      *
      * @param gameContextId the id (a {@link UUID} to reuse an existing {@link GameContextInstance}
@@ -136,4 +136,13 @@ public interface GameContextManager {
     <T> T getFromDynamicContext(Class<T> type, Annotation... qualifiers);
 
     <T extends GameContextBean> T addGameContextBean(T bean);
+
+    /**
+     * Check if a conrete type of {@link GameContextBean} is available in {@link GameContext}.
+     *
+     * @param type the concrete class
+     * @param <T>  the generic type (subclass of {@link GameContextBean}
+     * @return {@code true} if at least one instance of this type is available
+     */
+    <T extends GameContextBean> boolean isGameContextBeanAvailable(Class<T> type);
 }

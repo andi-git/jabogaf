@@ -3,11 +3,13 @@ package org.jabogaf.common.board.layout.grid;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
+import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.common.TestWithExampleGridLayoutBoard;
 import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -58,11 +60,20 @@ public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
     }
 
     @Test
-    public void testLook() {
-        Set<FieldConnection> fieldConnectionsForLook = getLayout().getLookConnections(getField(1, 0), getField(2, 2));
-        assertEquals(3, fieldConnectionsForLook.size());
-        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:1,0-1,1")));
-        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:1,1-2,1")));
-        assertTrue(fieldConnectionsForLook.contains(getById("FieldConnection:2,1-2,2")));
+    public void testGetAllLayoutActionImpacts() {
+        assertEquals(0, getLayout().getAllLayoutActionImpacts(getField(0, 0), getField(0, 0)).size());
+        assertEquals(0, getLayout().getAllLayoutActionImpacts(getField(0, 0), getField(1, 1)).size());
+
+        List<LayoutActionImpact<?, ?>> allLayoutActionImpacts = getLayout().getAllLayoutActionImpacts(getField(0, 0), getField(5, 0));
+        assertEquals(2, allLayoutActionImpacts.size());
+        assertEquals(getById("Wall:1,0-2,0"), allLayoutActionImpacts.get(0));
+        assertEquals(getById("player3"), allLayoutActionImpacts.get(1));
+
+        allLayoutActionImpacts = getLayout().getAllLayoutActionImpacts(getField(0, 0), getField(5, 3));
+        assertEquals(4, allLayoutActionImpacts.size());
+        assertEquals(getById("player1"), allLayoutActionImpacts.get(0));
+        assertEquals(getById("Door:1,1-2,1"), allLayoutActionImpacts.get(1));
+        assertEquals(getById("player2"), allLayoutActionImpacts.get(2));
+        assertEquals(getById("Wall:3,2-4,4"), allLayoutActionImpacts.get(3));
     }
 }
