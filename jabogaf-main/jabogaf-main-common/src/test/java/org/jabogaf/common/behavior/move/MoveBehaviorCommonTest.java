@@ -23,11 +23,7 @@ public class MoveBehaviorCommonTest extends TestWithExampleGridLayoutBoard {
     public void testGetMoveBlocks() throws Exception {
         assertEquals(4, moveBehavior.getMoveBlocks().size());
         for (MoveBlock moveBlock : moveBehavior.getMoveBlocks()) {
-            assertTrue(moveBlock instanceof MoveBlockDoor ||
-                            moveBlock instanceof MoveBlockWall ||
-                            moveBlock instanceof MoveBlockGameObjectOnField ||
-                            moveBlock instanceof MoveBlockGameSubjectOnField
-            );
+            assertTrue(moveBlock instanceof MoveBlockForMoveBehaviorCommon);
         }
     }
 

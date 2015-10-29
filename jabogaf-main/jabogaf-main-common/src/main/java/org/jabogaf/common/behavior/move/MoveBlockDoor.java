@@ -1,6 +1,5 @@
 package org.jabogaf.common.behavior.move;
 
-import org.jabogaf.api.behavior.move.MoveBlock;
 import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
@@ -12,7 +11,7 @@ import javax.inject.Inject;
 import java.util.Optional;
 
 @ApplicationScoped
-public class MoveBlockDoor implements MoveBlock {
+public class MoveBlockDoor implements MoveBlockForMoveBehaviorCommon {
 
     @Inject
     private BoardManager boardManager;

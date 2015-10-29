@@ -10,7 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class MoveBlockGameObjectOnField implements MoveBlock {
+public class MoveBlockGameObjectOnField implements MoveBlockForMoveBehaviorCommon {
 
     @Inject
     private BoardManager boardManager;

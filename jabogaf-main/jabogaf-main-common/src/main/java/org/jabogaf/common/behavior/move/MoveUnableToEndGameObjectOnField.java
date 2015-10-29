@@ -9,7 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class MoveUnableToEndGameObjectOnField implements MoveUnableToEnd {
+public class MoveUnableToEndGameObjectOnField implements MoveUnableToEndForMoveBehaviorCommon {
 
     @Inject
     private BoardManager boardManager;

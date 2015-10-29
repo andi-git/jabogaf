@@ -8,7 +8,10 @@ import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.core.resource.MovePoint;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,6 +27,20 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
 
     @Inject
     private MoveableFields moveableFields;
+
+    private Set<MoveBlock> moveBlocks = new HashSet<>();
+
+    private Set<MoveUnableToEnd> moveUnableToEnds = new HashSet<>();
+
+    @PostConstruct
+    private void init() {
+        moveBlocks = Collections.unmodifiableSet(fillMoveBlocks());
+        moveUnableToEnds = Collections.unmodifiableSet(fillMoveUnableToEnds());
+    }
+
+    protected abstract Set<MoveUnableToEnd> fillMoveUnableToEnds();
+
+    protected abstract Set<MoveBlock> fillMoveBlocks();
 
     @Override
     public CanMoveReport canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
@@ -122,5 +139,15 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
         return getMoveUnableToEnd().stream()
                 .filter(mute -> mute.unableToEnd(moveable, target))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<MoveBlock> getMoveBlocks() {
+        return moveBlocks;
+    }
+
+    @Override
+    public Set<MoveUnableToEnd> getMoveUnableToEnd() {
+        return moveUnableToEnds;
     }
 }

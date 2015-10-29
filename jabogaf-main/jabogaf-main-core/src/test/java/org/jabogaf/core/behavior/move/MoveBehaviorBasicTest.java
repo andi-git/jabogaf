@@ -173,6 +173,16 @@ public class MoveBehaviorBasicTest extends ArquillianGameContextTest {
         private Set<MoveUnableToEnd> moveUnableToEndSet = new HashSet<>();
 
         @Override
+        protected Set<MoveUnableToEnd> fillMoveUnableToEnds() {
+            return new HashSet<>();
+        }
+
+        @Override
+        protected Set<MoveBlock> fillMoveBlocks() {
+            return new HashSet<>();
+        }
+
+        @Override
         public Set<MoveBlock> getMoveBlocks() {
             return moveBlockSet;
         }

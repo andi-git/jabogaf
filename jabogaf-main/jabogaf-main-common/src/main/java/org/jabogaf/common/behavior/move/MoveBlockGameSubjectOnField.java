@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java.lang.reflect.Method;
 
 @ApplicationScoped
-public class MoveBlockGameSubjectOnField implements MoveBlock {
+public class MoveBlockGameSubjectOnField implements MoveBlockForMoveBehaviorCommon {
 
     @Inject
     private BoardManager boardManager;

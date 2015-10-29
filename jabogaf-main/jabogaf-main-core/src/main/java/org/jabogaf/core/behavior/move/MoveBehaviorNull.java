@@ -5,7 +5,6 @@ import org.jabogaf.api.behavior.move.MoveBlock;
 import org.jabogaf.api.behavior.move.MoveUnableToEnd;
 import org.jabogaf.api.gamecontext.GameScoped;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,13 +13,12 @@ import java.util.Set;
 public class MoveBehaviorNull extends MoveBehaviorBasic {
 
     @Override
-    public Set<MoveBlock> getMoveBlocks() {
-        return Collections.unmodifiableSet(new HashSet<>());
+    protected Set<MoveUnableToEnd> fillMoveUnableToEnds() {
+        return new HashSet<>();
     }
 
     @Override
-    public Set<MoveUnableToEnd> getMoveUnableToEnd() {
-        return Collections.unmodifiableSet(new HashSet<>());
+    protected Set<MoveBlock> fillMoveBlocks() {
+        return new HashSet<>();
     }
-
 }

@@ -6,7 +6,7 @@ import org.jabogaf.core.behavior.move.MoveIsBlockedByType;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class MoveBlockWall extends MoveIsBlockedByType<Wall> {
+public class MoveBlockWall extends MoveIsBlockedByType<Wall> implements MoveBlockForMoveBehaviorCommon {
 
     @Override
     protected Class<Wall> type() {
