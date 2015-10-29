@@ -1,5 +1,7 @@
 package org.jabogaf.core;
 
+import org.jabogaf.api.behavior.look.LookBehavior;
+import org.jabogaf.api.behavior.move.MoveBehavior;
 import org.jabogaf.api.board.Board;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
@@ -9,6 +11,7 @@ import org.jabogaf.api.gamecontext.FireEvent;
 import org.jabogaf.api.gamecontext.GameContextManager;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.subject.GameSubject;
+import org.jabogaf.api.subject.SetterOfPosition;
 import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.board.field.FieldBasic;
 import org.jabogaf.core.board.field.FieldConnectionBasic;
@@ -38,7 +41,7 @@ public class SimpleGridLayoutBoardWithSubject {
 
     private Map<String, FieldConnection> fieldConnections = new HashMap<>();
 
-    private GameSubject gameSubject;
+    private MyGameSubject gameSubject;
 
     private Board board;
 
@@ -46,7 +49,7 @@ public class SimpleGridLayoutBoardWithSubject {
         createLayout(sizeX, sizeY);
         Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>());
         board = new BoardBasic("board", layout);
-        gameSubject = new GameSubjectBasic("gameSubject", getField(positionX, positionY));
+        gameSubject = new MyGameSubject("gameSubject", getField(positionX, positionY));
         gameSubject.earn(new MovePoint(movementPoints, FireEvent.None).asPayment());
         playerController.setCurrentPlayer(gameSubject);
     }
@@ -100,10 +103,6 @@ public class SimpleGridLayoutBoardWithSubject {
         return fieldConnections;
     }
 
-    public GameSubject getGameSubject() {
-        return gameSubject;
-    }
-
     public Set<Field> getFieldsAsSet() {
         return fields.keySet().stream().map(fields::get).collect(Collectors.toSet());
     }
@@ -114,5 +113,51 @@ public class SimpleGridLayoutBoardWithSubject {
 
     public Board getBoard() {
         return board;
+    }
+
+    public GameSubject getGameSubject() {
+        return gameSubject;
+    }
+
+    public void changeMoveBehaviorOfSubject(MoveBehavior moveBehavior) {
+        gameSubject.changeMoveBehavior(moveBehavior);
+    }
+
+    public void changeLookBehaviorOfSubject(LookBehavior lookBehavior) {
+        gameSubject.changeLookBehavior(lookBehavior);
+    }
+
+    public void setPositionOfSubject(Field field) {
+        gameSubject.setPosition(field);
+    }
+
+    public SetterOfPosition getSetterOfPositionOfSubject() {
+        return gameSubject.getSetterOfPosition();
+    }
+
+    private static class MyGameSubject extends GameSubjectBasic {
+
+        public MyGameSubject(String id, Field position) {
+            super(id, position);
+        }
+
+        @Override
+        public void changeMoveBehavior(MoveBehavior moveBehavior) {
+            super.changeMoveBehavior(moveBehavior);
+        }
+
+        @Override
+        public void changeLookBehavior(LookBehavior lookBehavior) {
+            super.changeLookBehavior(lookBehavior);
+        }
+
+        public void setPosition(Field field) {
+            getSetterOfPosition().setPosition(field);
+        }
+
+        @Override
+        public SetterOfPosition getSetterOfPosition() {
+            return super.getSetterOfPosition();
+        }
     }
 }

@@ -35,6 +35,8 @@ public class FieldBasic extends GameContextBeanBasic<Field> implements Field {
 
     private Set<Field> connectedFieldsCache = new HashSet<>();
 
+    private Resource movePoint = new MovePoint(1);
+
     /**
      * Create a new {@link org.jabogaf.core.board.field.FieldBasic}
      *
@@ -84,6 +86,11 @@ public class FieldBasic extends GameContextBeanBasic<Field> implements Field {
 
     @Override
     public Resource movementCost() {
-        return new MovePoint(1);
+        return movePoint;
+    }
+
+    @Override
+    public void setMovementCost(Resource movePoint) {
+        this.movePoint = movePoint;
     }
 }

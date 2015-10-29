@@ -246,6 +246,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         }
 
         @Override
+        public void setMovementCost(Resource resource) {
+            getTarget().setMovementCost(resource);
+        }
+
+        @Override
         public String getId() {
             return getMovePath().getTarget().getId();
         }
@@ -352,6 +357,11 @@ public class MoveableFields extends CachedValueMap<List<MovePath>, MoveableField
         @Override
         public Resource movementCost() {
             return costBefore().add(costFromLastFieldToTarget());
+        }
+
+        @Override
+        public void setMovementCost(Resource resource) {
+            getTarget().setMovementCost(resource);
         }
 
         @Override

@@ -17,22 +17,22 @@ import java.util.List;
 public interface GameSubject extends LayoutActionImpact<GameSubject, Field>, Moveable, Lookable, ResourceHolder, ArtifactHolder {
 
     /**
-     * @see {@link Moveable#move(Field, ResourceHolder)}
+     * @see Moveable#move(Field, ResourceHolder)
      */
     Field move(Field target) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException;
 
     /**
-     * @see {@link Moveable#move(MovePath, ResourceHolder)}
+     * @see Moveable#move(MovePath, ResourceHolder)
      */
     Field move(MovePath movePath) throws FieldsNotConnectedException, MoveNotPossibleException, NotEnoughResourceException;
 
     /**
-     * @see {@link Moveable#canMove(Field, ResourceHolder)}
+     * @see Moveable#canMove(Field, ResourceHolder)
      */
     CanMoveReport canMove(Field target);
 
     /**
-     * @see {@link Moveable#canMove(MovePath, ResourceHolder)}
+     * @see Moveable#canMove(MovePath, ResourceHolder)
      */
     boolean canMove(MovePath movePath);
 

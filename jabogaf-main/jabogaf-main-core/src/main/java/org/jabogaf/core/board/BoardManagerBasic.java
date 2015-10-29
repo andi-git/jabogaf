@@ -35,12 +35,7 @@ public class BoardManagerBasic implements BoardManager {
 
     @Override
     public Set<GameObject> getAllGameObjectsOnFieldConnection(Field leftHand, Field rightHand) {
-        Set<GameObject> result = new HashSet<>();
-        // TODO this is ugly: a check if the board is available should not be necessary (only important for move-test)
-        if (gameContextManager.isGameContextBeanAvailable(Board.class)) {
-            result.addAll(getBoard().getLayout().getAllGameObjectsOnFieldConnection(leftHand, rightHand));
-        }
-        return result;
+        return getBoard().getLayout().getAllGameObjectsOnFieldConnection(leftHand, rightHand);
     }
 
     @Override

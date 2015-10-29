@@ -57,4 +57,6 @@ public interface Field extends GameContextBean<Field>, ContainsGameObjects, Cont
     Set<Field> getConnectedFields();
 
     Resource movementCost();
+
+    void setMovementCost(Resource resource);
 }
