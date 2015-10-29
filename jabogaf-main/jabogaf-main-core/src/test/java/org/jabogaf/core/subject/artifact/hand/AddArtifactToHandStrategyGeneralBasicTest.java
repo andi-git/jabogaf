@@ -66,6 +66,6 @@ public class AddArtifactToHandStrategyGeneralBasicTest extends ArquillianGameCon
                 setArtifactHolder(artifactHolder).
                 setSetterOfArtifactsForHands(artifactHolder.createSetterOfArtifactsForHands()).
                 setCanHandleArtifactStrategy((a, h) -> true).
-                setAddArtifactToHandStrategyConcrete((ctx) -> ctx.addArtifactToMainHand());
+                setAddArtifactToHandStrategyConcrete(AddArtifactToHandStrategyContext::addArtifactToMainHand);
     }
 }

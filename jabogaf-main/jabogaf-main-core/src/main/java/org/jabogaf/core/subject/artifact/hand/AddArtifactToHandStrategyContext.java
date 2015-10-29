@@ -17,23 +17,16 @@ import java.util.List;
 public class AddArtifactToHandStrategyContext {
 
     private Artifact artifact;
+
     private Hand.Type handType;
+
     private ArtifactHolder artifactHolder;
+
     private SetterOfArtifactsForHands setterOfArtifactsForHands;
+
     private CanHandleArtifactStrategy canHandleArtifactStrategy;
+
     private AddArtifactToHandStrategyConcrete addArtifactToHandStrategyConcrete;
-
-    public AddArtifactToHandStrategyContext(Artifact artifact, Hand.Type handType, ArtifactHolder artifactHolder, SetterOfArtifactsForHands setterOfArtifactsForHands, CanHandleArtifactStrategy canHandleArtifactStrategy, AddArtifactToHandStrategyConcrete addArtifactToHandStrategyConcrete) {
-        this.artifact = artifact;
-        this.handType = handType;
-        this.artifactHolder = artifactHolder;
-        this.setterOfArtifactsForHands = setterOfArtifactsForHands;
-        this.canHandleArtifactStrategy = canHandleArtifactStrategy;
-        this.addArtifactToHandStrategyConcrete = addArtifactToHandStrategyConcrete;
-    }
-
-    public AddArtifactToHandStrategyContext() {
-    }
 
     public Artifact getArtifact() {
         if (artifact == null) throw new IllegalStateException("artifact was not set");
