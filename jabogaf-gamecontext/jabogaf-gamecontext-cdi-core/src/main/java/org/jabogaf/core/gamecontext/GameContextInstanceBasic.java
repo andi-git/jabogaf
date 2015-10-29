@@ -1,16 +1,12 @@
 package org.jabogaf.core.gamecontext;
 
 import org.jabogaf.api.gamecontext.*;
-import org.jabogaf.util.loader.*;
-import org.jabogaf.util.loader.ServiceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.Typed;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.util.AnnotationLiteral;
 import java.lang.annotation.Annotation;
 import java.time.Instant;
@@ -140,7 +136,6 @@ public class GameContextInstanceBasic implements GameContextInstance {
     }
 
 
-
     private static class CacheForDeploymentBeans {
 
         private final Map<Bean<?>, BeanInstance<?>> cacheForDeploymentBeans = Collections.synchronizedMap(new HashMap<>());
@@ -168,7 +163,7 @@ public class GameContextInstanceBasic implements GameContextInstance {
                 if (getAlternativesInGameContext(creationalContext).contains(bean.getBeanClass())) {
                     Bean<T> beanBefore = bean;
                     bean = (Bean<T>) beanManager.getBeans(bean.getBeanClass(), annotationLiteralAlternativeInGameContext).iterator().next();
-                    log.info("use alternative: " + bean + " for " + beanBefore);
+                    log.debug("use alternative: " + bean + " for " + beanBefore);
                 }
             }
             return bean;

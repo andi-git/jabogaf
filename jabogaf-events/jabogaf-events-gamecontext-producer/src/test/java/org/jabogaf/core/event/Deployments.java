@@ -12,13 +12,10 @@ public class Deployments {
 
     @Deployment
     public static WebArchive deploy() throws IOException {
-        WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war").//
+        return ShrinkWrap.create(WebArchive.class, "test.war").//
                 addAsWebInfResource("META-INF/beans.xml", "beans.xml").
                 addPackages(true, "org.jabogaf.util").
                 addPackages(true, "org.jabogaf.api").
                 addPackages(true, "org.jabogaf.core");
-        System.out.println(webArchive.toString(true));
-        return webArchive;
     }
-
 }

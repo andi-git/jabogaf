@@ -20,6 +20,8 @@ import org.jabogaf.core.subject.GameSubjectBasic;
 import org.jabogaf.test.gamecontext.ArquillianGameContext;
 import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.jabogaf.test.gamecontext.BeforeInGameContext;
+import org.jabogaf.util.log.LogWrapper;
+import org.jabogaf.util.log.SLF4J;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -57,6 +59,10 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
 
     @Inject
     private Event<GameStateInvalidEvent> gameStateInvalidEventEvent;
+
+    @Inject
+    @SLF4J
+    private LogWrapper log;
 
     @BeforeInGameContext
     public void before() {
@@ -139,7 +145,7 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 2, 1);
 
         gameSubject.setResource(new MovePoint(2));
-        gameStateChange(() -> getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new GameObjectBasic("fco1") {
+        gameStateChange(() -> getFieldConnection(0, 0, 1, 0).addObjectOnConnection(new GameObjectBasic<Field>("fco1") {
             @Override
             public Resource movementCost() {
                 return new MovePoint(3);
@@ -166,25 +172,25 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
         assertContainsNumberOfCost(movePaths, 0, 3);
 
         gameStateChange(() -> {
-            getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new GameObjectBasic("fco1") {
+            getFieldConnection(0, 1, 1, 1).addObjectOnConnection(new GameObjectBasic<Field>("fco1") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(9);
                 }
             });
-            getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new GameObjectBasic("fco2") {
+            getFieldConnection(0, 0, 0, 1).addObjectOnConnection(new GameObjectBasic<Field>("fco2") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
                 }
             });
-            getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new GameObjectBasic("fco3") {
+            getFieldConnection(0, 1, 0, 2).addObjectOnConnection(new GameObjectBasic<Field>("fco3") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
                 }
             });
-            getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new GameObjectBasic("fco4") {
+            getFieldConnection(1, 1, 2, 1).addObjectOnConnection(new GameObjectBasic<Field>("fco4") {
                 @Override
                 public Resource movementCost() {
                     return new MovePoint(20);
@@ -218,12 +224,12 @@ public class MoveableFieldsTest extends ArquillianGameContextTest {
     }
 
     private void printMovePath(List<MovePath> movePaths) {
-        System.out.println("------------------------------------------------------");
-        movePaths.stream().forEach(System.out::println);
-        System.out.println("------------------------------------------------------");
+        log.debug("------------------------------------------------------");
+        movePaths.stream().forEach((mp) -> log.debug("{}", mp::toString));
+        log.debug("------------------------------------------------------");
     }
 
-    private <T> void gameStateChange(Runnable actionThatTriggersGameStateChange) {
+    private void gameStateChange(Runnable actionThatTriggersGameStateChange) {
         actionThatTriggersGameStateChange.run();
         gameStateInvalidEventEvent.fire(new GameStateInvalidEvent());
     }

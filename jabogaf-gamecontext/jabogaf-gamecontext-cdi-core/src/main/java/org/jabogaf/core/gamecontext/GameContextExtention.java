@@ -18,13 +18,12 @@ public class GameContextExtention implements Extension, Serializable {
     private static final Logger log = LoggerFactory.getLogger(GameContextExtention.class);
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery bbd) {
-        log.info("BeforeBeanDiscovery. Beginning the scanning process");
+        log.debug("BeforeBeanDiscovery. Beginning the scanning process");
 
     }
 
-    public void registerContexts(@Observes
-                                 AfterBeanDiscovery afterBeanDiscovery) {
-        log.info("AfterBeanDiscovery: Register context GameContext for GameScoped beans\n");
+    public void registerContexts(@Observes AfterBeanDiscovery afterBeanDiscovery) {
+        log.debug("AfterBeanDiscovery: Register context GameContext for GameScoped beans\n");
         afterBeanDiscovery.addContext(new GameContext());
     }
 }

@@ -3,16 +3,13 @@ package org.jabogaf.core.gamecontext;
 import org.jabogaf.api.gamecontext.GameContextException;
 import org.jabogaf.api.gamecontext.GameContextInstance;
 import org.jabogaf.api.gamecontext.RunInGameContext;
+import org.jabogaf.util.log.LogWrapper;
 import org.jabogaf.util.log.SLF4J;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
@@ -37,7 +34,7 @@ public class GameContextCache {
 
     @Inject
     @SLF4J
-    private Logger log;
+    private LogWrapper log;
 
     @Inject
     private GameContextCacheDeleteStrategy gameContextCacheDeleteStrategy;
@@ -63,9 +60,9 @@ public class GameContextCache {
         if (gameContextDeleteTimer != null && gameContextCacheDeleteStrategy != null) {
             // remove old GameContexts from cache
             if (gameContextDeleteTimer.shouldCheck()) {
-                log.info("check if a {} should be removed", GameContextInstance.class.getSimpleName());
+                log.debug("check if a {} should be removed", GameContextInstance.class::getSimpleName);
                 gameContextCacheDeleteStrategy.getContextsToDelete(gameContextCache, currentGameContextInstance.getId()).stream().forEach((contextId) -> {
-                    log.info("remove {} with id {}", GameContextInstance.class.getSimpleName(), contextId);
+                    log.debug("remove {} with id {}", Arrays.asList(GameContextInstance.class::getSimpleName, () -> contextId));
                     gameContextCache.remove(contextId);
                 });
             }
@@ -107,7 +104,7 @@ public class GameContextCache {
      *                      GameContextInstance} will create.
      * @return the {@link GameContextInstance}
      */
-    private GameContextInstance getGameContextInstance(UUID gameContextId, BeanManager beanManager) {
+    private GameContextInstance getGameContextInstance(final UUID gameContextId, BeanManager beanManager) {
         GameContextInstance gameContextInstance = null;
         if (gameContextId != null) {
             gameContextInstance = gameContextCache.get(gameContextId);
@@ -115,18 +112,19 @@ public class GameContextCache {
         }
         if (gameContextInstance == null) {
             if (gameContextId != null) {
-                log.info("no {}  with id {} available", GameContextInstance.class.getSimpleName(), gameContextId);
+                log.debug("no {} with id {} available", Arrays.asList(GameContextInstance.class::getSimpleName, () -> gameContextId));
             }
-            gameContextId = UUID.randomUUID();
-            log.info("create new {} with id {}", GameContextInstance.class.getSimpleName(), gameContextId);
-            gameContextInstance = new GameContextInstanceBasic(gameContextId, beanManager);
-            gameContextCache.put(gameContextId, gameContextInstance);
+            final UUID newGameContextId = UUID.randomUUID();
+            log.debug("create new {} with id {}", Arrays.asList(GameContextInstance.class::getSimpleName, () -> newGameContextId));
+            gameContextInstance = new GameContextInstanceBasic(newGameContextId, beanManager);
+            gameContextCache.put(newGameContextId, gameContextInstance);
         } else {
-            log.info("reuse {} with id {}", GameContextInstance.class.getSimpleName(), gameContextId);
+            log.debug("reuse {} with id {}", Arrays.asList(GameContextInstance.class::getSimpleName, () -> gameContextId));
         }
         return gameContextInstance;
     }
 
+    @SuppressWarnings("unused")
     @Produces
     @Dependent
     private GameContextInstance produceCurrentGameContextInstance() {

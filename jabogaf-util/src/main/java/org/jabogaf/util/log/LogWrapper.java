@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;
+import java.util.List;
 import java.util.function.Supplier;
 
 @Dependent
@@ -35,6 +36,12 @@ public class LogWrapper {
         }
     }
 
+    public void debug(String message, List<Supplier<Object>> suppliers) {
+        if (log.isDebugEnabled()) {
+            log.debug(message, getValuesOfSuppliers(suppliers));
+        }
+    }
+
     public void info(String message, Object... object) {
         if (log.isInfoEnabled()) {
             log.info(message, object);
@@ -44,6 +51,13 @@ public class LogWrapper {
     public void info(String message, Supplier<Object> supplier) {
         if (log.isInfoEnabled()) {
             log.info(message, supplier.get());
+        }
+    }
+
+
+    public void info(String message, List<Supplier<Object>> suppliers) {
+        if (log.isInfoEnabled()) {
+            log.info(message, getValuesOfSuppliers(suppliers));
         }
     }
 
@@ -59,6 +73,13 @@ public class LogWrapper {
         }
     }
 
+
+    public void warn(String message, List<Supplier<Object>> suppliers) {
+        if (log.isWarnEnabled()) {
+            log.warn(message, getValuesOfSuppliers(suppliers));
+        }
+    }
+
     public void error(String message, Object... object) {
         if (log.isErrorEnabled()) {
             log.error(message, object);
@@ -69,5 +90,22 @@ public class LogWrapper {
         if (log.isErrorEnabled()) {
             log.error(message, supplier.get());
         }
+    }
+
+    public void error(String message, List<Supplier<Object>> suppliers) {
+        if (log.isErrorEnabled()) {
+            log.error(message, getValuesOfSuppliers(suppliers));
+        }
+    }
+
+    private Object[] getValuesOfSuppliers(List<Supplier<Object>> suppliers) {
+        Object[] values = new Object[suppliers.size()];
+        for (int i = 0; i < suppliers.size(); i++) {
+            Supplier<Object> supplier = suppliers.get(i);
+            if (supplier != null) {
+                values[i] = supplier.get();
+            }
+        }
+        return values;
     }
 }

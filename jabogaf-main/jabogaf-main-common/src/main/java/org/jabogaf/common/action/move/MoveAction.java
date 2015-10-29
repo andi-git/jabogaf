@@ -10,11 +10,12 @@ import org.jabogaf.common.event.move.AfterMoveActionEvent;
 import org.jabogaf.common.event.move.BeforeMoveActionEvent;
 import org.jabogaf.common.event.move.MoveActionParameter;
 import org.jabogaf.core.action.GameActionPreferencesBasic;
+import org.jabogaf.util.log.LogWrapper;
 import org.jabogaf.util.log.SLF4J;
-import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Arrays;
 
 /**
  * A standard move-action.
@@ -32,16 +33,16 @@ public class MoveAction implements GameAction<MoveActionParameter> {
 
     @Inject
     @SLF4J
-    private Logger log;
+    private LogWrapper log;
 
     /**
      * Perform a move on the assigned {@link GameSubject} to the assigned {@link
      * Field} via {@link GameSubject#move(Field)}
-     * <p/>
+     * <p>
      * Prerequisites: {@link GameSubject} is the current player
-     * <p/>
+     * <p>
      * Action: Move {@link GameSubject} to a {@link Field}
-     * <p/>
+     * <p>
      * Events: {@link BeforeMoveActionEvent}, {@link
      * AfterMoveActionEvent}
      *
@@ -51,7 +52,7 @@ public class MoveAction implements GameAction<MoveActionParameter> {
      */
     @Override
     public void perform(MoveActionParameter moveActionParameter) throws Exception {
-        log.info("running MoveAction: {}", moveActionParameter);
+        log.debug("running MoveAction: {}", () -> moveActionParameter);
         GameSubject gameSubject = moveActionParameter.getGameSubject();
         Field target = moveActionParameter.getTarget();
         gameActionLifecycle.perform(//
@@ -61,13 +62,13 @@ public class MoveAction implements GameAction<MoveActionParameter> {
                         throw new ActionNotPossibleException(gameSubject + " is not the current player (" + playerController.getCurrentPlayer() + ")");
                     }
                 }).addPerform(() -> {
-                    log.info("move " + moveActionParameter.getMoveable() + " from "  + moveActionParameter.getMoveable().getPosition() + " to " + target);
+                    log.debug("move {}  from {} to {}", Arrays.asList(() -> moveActionParameter.getMoveable(), () -> moveActionParameter.getMoveable().getPosition(), () -> target));
                     gameSubject.move(target);
                 }).addBeforeActionEventCreation(() -> {
-                    log.info("fire {}", BeforeMoveActionEvent.class);
+                    log.debug("fire {}", () -> BeforeMoveActionEvent.class);
                     return new BeforeMoveActionEvent(moveActionParameter);
                 }).addAfterActionEventCreation(() -> {
-                    log.info("fire {}", AfterMoveActionEvent.class);
+                    log.debug("fire {}", () -> AfterMoveActionEvent.class);
                     return new AfterMoveActionEvent(moveActionParameter);
                 }));
     }
