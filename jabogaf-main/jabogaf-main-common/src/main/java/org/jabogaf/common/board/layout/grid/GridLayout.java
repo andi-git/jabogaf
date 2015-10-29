@@ -1,10 +1,13 @@
 package org.jabogaf.common.board.layout.grid;
 
+import org.jabogaf.api.behavior.look.LookNotPossibleException;
+import org.jabogaf.api.behavior.look.LookPath;
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.layout.Layout;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
+import org.jabogaf.core.behavior.look.LookPathBasic;
+import org.jabogaf.core.behavior.look.LookPathNull;
 import org.jabogaf.core.board.layout.LayoutBasic;
 import org.jabogaf.util.stream.StreamUtil;
 
@@ -28,7 +31,7 @@ public class GridLayout extends LayoutBasic {
 
     private final Field[][] fields;
 
-    private Map<String, List<Field>> lookPaths = new HashMap<>();
+    private Map<String, LookPath> lookPaths = new HashMap<>();
 
     public GridLayout(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
         super(id, gridLayoutCreationStrategy.getFields(), gridLayoutCreationStrategy.getFieldConnections(), gridLayoutCreationStrategy.getFieldGroups());
@@ -49,7 +52,7 @@ public class GridLayout extends LayoutBasic {
                         Field fieldTarget = fields[n][m];
                         if (!fieldFrom.equals(fieldTarget)) {
                             List<Field> allFieldsInLook = getAllFieldsInLook(fieldFrom, fieldTarget);
-                            lookPaths.put(createKeyFor2Fields(fieldFrom, fieldTarget), allFieldsInLook);
+                            lookPaths.put(createKeyFor2Fields(fieldFrom, fieldTarget), new LookPathBasic(allFieldsInLook));
                         }
                     }
                 }
@@ -62,23 +65,23 @@ public class GridLayout extends LayoutBasic {
     }
 
     @Override
+    public LookPath getLookPath(Field fieldFrom, Field fieldTo) {
+        String key = createKeyFor2Fields(fieldFrom, fieldTo);
+        if (!lookPaths.containsKey(key)) {
+            return new LookPathNull();
+        } else {
+            return lookPaths.get(key);
+        }
+    }
+
+    @Override
     public List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo) {
-        Set<LayoutActionImpact<?, ?>> layoutActionImpacts = new LinkedHashSet<>(); // for unique and sorted collection
+        List<LayoutActionImpact<?, ?>> layoutActionImpacts = new ArrayList<>();
         String key = createKeyFor2Fields(fieldFrom, fieldTo);
         if (lookPaths.containsKey(key)) {
-            List<Field> fields = lookPaths.get(key);
-            for (int i = 0; i < fields.size() - 1; i++) {
-                Field field = fields.get(i);
-                layoutActionImpacts.addAll(field.getGameSubjects());
-                layoutActionImpacts.addAll(field.getGameObjects());
-                for (FieldConnection fieldConnection : field.getFieldConnections()) {
-                    if (fieldConnection.containsAll(fields)) {
-                        layoutActionImpacts.addAll(fieldConnection.getGameObjects());
-                    }
-                }
-            }
+            layoutActionImpacts.addAll(lookPaths.get(key).getLayoutActionImpacts());
         }
-        return Collections.unmodifiableList(new ArrayList<>(layoutActionImpacts));
+        return Collections.unmodifiableList(layoutActionImpacts);
     }
 
     private List<Field> getAllFieldsInLook(Field fieldFrom, Field fieldTo) {

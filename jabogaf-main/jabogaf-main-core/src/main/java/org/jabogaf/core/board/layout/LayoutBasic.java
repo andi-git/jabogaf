@@ -1,10 +1,12 @@
 package org.jabogaf.core.board.layout;
 
+import org.jabogaf.api.behavior.look.LookPath;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.board.layout.*;
 import org.jabogaf.api.object.GameObject;
+import org.jabogaf.core.behavior.look.LookPathNull;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
@@ -22,7 +24,7 @@ import java.util.stream.Stream;
  * Field}s, how the {@link Field}s are connected via {@link FieldConnection}s and grouped via {@link FieldGroup}.
  */
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public class LayoutBasic extends GameContextBeanBasic implements Layout {
+public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout {
 
     private final Set<Field> fields;
 
@@ -124,6 +126,11 @@ public class LayoutBasic extends GameContextBeanBasic implements Layout {
                 return fc.getLeftHand();
             }
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    public LookPath getLookPath(Field fieldFrom, Field fieldTo) {
+        return new LookPathNull();
     }
 
     @Override

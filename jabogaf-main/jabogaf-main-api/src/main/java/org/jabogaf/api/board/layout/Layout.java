@@ -1,5 +1,6 @@
 package org.jabogaf.api.board.layout;
 
+import org.jabogaf.api.behavior.look.LookPath;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
  * All the {@link Field}s of a board are arranged by a concrete layout. So the layout defines the available {@link
  * Field}s, how the {@link Field}s are connected via {@link FieldConnection}s and grouped via {@link FieldGroup}.
  */
-public interface Layout extends GameContextBean {
+public interface Layout extends GameContextBean<Layout> {
 
     void initAfterBoard();
 
@@ -76,6 +77,15 @@ public interface Layout extends GameContextBean {
      * @return all connected {@link Field} of an assigned {@link Field}
      */
     Set<Field> getConnectedFields(Field field);
+
+    /**
+     * Get the {@link LookPath} from one {@link Field} to another {@link Field}.
+     *
+     * @param fieldFrom from one {@link Field}
+     * @param fieldTo   to another {@link Field}
+     * @return the {@link LookPath} from one {@link Field} to another {@link Field}
+     */
+    LookPath getLookPath(Field fieldFrom, Field fieldTo);
 
     /**
      * Get all {@link LayoutActionImpact}s ({@link GameObject}s, {@link GameSubject}) that impacts the connection

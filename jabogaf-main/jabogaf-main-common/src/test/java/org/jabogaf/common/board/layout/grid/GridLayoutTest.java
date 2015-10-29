@@ -76,4 +76,9 @@ public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
         assertEquals(getById("player2"), allLayoutActionImpacts.get(2));
         assertEquals(getById("Wall:3,2-4,4"), allLayoutActionImpacts.get(3));
     }
+
+    @Test
+    public void testGetLookPath() {
+        assertEquals(2, getLayout().getLookPath(getField(0, 0), getField(1, 0)).getFields().size());
+    }
 }

@@ -53,6 +53,7 @@ public class BoardManagerBasic implements BoardManager {
         Set<GameObject<? extends ContainsGameObjects>> gameObjects = new HashSet<>();
         Set<GameObject> gameContextBeans = gameContextManager.getGameContextBeans(GameObject.class);
         for (GameObject gameObject : gameContextBeans) {
+            //noinspection unchecked
             gameObjects.add(gameObject);
         }
         return Collections.unmodifiableSet(gameObjects);
