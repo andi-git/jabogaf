@@ -16,6 +16,7 @@ import org.jabogaf.core.board.BoardBasic;
 import org.jabogaf.core.board.field.FieldBasic;
 import org.jabogaf.core.board.field.FieldConnectionBasic;
 import org.jabogaf.core.board.layout.LayoutBasic;
+import org.jabogaf.core.resource.LookPoint;
 import org.jabogaf.core.resource.MovePoint;
 import org.jabogaf.core.subject.GameSubjectBasic;
 
@@ -45,12 +46,13 @@ public class SimpleGridLayoutBoardWithSubject {
 
     private Board board;
 
-    public void create(int sizeX, int sizeY, int positionX, int positionY, int movementPoints) {
+    public void create(int sizeX, int sizeY, int positionX, int positionY, int resourcePoints) {
         createLayout(sizeX, sizeY);
         Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>());
         board = new BoardBasic("board", layout);
         gameSubject = new MyGameSubject("gameSubject", getField(positionX, positionY));
-        gameSubject.earn(new MovePoint(movementPoints, FireEvent.None).asPayment());
+        gameSubject.earn(new MovePoint(resourcePoints, FireEvent.None).asPayment());
+        gameSubject.earn(new LookPoint(resourcePoints, FireEvent.None).asPayment());
         playerController.setCurrentPlayer(gameSubject);
     }
 

@@ -18,6 +18,7 @@ import org.jabogaf.api.subject.hand.Hand;
 import org.jabogaf.core.behavior.look.LookBehaviorNull;
 import org.jabogaf.core.behavior.move.MoveBehaviorNull;
 import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
+import org.jabogaf.core.resource.LookPoint;
 import org.jabogaf.core.resource.MovePoint;
 
 import javax.enterprise.context.Dependent;
@@ -152,12 +153,12 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
 
     @Override
     public CanLookReport canLook(Field target) {
-        return lookBehavior.canLook(this, target);
+        return lookBehavior.canLook(this, target, this);
     }
 
     @Override
     public Set<Field> getLookableFields() {
-        return lookBehavior.getLookableFields(this);
+        return lookBehavior.getLookableFields(this, this);
     }
 
     @Override
@@ -172,7 +173,12 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
 
     @Override
     public Resource movementCost() {
-        return new MovePoint(0);
+        return MovePoint.NULL;
+    }
+
+    @Override
+    public Resource lookCost() {
+        return LookPoint.NULL;
     }
 
     @Override

@@ -26,7 +26,7 @@ public class GameSubjectForMovement extends GameSubjectBasic {
 
     @Override
     public CanMoveReport canMove(Field target) {
-        return new CanMoveReportBasic.CanMoveReportBuilder().buildDefault();
+        return new CanMoveReportBasic.Builder().buildDefault();
     }
 
     @Override

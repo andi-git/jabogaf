@@ -45,9 +45,9 @@ public abstract class MoveBehaviorBasic implements MoveBehavior {
     @Override
     public CanMoveReport canMove(Moveable moveable, Field target, ResourceHolder resourceHolder) {
         if (moveable == null || target == null || resourceHolder == null) {
-            return new CanMoveReportBasic.CanMoveReportBuilder().buildNull();
+            return new CanMoveReportBasic.Builder().buildNull();
         }
-        return new CanMoveReportBasic.CanMoveReportBuilder()
+        return new CanMoveReportBasic.Builder()
                 .setCost(movePointCollector.collect(moveable, target))
                 .setMaxPayment(resourceHolder.get(MovePoint.class))
                 .setMoveIsBlockedBy(checkMoveBlocks(moveable, target))

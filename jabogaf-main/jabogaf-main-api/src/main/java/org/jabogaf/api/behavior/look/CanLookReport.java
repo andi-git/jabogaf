@@ -1,6 +1,8 @@
 package org.jabogaf.api.behavior.look;
 
+import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.gamecontext.GameContextBean;
+import org.jabogaf.api.resource.Resource;
 
 import java.util.Set;
 
@@ -9,13 +11,17 @@ import java.util.Set;
  */
 public interface CanLookReport {
 
-    void addLookBlock(GameContextBean gameContextBean);
+    Field getSource();
 
-    void addLookBlock(Set<GameContextBean> gameContextBeans);
+    Field getTarget();
+
+    Resource cost();
+
+    Resource maxPayment();
 
     boolean isPossible();
 
     boolean isBlocked();
 
-    Set<GameContextBean> lookBlocks();
+    Set<LookBlock> lookBlocks();
 }

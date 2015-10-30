@@ -26,13 +26,13 @@ public class CanMoveReportBasic implements CanMoveReport {
 
     private final Field target;
 
-    public CanMoveReportBasic(Resource moveCost, Resource maxPayment, Set<MoveBlock> moveIsBlockedBy, Set<MoveUnableToEnd> moveIsUnableToEndBy, Field source, Field target) {
+    private CanMoveReportBasic(Field source, Field target, Resource moveCost, Resource maxPayment, Set<MoveBlock> moveIsBlockedBy, Set<MoveUnableToEnd> moveIsUnableToEndBy) {
+        this.source = source;
+        this.target = target;
         this.moveCost = moveCost == null ? new MovePoint(0) : moveCost;
         this.maxPayment = maxPayment == null ? new MovePoint(0) : maxPayment;
         this.moveIsBlockedBy.addAll(moveIsBlockedBy);
         this.moveIsUnableToEndBy.addAll(moveIsUnableToEndBy);
-        this.source = source;
-        this.target = target;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class CanMoveReportBasic implements CanMoveReport {
         return target;
     }
 
-    public static class CanMoveReportBuilder {
+    public static class Builder {
 
         private Resource cost;
 
@@ -99,50 +99,50 @@ public class CanMoveReportBasic implements CanMoveReport {
 
         private Field target;
 
-        public CanMoveReportBuilder setCost(Resource cost) {
+        public Builder setCost(Resource cost) {
             this.cost = cost;
             return this;
         }
 
-        public CanMoveReportBuilder setMaxPayment(Resource maxPayment) {
+        public Builder setMaxPayment(Resource maxPayment) {
             this.maxPayment = maxPayment;
             return this;
         }
 
-        public CanMoveReportBuilder setMoveIsBlockedBy(Set<MoveBlock> moveIsBlockedBy) {
+        public Builder setMoveIsBlockedBy(Set<MoveBlock> moveIsBlockedBy) {
             this.moveIsBlockedBy.clear();
             this.moveIsBlockedBy.addAll(moveIsBlockedBy);
             return this;
         }
 
-        public CanMoveReportBuilder setMoveIsUnableToEndBy(Set<MoveUnableToEnd> moveIsUnableToEndBy) {
+        public Builder setMoveIsUnableToEndBy(Set<MoveUnableToEnd> moveIsUnableToEndBy) {
             this.moveIsUnableToEndBy.clear();
             this.moveIsUnableToEndBy.addAll(moveIsUnableToEndBy);
             return this;
         }
 
-        public CanMoveReportBuilder setSource(Field source) {
+        public Builder setSource(Field source) {
             this.source = source;
             return this;
         }
 
-        public CanMoveReportBuilder setTarget(Field target) {
+        public Builder setTarget(Field target) {
             this.target = target;
             return this;
         }
 
         public CanMoveReport build() {
-            return new CanMoveReportBasic(cost, maxPayment, moveIsBlockedBy, moveIsUnableToEndBy, source, target);
+            return new CanMoveReportBasic(source, target, cost, maxPayment, moveIsBlockedBy, moveIsUnableToEndBy);
         }
 
         public CanMoveReport buildDefault() {
-            return new CanMoveReportBasic(new MovePoint(0), new MovePoint(0), new HashSet<>(), new HashSet<>(), new FieldNull(), new FieldNull());
+            return new CanMoveReportBasic(new FieldNull(), new FieldNull(), new MovePoint(0), new MovePoint(0), new HashSet<>(), new HashSet<>());
         }
 
         public CanMoveReport buildNull() {
             Set<MoveBlock> moveBlocks = new HashSet<>();
             moveBlocks.add((moveable, target) -> false);
-            return new CanMoveReportBasic(new MovePoint(Integer.MAX_VALUE), new MovePoint(0), moveBlocks, moveIsUnableToEndBy, new FieldNull(), new FieldNull());
+            return new CanMoveReportBasic(new FieldNull(), new FieldNull(), new MovePoint(Integer.MAX_VALUE), new MovePoint(0), moveBlocks, moveIsUnableToEndBy);
         }
     }
 }

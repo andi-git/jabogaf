@@ -1,12 +1,10 @@
 package org.jabogaf.common.behavior.look;
 
-import org.jabogaf.api.behavior.look.CanLookReport;
-import org.jabogaf.api.behavior.look.LookBehavior;
-import org.jabogaf.api.behavior.look.LookBehaviorType;
-import org.jabogaf.api.behavior.look.Lookable;
+import org.jabogaf.api.behavior.look.*;
 import org.jabogaf.api.behavior.move.MoveBlock;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
+import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.core.behavior.look.CanLookReportBasic;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -27,17 +25,22 @@ public class LookBehaviorAll implements LookBehavior {
     private BoardManager boardManager;
 
     @Override
-    public CanLookReport canLook(Lookable lookable, Field target) {
-        return new CanLookReportBasic();
+    public CanLookReport canLook(Lookable lookable, Field target, ResourceHolder resourceHolder) {
+        return new CanLookReportBasic.Builder().buildDefault();
     }
 
     @Override
-    public Set<Field> getLookableFields(Lookable lookable) {
+    public Set<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
         return boardManager.getFields();
     }
 
     @Override
-    public Set<MoveBlock> getLookBlocks() {
+    public Set<LookBlock> getLookBlocks() {
+        return new HashSet<>();
+    }
+
+    @Override
+    public Set<LookBlock> checkLookBlocks(Lookable lookable, Field target) {
         return new HashSet<>();
     }
 }

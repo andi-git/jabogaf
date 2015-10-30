@@ -13,4 +13,6 @@ public interface LayoutActionImpact<T extends GameContextBeanWithState, POSITION
     POSITION getPosition();
 
     Resource movementCost();
+
+    Resource lookCost();
 }

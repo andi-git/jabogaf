@@ -5,6 +5,7 @@ import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.state.GameState;
 import org.jabogaf.core.gamecontext.GameContextBeanWithStateBasic;
+import org.jabogaf.core.resource.LookPoint;
 import org.jabogaf.core.resource.MovePoint;
 
 import javax.enterprise.context.Dependent;
@@ -52,7 +53,12 @@ public abstract class GameObjectBasic<POSITION extends ContainsGameObjects> exte
 
     @Override
     public Resource movementCost() {
-        return new MovePoint(0);
+        return MovePoint.NULL;
+    }
+
+    @Override
+    public Resource lookCost() {
+        return LookPoint.MAX;
     }
 
     @Override

@@ -106,7 +106,7 @@ public interface MoveBehavior {
     Set<MoveBlock> getMoveBlocks();
 
     /**
-     * Get a {@link Set} of {@link MoveBlock} that block the move of a {@link Moveable} to the target {@link Field}
+     * Get a {@link Set} of {@link MoveBlock} that blocks the move of a {@link Moveable} to the target {@link Field}
      *
      * @param moveable the {@link Moveable} that want's to move
      * @param target   the target {@link Field} to move to

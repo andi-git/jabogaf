@@ -1,11 +1,12 @@
-package org.jabogaf.core.behavior.move;
+package org.jabogaf.core.behavior.look;
 
+import org.jabogaf.api.behavior.look.Lookable;
 import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.gamecontext.GameScoped;
 import org.jabogaf.api.resource.Resource;
-import org.jabogaf.core.resource.MovePoint;
+import org.jabogaf.core.resource.LookPoint;
 import org.jabogaf.core.state.CachedValueMap;
 import org.jabogaf.core.util.ParameterForCacheOfTwoFields;
 import org.jabogaf.util.log.SLF4J;
@@ -15,14 +16,14 @@ import javax.inject.Inject;
 import java.util.function.Function;
 
 @GameScoped
-public class MovePointCollectorBasic implements MovePointCollector {
+public class LookPointCollectorBasic implements LookPointCollector {
 
     @Inject
     private MovePointCollectorCache movePointCollectorCache;
 
     @Override
-    public Resource collect(Moveable moveable, Field target) {
-        return collect(moveable.getPosition(), target);
+    public Resource collect(Lookable lookable, Field target) {
+        return collect(lookable.getPosition(), target);
     }
 
     @Override
@@ -34,7 +35,7 @@ public class MovePointCollectorBasic implements MovePointCollector {
     }
 
     @GameScoped
-    public static class MovePointCollectorCache extends CachedValueMap<MovePoint, ParameterForCacheOfTwoFields> {
+    public static class MovePointCollectorCache extends CachedValueMap<LookPoint, ParameterForCacheOfTwoFields> {
 
         @Inject
         @SLF4J
@@ -44,14 +45,10 @@ public class MovePointCollectorBasic implements MovePointCollector {
         private BoardManager boardManager;
 
         @Override
-        protected Function<ParameterForCacheOfTwoFields, MovePoint> create() {
-            return parameter -> {
-                int mpFieldConnectionObjects = boardManager.getAllGameObjectsOnFieldConnection(parameter.getPosition(), parameter.getTarget()).stream()
-                        .mapToInt(fco -> fco.movementCost().getAmount())
-                        .sum();
-                int mpField = parameter.getTarget().movementCost().getAmount();
-                return new MovePoint(mpFieldConnectionObjects + mpField);
-            };
+        protected Function<ParameterForCacheOfTwoFields, LookPoint> create() {
+            return parameter -> new LookPoint(boardManager.getBoard().getLayout().getAllLayoutActionImpacts(parameter.getPosition(), parameter.getTarget()).stream()
+                    .mapToInt(lai -> lai.lookCost().getAmount())
+                    .sum());
         }
 
         @Override

@@ -7,6 +7,10 @@ import org.jabogaf.api.gamecontext.FireEvent;
  */
 public class MovePoint extends ResourceBasic<MovePoint> {
 
+    public static final MovePoint MAX = new MovePoint(Integer.MAX_VALUE);
+
+    public static final MovePoint NULL = new MovePoint(0);
+
     public MovePoint() {
         super();
     }
