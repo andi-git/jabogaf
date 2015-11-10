@@ -12,6 +12,7 @@ import org.jabogaf.core.object.GameObjectBasic;
 import org.jabogaf.test.gamecontext.ArquillianGameContextTest;
 import org.jabogaf.test.gamecontext.BeforeInGameContext;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -54,7 +55,7 @@ public abstract class AbstractBoardTest extends ArquillianGameContextTest {
         fieldConnection12.addObjectOnConnection(object2);
         fieldConnectionObjects.add(object1);
         fieldConnectionObjects.add(object2);
-        layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>());
+        layout = new LayoutBasic("layout", fields, fieldConnections, new HashSet<>(), new HashMap<>());
         board = new BoardBasic("board", layout);
     }
 }

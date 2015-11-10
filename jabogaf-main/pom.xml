@@ -16,5 +16,6 @@
         <module>jabogaf-main-api</module>
         <module>jabogaf-main-core</module>
         <module>jabogaf-main-common</module>
+        <module>jabogaf-main-gridlayout-creation</module>
     </modules>
 </project>

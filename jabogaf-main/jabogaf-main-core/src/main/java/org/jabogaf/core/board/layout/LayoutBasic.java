@@ -6,18 +6,18 @@ import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.board.layout.*;
 import org.jabogaf.api.object.GameObject;
-import org.jabogaf.core.behavior.look.LookPathNull;
+import org.jabogaf.common.board.layout.KeyTwoFieldsBasic;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
 
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * All the {@link Field}s of a board are arranged by a concrete layout. So the layout defines the available {@link
@@ -26,11 +26,13 @@ import java.util.stream.Stream;
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout {
 
-    private final Set<Field> fields;
+    private final Set<Field> fields = new HashSet<>();
 
-    private final Set<FieldConnection> fieldConnections;
+    private final Set<FieldConnection> fieldConnections = new HashSet<>();
 
-    private final Set<FieldGroup> fieldGroups;
+    private final Set<FieldGroup> fieldGroups = new HashSet<>();
+
+    private final Map<KeyTwoFields, LookPath> lookPaths = new HashMap<>();
 
     private final CacheFor2Fields<Boolean> isConnectedCache = new CacheFor2Fields<>();
 
@@ -57,14 +59,22 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
      * @param fieldConnections all connections of the {@link Field}s as {@link FieldConnection}s
      * @param fieldGroups      all groups of the {@link Field}s as {@link FieldGroup}s
      */
-    public LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups) {
+    public LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups, Map<KeyTwoFields, LookPath> lookPaths) {
         super(id);
         if (fields == null || fieldConnections == null || fieldGroups == null) {
             throw new IllegalArgumentException("fields,  fieldConnections and fieldGroups must not be null!");
         }
-        this.fields = fields;
-        this.fieldConnections = fieldConnections;
-        this.fieldGroups = fieldGroups;
+        checkNotNull(fields, "fields must not be null");
+        checkNotNull(fieldConnections, "fieldConnections must not be null");
+        checkNotNull(fieldGroups, "fieldGroups must not be null");
+        checkNotNull(lookPaths, "lookPaths must not be null");
+//        checkArgument(!fields.isEmpty(), "fields must not be empty");
+//        checkArgument(!fieldConnections.isEmpty(), "fieldConnections must not be empty");
+//        checkArgument(!lookPaths.isEmpty(), "lookPaths must not be empty");
+        this.fields.addAll(fields);
+        this.fieldConnections.addAll(fieldConnections);
+        this.fieldGroups.addAll(fieldGroups);
+        this.lookPaths.putAll(lookPaths);
     }
 
     @Override
@@ -129,8 +139,13 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
     }
 
     @Override
-    public LookPath getLookPath(Field fieldFrom, Field fieldTo) {
-        return new LookPathNull();
+    public Optional<LookPath> getLookPath(Field fieldFrom, Field fieldTo) {
+        return Optional.ofNullable(lookPaths.get(new KeyTwoFieldsBasic(fieldFrom, fieldTo)));
+    }
+
+    @Override
+    public Map<KeyTwoFields, LookPath> getLookPaths() {
+        return Collections.unmodifiableMap(lookPaths);
     }
 
     @Override

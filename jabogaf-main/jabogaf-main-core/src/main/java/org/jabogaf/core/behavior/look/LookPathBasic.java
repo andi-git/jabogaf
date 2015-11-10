@@ -12,7 +12,7 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class LookPathBasic extends GameContextBeanBasic<LookPathBasic> implements LookPath {
+public class LookPathBasic extends GameContextBeanBasic<LookPath> implements LookPath {
 
     private final List<Field> fields = new ArrayList<>();
 

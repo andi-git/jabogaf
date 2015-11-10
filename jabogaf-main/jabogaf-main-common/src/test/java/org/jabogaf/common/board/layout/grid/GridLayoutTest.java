@@ -1,7 +1,6 @@
 package org.jabogaf.common.board.layout.grid;
 
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.board.field.FieldConnection;
 import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.common.TestWithExampleGridLayoutBoard;
@@ -10,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -79,6 +77,6 @@ public class GridLayoutTest extends TestWithExampleGridLayoutBoard {
 
     @Test
     public void testGetLookPath() {
-        assertEquals(2, getLayout().getLookPath(getField(0, 0), getField(1, 0)).getFields().size());
+        assertEquals(2, getLayout().getLookPath(getField(0, 0), getField(1, 0)).get().getFields().size());
     }
 }

@@ -48,7 +48,7 @@ public class SimpleGridLayoutBoardWithSubject {
 
     public void create(int sizeX, int sizeY, int positionX, int positionY, int resourcePoints) {
         createLayout(sizeX, sizeY);
-        Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>());
+        Layout layout = new LayoutBasic("layout", getFieldsAsSet(), getFieldConnectionsAsSet(), new HashSet<>(), new HashMap<>());
         board = new BoardBasic("board", layout);
         gameSubject = new MyGameSubject("gameSubject", getField(positionX, positionY));
         gameSubject.earn(new MovePoint(resourcePoints, FireEvent.None).asPayment());

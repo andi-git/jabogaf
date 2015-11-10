@@ -2,6 +2,7 @@ package org.jabogaf.api.behavior.look;
 
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.layout.LayoutActionImpact;
+import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.resource.Resource;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * The path of all {@link LayoutActionImpact} to look from one {@link Field} to another {@link Field}.
  */
-public interface LookPath {
+public interface LookPath extends GameContextBean<LookPath> {
 
     /**
      * The current position {@link Field} where the path starts.

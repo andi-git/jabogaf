@@ -9,6 +9,7 @@ import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.subject.GameSubject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -85,7 +86,14 @@ public interface Layout extends GameContextBean<Layout> {
      * @param fieldTo   to another {@link Field}
      * @return the {@link LookPath} from one {@link Field} to another {@link Field}
      */
-    LookPath getLookPath(Field fieldFrom, Field fieldTo);
+    Optional<LookPath> getLookPath(Field fieldFrom, Field fieldTo);
+
+    /**
+     * Get all available {@link LookPath}s.
+     *
+     * @return all available {@link LookPath}s
+     */
+    Map<KeyTwoFields, LookPath> getLookPaths();
 
     /**
      * Get all {@link LayoutActionImpact}s ({@link GameObject}s, {@link GameSubject}) that impacts the connection

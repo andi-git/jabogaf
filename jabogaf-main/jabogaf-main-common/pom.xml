@@ -33,6 +33,11 @@
             <artifactId>jabogaf-events-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-main-gridlayout-creation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- test -->
         <dependency>

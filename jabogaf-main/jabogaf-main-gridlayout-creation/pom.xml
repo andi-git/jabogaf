@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jabogaf-main-core</artifactId>
+    <artifactId>jabogaf-main-gridlayout-creation</artifactId>
 
     <dependencies>
         <!-- production -->
@@ -20,27 +20,7 @@
         </dependency>
         <dependency>
             <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-gamecontext-cdi-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-events-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-state-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-util</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jabogaf</groupId>
-            <artifactId>jabogaf-main-gridlayout-creation</artifactId>
+            <artifactId>jabogaf-gamecontext-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -55,5 +35,12 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jabogaf</groupId>
+            <artifactId>jabogaf-gamecontext-cdi-core</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 </project>
