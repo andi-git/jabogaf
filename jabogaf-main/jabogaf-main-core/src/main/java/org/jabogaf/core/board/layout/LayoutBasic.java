@@ -7,6 +7,7 @@ import org.jabogaf.api.board.field.FieldGroup;
 import org.jabogaf.api.board.layout.*;
 import org.jabogaf.api.object.GameObject;
 import org.jabogaf.common.board.layout.KeyTwoFieldsBasic;
+import org.jabogaf.common.board.layout.grid.GridLayoutCreationStrategy;
 import org.jabogaf.core.gamecontext.GameContextBeanBasic;
 import org.jabogaf.core.util.CacheFor1Field;
 import org.jabogaf.core.util.CacheFor2Fields;
@@ -59,7 +60,7 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
      * @param fieldConnections all connections of the {@link Field}s as {@link FieldConnection}s
      * @param fieldGroups      all groups of the {@link Field}s as {@link FieldGroup}s
      */
-    public LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups, Map<KeyTwoFields, LookPath> lookPaths) {
+    protected LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups, Map<KeyTwoFields, LookPath> lookPaths) {
         super(id);
         if (fields == null || fieldConnections == null || fieldGroups == null) {
             throw new IllegalArgumentException("fields,  fieldConnections and fieldGroups must not be null!");
@@ -68,13 +69,23 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
         checkNotNull(fieldConnections, "fieldConnections must not be null");
         checkNotNull(fieldGroups, "fieldGroups must not be null");
         checkNotNull(lookPaths, "lookPaths must not be null");
-//        checkArgument(!fields.isEmpty(), "fields must not be empty");
-//        checkArgument(!fieldConnections.isEmpty(), "fieldConnections must not be empty");
-//        checkArgument(!lookPaths.isEmpty(), "lookPaths must not be empty");
+        checkArgument(!fields.isEmpty(), "fields must not be empty");
+        checkArgument(!fieldConnections.isEmpty(), "fieldConnections must not be empty");
+        checkArgument(!lookPaths.isEmpty(), "lookPaths must not be empty");
         this.fields.addAll(fields);
         this.fieldConnections.addAll(fieldConnections);
         this.fieldGroups.addAll(fieldGroups);
         this.lookPaths.putAll(lookPaths);
+    }
+
+    /**
+     * Create a new {@link LayoutBasic}
+     *
+     * @param id                         the id of the {@link LayoutBasic}
+     * @param gridLayoutCreationStrategy the stategy to create the layout
+     */
+    public LayoutBasic(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
+        this(id, gridLayoutCreationStrategy.getFields(), gridLayoutCreationStrategy.getFieldConnections(), gridLayoutCreationStrategy.getFieldGroups(), gridLayoutCreationStrategy.getLookPaths());
     }
 
     @Override

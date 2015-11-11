@@ -26,6 +26,8 @@ import javax.enterprise.inject.Typed;
 import javax.inject.Inject;
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A subject (i.e. hero, monster,...) in the game.
  */
@@ -66,9 +68,7 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
 
     public GameSubjectBasic(String id, Field position, Set<Resource> resources, MoveBehavior moveBehavior, LookBehavior lookBehavior) {
         super(id);
-        if (position == null) {
-            throw new IllegalStateException("'position must not be null");
-        }
+        checkNotNull(position);
         this.state.setPosition(position);
         this.state.addResources(resources);
         this.moveBehavior = moveBehavior != null ? moveBehavior : moveBehaviorNull;

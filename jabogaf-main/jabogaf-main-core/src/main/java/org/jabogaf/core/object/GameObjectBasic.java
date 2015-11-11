@@ -12,7 +12,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
-public abstract class GameObjectBasic<POSITION extends ContainsGameObjects> extends GameContextBeanWithStateBasic<GameObject> implements GameObject<POSITION> {
+public class GameObjectBasic<POSITION extends ContainsGameObjects> extends GameContextBeanWithStateBasic<GameObject> implements GameObject<POSITION> {
 
     @Inject
     private State<POSITION> state;

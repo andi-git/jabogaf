@@ -31,11 +31,7 @@ public class GridLayout extends LayoutBasic {
     private final Field[][] fields;
 
     public GridLayout(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
-        super(id,
-                gridLayoutCreationStrategy.getFields(),
-                gridLayoutCreationStrategy.getFieldConnections(),
-                gridLayoutCreationStrategy.getFieldGroups(),
-                gridLayoutCreationStrategy.getLookPaths());
+        super(id, gridLayoutCreationStrategy);
         fields = gridLayoutCreationStrategy.getFieldsArray();
     }
 
