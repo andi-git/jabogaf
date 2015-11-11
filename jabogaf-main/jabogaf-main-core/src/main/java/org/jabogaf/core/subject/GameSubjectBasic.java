@@ -157,7 +157,7 @@ public class GameSubjectBasic extends GameContextBeanWithStateBasic<GameSubject>
     }
 
     @Override
-    public Set<Field> getLookableFields() {
+    public List<Field> getLookableFields() {
         return lookBehavior.getLookableFields(this, this);
     }
 

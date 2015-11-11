@@ -1,18 +1,12 @@
 package org.jabogaf.common.board.layout.grid;
 
-import org.jabogaf.api.behavior.look.LookPath;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.board.layout.Layout;
-import org.jabogaf.api.board.layout.LayoutActionImpact;
 import org.jabogaf.api.board.layout.log.LayoutLoggerManager;
 import org.jabogaf.core.board.layout.LayoutBasic;
 import org.jabogaf.util.stream.StreamUtil;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -33,16 +27,6 @@ public class GridLayout extends LayoutBasic {
     public GridLayout(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
         super(id, gridLayoutCreationStrategy);
         fields = gridLayoutCreationStrategy.getFieldsArray();
-    }
-
-    @Override
-    public List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo) {
-        List<LayoutActionImpact<?, ?>> layoutActionImpacts = new ArrayList<>();
-        Optional<LookPath> lookPath = getLookPath(fieldFrom, fieldTo);
-        if (lookPath.isPresent()) {
-            layoutActionImpacts.addAll(lookPath.get().getLayoutActionImpacts());
-        }
-        return Collections.unmodifiableList(layoutActionImpacts);
     }
 
     /**

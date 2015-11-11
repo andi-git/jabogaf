@@ -11,6 +11,8 @@ public class LookPoint extends ResourceBasic<LookPoint> {
 
     public static final LookPoint NULL = new LookPoint(0);
 
+    public static final LookPoint ONE = new LookPoint(1);
+
     public LookPoint() {
         super();
     }

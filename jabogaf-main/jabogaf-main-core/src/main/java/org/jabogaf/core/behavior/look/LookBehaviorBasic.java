@@ -4,24 +4,14 @@ import org.jabogaf.api.behavior.look.CanLookReport;
 import org.jabogaf.api.behavior.look.LookBehavior;
 import org.jabogaf.api.behavior.look.LookBlock;
 import org.jabogaf.api.behavior.look.Lookable;
-import org.jabogaf.api.behavior.move.MoveBlock;
-import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.board.field.FieldConnection;
-import org.jabogaf.api.board.layout.LayoutActionImpact;
-import org.jabogaf.api.gamecontext.GameContextBean;
-import org.jabogaf.api.resource.Resource;
 import org.jabogaf.api.resource.ResourceHolder;
-import org.jabogaf.core.behavior.move.CanMoveReportBasic;
 import org.jabogaf.core.resource.LookPoint;
-import org.jabogaf.core.resource.MovePoint;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +25,9 @@ public abstract class LookBehaviorBasic implements LookBehavior {
 
     @Inject
     private LookPointCollector lookPointCollector;
+
+    @Inject
+    private LookableFields lookableFields;
 
     private Set<LookBlock> lookBlocks = new HashSet<>();
 
@@ -67,7 +60,12 @@ public abstract class LookBehaviorBasic implements LookBehavior {
     }
 
     @Override
-    public Set<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
-        return null;
+    public List<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
+        return lookableFields.get(new LookableFields.Parameter(lookable, resourceHolder));
+    }
+
+    @Override
+    public Set<LookBlock> getLookBlocks() {
+        return lookBlocks;
     }
 }

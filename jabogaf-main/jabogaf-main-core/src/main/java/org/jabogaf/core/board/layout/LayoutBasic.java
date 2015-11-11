@@ -55,10 +55,10 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
     /**
      * Create a new {@link LayoutBasic}.
      *
-     * @param id               the id of the {@link LayoutBasic}
-     * @param fields           all {@link Field}s of the layout
-     * @param fieldConnections all connections of the {@link Field}s as {@link FieldConnection}s
-     * @param fieldGroups      all groups of the {@link Field}s as {@link FieldGroup}s
+     * @param id                          the id of the {@link LayoutBasic}
+     * @param fields                      all {@link Field}s of the layout
+     * @param fieldConnections            all connections of the {@link Field}s as {@link FieldConnection}s
+     * @param fieldGroups                 all groups of the {@link Field}s as {@link FieldGroup}s
      */
     protected LayoutBasic(String id, Set<Field> fields, Set<FieldConnection> fieldConnections, Set<FieldGroup> fieldGroups, Map<KeyTwoFields, LookPath> lookPaths) {
         super(id);
@@ -81,8 +81,8 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
     /**
      * Create a new {@link LayoutBasic}
      *
-     * @param id                         the id of the {@link LayoutBasic}
-     * @param gridLayoutCreationStrategy the stategy to create the layout
+     * @param id                          the id of the {@link LayoutBasic}
+     * @param gridLayoutCreationStrategy  the stategy to create the layout
      */
     public LayoutBasic(String id, GridLayoutCreationStrategy gridLayoutCreationStrategy) {
         this(id, gridLayoutCreationStrategy.getFields(), gridLayoutCreationStrategy.getFieldConnections(), gridLayoutCreationStrategy.getFieldGroups(), gridLayoutCreationStrategy.getLookPaths());
@@ -124,7 +124,12 @@ public class LayoutBasic extends GameContextBeanBasic<Layout> implements Layout 
 
     @Override
     public List<LayoutActionImpact<?, ?>> getAllLayoutActionImpacts(Field fieldFrom, Field fieldTo) {
-        return Collections.emptyList();
+        List<LayoutActionImpact<?, ?>> layoutActionImpacts = new ArrayList<>();
+        Optional<LookPath> lookPath = getLookPath(fieldFrom, fieldTo);
+        if (lookPath.isPresent()) {
+            layoutActionImpacts.addAll(lookPath.get().getLayoutActionImpacts());
+        }
+        return Collections.unmodifiableList(layoutActionImpacts);
     }
 
     @Override

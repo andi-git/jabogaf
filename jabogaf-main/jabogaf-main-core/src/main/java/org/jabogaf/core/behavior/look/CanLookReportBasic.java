@@ -3,7 +3,6 @@ package org.jabogaf.core.behavior.look;
 import org.jabogaf.api.behavior.look.CanLookReport;
 import org.jabogaf.api.behavior.look.LookBlock;
 import org.jabogaf.api.board.field.Field;
-import org.jabogaf.api.gamecontext.GameContextBean;
 import org.jabogaf.api.resource.Resource;
 import org.jabogaf.core.board.field.FieldNull;
 import org.jabogaf.core.resource.LookPoint;
@@ -54,7 +53,7 @@ public class CanLookReportBasic implements CanLookReport {
 
     @Override
     public boolean isPossible() {
-        return !isBlocked();
+        return canPay() && !isBlocked();
     }
 
     @Override
@@ -65,6 +64,11 @@ public class CanLookReportBasic implements CanLookReport {
     @Override
     public Set<LookBlock> lookBlocks() {
         return Collections.unmodifiableSet(lookBlocks);
+    }
+
+    @Override
+    public boolean canPay() {
+        return maxPayment.greaterEquals(cost);
     }
 
     public static class Builder {

@@ -24,4 +24,6 @@ public interface CanLookReport {
     boolean isBlocked();
 
     Set<LookBlock> lookBlocks();
+
+    boolean canPay();
 }

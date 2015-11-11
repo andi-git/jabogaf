@@ -1,7 +1,6 @@
 package org.jabogaf.core.behavior.look;
 
 import org.jabogaf.api.behavior.look.Lookable;
-import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.gamecontext.GameScoped;
@@ -19,7 +18,7 @@ import java.util.function.Function;
 public class LookPointCollectorBasic implements LookPointCollector {
 
     @Inject
-    private MovePointCollectorCache movePointCollectorCache;
+    private LookPointCollectorCache lookPointCollectorCache;
 
     @Override
     public Resource collect(Lookable lookable, Field target) {
@@ -28,14 +27,11 @@ public class LookPointCollectorBasic implements LookPointCollector {
 
     @Override
     public Resource collect(Field position, Field target) {
-        if (!position.isConnected(target)) {
-            throw new IllegalStateException(position + " and" + target + " are not connected");
-        }
-        return movePointCollectorCache.get(new ParameterForCacheOfTwoFields(position, target));
+        return lookPointCollectorCache.get(new ParameterForCacheOfTwoFields(position, target));
     }
 
     @GameScoped
-    public static class MovePointCollectorCache extends CachedValueMap<LookPoint, ParameterForCacheOfTwoFields> {
+    public static class LookPointCollectorCache extends CachedValueMap<LookPoint, ParameterForCacheOfTwoFields> {
 
         @Inject
         @SLF4J

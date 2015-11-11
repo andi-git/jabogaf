@@ -50,7 +50,9 @@ public class SimpleGridLayoutBoardWithSubject {
     }
 
     public FieldConnection getFieldConnection(int x1, int y1, int x2, int y2) {
-        return gameContextManager.getGameContextBean(FieldConnection.class, "fcf" + x1 + "" + y1 + "f" + x2 + "" + y2);
+        Field field1 = gameContextManager.getGameContextBean(Field.class, "f" + x1 + y1);
+        Field field2 = gameContextManager.getGameContextBean(Field.class, "f" + x2 + y2);
+        return field1.getConnectionTo(field2);
     }
 
     public GameSubject getGameSubject() {

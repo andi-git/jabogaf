@@ -1,7 +1,6 @@
 package org.jabogaf.common.behavior.look;
 
 import org.jabogaf.api.behavior.look.*;
-import org.jabogaf.api.behavior.move.MoveBlock;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.ResourceHolder;
@@ -9,13 +8,11 @@ import org.jabogaf.core.behavior.look.CanLookReportBasic;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This implementation of {@link org.jabogaf.api.behavior.look.LookBehavior} can look to every {@link
- * org.jabogaf.api.board.field.Field} of the {@link org.jabogaf.api.board.layout.Layout} and can be used
- * everywhere.
+ * org.jabogaf.api.board.field.Field} of the {@link org.jabogaf.api.board.layout.Layout} and can be used everywhere.
  */
 @ApplicationScoped
 @LookBehaviorType(LookBehaviorAll.class)
@@ -30,8 +27,8 @@ public class LookBehaviorAll implements LookBehavior {
     }
 
     @Override
-    public Set<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
-        return boardManager.getFields();
+    public List<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
+        return Collections.unmodifiableList(new ArrayList<>(boardManager.getFields()));
     }
 
     @Override

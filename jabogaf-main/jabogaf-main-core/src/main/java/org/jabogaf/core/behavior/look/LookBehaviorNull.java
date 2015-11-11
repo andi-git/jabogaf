@@ -6,9 +6,7 @@ import org.jabogaf.api.board.field.Field;
 import org.jabogaf.api.resource.ResourceHolder;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @ApplicationScoped
 @LookBehaviorType(LookBehaviorNull.class)
@@ -20,8 +18,8 @@ public class LookBehaviorNull implements LookBehavior {
     }
 
     @Override
-    public Set<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
-        return Collections.unmodifiableSet(new HashSet<>());
+    public List<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder) {
+        return Collections.unmodifiableList(new ArrayList<>());
     }
 
     @Override

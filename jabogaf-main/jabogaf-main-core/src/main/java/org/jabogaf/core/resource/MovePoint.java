@@ -11,6 +11,8 @@ public class MovePoint extends ResourceBasic<MovePoint> {
 
     public static final MovePoint NULL = new MovePoint(0);
 
+    public static final MovePoint ONE = new MovePoint(1);
+
     public MovePoint() {
         super();
     }

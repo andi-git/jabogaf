@@ -6,6 +6,7 @@ import org.jabogaf.api.object.GameObject;
 import org.jabogaf.api.resource.ResourceHolder;
 import org.jabogaf.api.subject.GameSubject;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,7 +33,7 @@ public interface LookBehavior {
      * @param lookable the {@link Lookable} to check for
      * @return a set of {@link Field}s that can be looked to
      */
-    Set<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder);
+    List<Field> getLookableFields(Lookable lookable, ResourceHolder resourceHolder);
 
     /**
      * Get a {@link Set} of all {@link LookBlock}s that are activated.

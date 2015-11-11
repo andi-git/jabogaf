@@ -1,5 +1,6 @@
 package org.jabogaf.core.behavior.move;
 
+import com.google.common.base.Preconditions;
 import org.jabogaf.api.behavior.move.Moveable;
 import org.jabogaf.api.board.BoardManager;
 import org.jabogaf.api.board.field.Field;
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import javax.inject.Inject;
 import java.util.function.Function;
 
+import static com.google.common.base.Preconditions.checkState;
+
 @GameScoped
 public class MovePointCollectorBasic implements MovePointCollector {
 
@@ -27,9 +30,7 @@ public class MovePointCollectorBasic implements MovePointCollector {
 
     @Override
     public Resource collect(Field position, Field target) {
-        if (!position.isConnected(target)) {
-            throw new IllegalStateException(position + " and" + target + " are not connected");
-        }
+        checkState(position.isConnected(target), position + " and" + target + " are not connected");
         return movePointCollectorCache.get(new ParameterForCacheOfTwoFields(position, target));
     }
 
